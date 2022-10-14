@@ -20,9 +20,14 @@ class MatchListViewModel : ViewModel() {
         get() = _matches
 
     init {
+        updateMatch()
+    }
+
+    fun updateMatch() {
         viewModelScope.launch {
             try {
                 _matches.value = BonPariApi.retrofitService.getAllGames()
+                Log.d("CAL", _matches.value.toString())
             } catch (e: Exception) {
                 Log.e("CAL", e.message.toString())
             }

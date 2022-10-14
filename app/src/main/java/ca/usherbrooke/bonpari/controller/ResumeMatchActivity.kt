@@ -5,10 +5,12 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.Pointage
+import ca.usherbrooke.bonpari.model.MatchListViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 // todo: handle "service mark"
@@ -34,7 +36,7 @@ class ResumeMatchActivity : AppCompatActivity() {
     private lateinit var player2reclame: TextView
     private lateinit var service2: TextView
 
-
+    private val viewModel: MatchListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,12 +76,17 @@ class ResumeMatchActivity : AppCompatActivity() {
         val mpointage: Pointage? = matchSerializable?.score
         if(mpointage != null) {
             player1set1.text = mpointage.jeu[0][0].toString()
-            player1set2.text = mpointage.jeu[1][0].toString()
-            //player1set3.text = mpointage.jeu[0][2].toString()
-            player1game.text = mpointage.echange[0].toString()
             player2set1.text = mpointage.jeu[0][1].toString()
-            player2set2.text = mpointage.jeu[1][1].toString()
-            //player2set3.text = mpointage.jeu[1][2].toString()
+            Log.d("CAL", "Size of 'jeu': ${mpointage.jeu.size}")
+            if (mpointage.jeu.size >= 2) {
+                player1set2.text = mpointage.jeu[1][0].toString()
+                player2set2.text = mpointage.jeu[1][1].toString()
+            }
+            if (mpointage.jeu.size == 3) {
+                player1set3.text = mpointage.jeu[2][0].toString()
+                player2set3.text = mpointage.jeu[2][1].toString()
+            }
+            player1game.text = mpointage.echange[0].toString()
             player2game.text = mpointage.echange[1].toString()
 
         }
@@ -122,7 +129,10 @@ class ResumeMatchActivity : AppCompatActivity() {
                 .show()
         }
 
-        buttonRefresh.setOnClickListener { }
+        buttonRefresh.setOnClickListener {
+            Log.d("CAL", "Refresh")
+            viewModel.updateMatch()
+        }
 
     }
 }
