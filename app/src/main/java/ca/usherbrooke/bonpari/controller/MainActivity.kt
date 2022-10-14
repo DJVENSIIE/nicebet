@@ -1,4 +1,4 @@
-package ca.usherbrooke.bonpari
+package ca.usherbrooke.bonpari.controller
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
