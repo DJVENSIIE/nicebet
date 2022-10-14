@@ -1,4 +1,5 @@
 const Pointage = require('./Pointage.js');
+const Paris = require('./Paris.js');
 
 class Partie {
   constructor (joueur1, joueur2, terrain, tournoi, heureDebut, tickDebut) {
@@ -14,7 +15,65 @@ class Partie {
     this.nombre_coup_dernier_echange = 0;
     this.constestation = [3, 3];
     this.tick_debut = tickDebut;
+    this.paris = [];
+    this.montantTotal = 0.00;
+    this.montantJoueur1 = 0.00;
+    this.montantJoueur2 = 0.00;
+    this.pariPossible = true;
+    this.vainqueur = -1;
+
   }
+
+  parier (client,joueur,montant){
+    let paris = new Paris(this);
+    paris.ajouterParis(client,joueur,montant);
+
+    this.paris.push(paris);
+    
+    this.paris.montantTotal += montant;
+    
+    if (joueur == joueur1){
+      this.montantJoueur1 += montant;
+    }
+    else {
+      this.montantJoueur2 += montant;
+    }
+  }
+
+
+  ObtenirGains (client, vainqueur){
+    
+    let coeff;
+    let choix;
+
+    if (vainqueur == this.joueur1){
+      coeff = this.montantTotal * (75 / 100) / this.montantJoueur1;
+      choix = 0;
+    }
+    else if (vainqueur == this.joueur2){
+      coeff = this.montantTotal * (75 / 100) / this.montantJoueur2;
+      choix = 1;
+    }
+
+    let gains = 0.00;
+    
+    for (let i = 0; i < this.paris.length; i++) {
+
+      if (this.paris[i].client == client && this.paris[i].choix == choix ){
+
+        gains += this.paris[i].montantParié;
+      }
+    } 
+
+    gains = gains * coeff
+
+    return gains;
+    
+  }
+
+
+
+
 
   jouerTour () {
     let contestationReussi = false;
