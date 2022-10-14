@@ -1,9 +1,11 @@
 package ca.usherbrooke.bonpari.model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.Player
 import kotlinx.coroutines.delay
@@ -18,10 +20,11 @@ class MatchListViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            addMatch(Match(AlbertRamos, MilosRaonic, '1', "Hale", "13h30"))
-            addMatch(Match(MilosRaonic, AndyRoddick, '2', "Hale", "14h30"))
-            addMatch(Match(AndyRoddick, AndyMurray, '1', "Hale", "16h30"))
-            addMatch(Match(AndyMurray, AlbertRamos, '2', "Hale", "17h30"))
+            try {
+                _matches.value = BonPariApi.retrofitService.getAllGames()
+            } catch (e: Exception) {
+                Log.e("CAL", e.message.toString())
+            }
         }
     }
 
