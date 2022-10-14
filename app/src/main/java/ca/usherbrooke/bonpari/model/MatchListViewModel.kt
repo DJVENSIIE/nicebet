@@ -64,11 +64,11 @@ class MatchListViewModel : ViewModel() {
     }
 
     private suspend fun addMatch(match: Match) {
-        delay(5000)
         _matches.value = mutableListOf<Match>().apply {
             addAll(_matches.value!!)
             add(match)
         }
+        delay(5000)
     }
 
     companion object {

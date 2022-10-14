@@ -35,7 +35,7 @@ class MatchItemAdapter(private val items: LiveData<List<Match>>) : ListAdapter<M
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // todo: terrain? and nested views / clean this mess
         holder.itemView.context.apply {
-            val match = items.value!![position];
+            val match = items.value!![position]
             match.Player1.apply {
                 holder.playerName1.text = getString(R.string.player_name, "$firstName $lastName")
                 holder.playerCountry1.text = getString(R.string.player_country, country)

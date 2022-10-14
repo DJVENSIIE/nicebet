@@ -107,6 +107,12 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/reclamation1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#ffffff"
+            tools:text="3" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -187,6 +193,14 @@
 
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/reclamation2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#ffffff"
+
+            tools:text="3" />
 
         <LinearLayout
             android:layout_width="match_parent"
