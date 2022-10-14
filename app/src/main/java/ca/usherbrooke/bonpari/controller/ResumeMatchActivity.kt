@@ -23,6 +23,7 @@ class ResumeMatchActivity : AppCompatActivity() {
     private lateinit var player1set3: TextView
     private lateinit var player1game: TextView
     private lateinit var player1reclame: TextView
+    private lateinit var service1: TextView
 
     private lateinit var player2: TextView
     private lateinit var player2set1: TextView
@@ -30,6 +31,7 @@ class ResumeMatchActivity : AppCompatActivity() {
     private lateinit var player2set3: TextView
     private lateinit var player2game: TextView
     private lateinit var player2reclame: TextView
+    private lateinit var service2: TextView
 
 
 
@@ -39,7 +41,8 @@ class ResumeMatchActivity : AppCompatActivity() {
 
         match = findViewById(R.id.match)
 
-
+        service1 = findViewById(R.id.service1)
+        service2 = findViewById(R.id.service2)
 
         val matchSerializable: Match? = intent.getSerializableExtra("match") as Match?
 
@@ -80,7 +83,13 @@ class ResumeMatchActivity : AppCompatActivity() {
 
         }
 
-
+        if (matchSerializable?.serveur == 0) {
+            service1.text = "°"
+            service2.text = ""
+        } else {
+            service1.text = ""
+            service2.text = "°"
+        }
 
         val buttonRefresh:Button = findViewById(R.id.buttonRefresh)
         buttonBet1.setOnClickListener {
@@ -111,8 +120,8 @@ class ResumeMatchActivity : AppCompatActivity() {
                 }
                 .show()
         }
-        buttonRefresh.setOnClickListener { }
 
+        buttonRefresh.setOnClickListener { }
 
     }
 }
