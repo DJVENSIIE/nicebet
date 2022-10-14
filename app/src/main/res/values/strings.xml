@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bonpari</string>
+    <string name="player_name">%s</string>
+    <string name="player_country">%s</string>
+    <string name="player_age">%d ans</string>
+    <string name="more_button">Regarder le match</string>
+    <string name="match_starting_at">Tournoi %s - %s</string>
+</resources>
