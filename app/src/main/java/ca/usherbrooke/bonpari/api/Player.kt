@@ -1,5 +1,8 @@
 package ca.usherbrooke.bonpari.api
 
+import java.io.Serializable
+
+/*
 import com.squareup.moshi.Json
 
 data class Player(
@@ -13,3 +16,13 @@ data class Player(
     val rank: Int,
     @Json(name = "pays")
     val country: String)
+
+ */
+
+data class Player(val firstName: String,
+                  val lastName: String,
+                  val age: Int,
+                  val rank: Int,
+                  val country: String): Serializable
+
+

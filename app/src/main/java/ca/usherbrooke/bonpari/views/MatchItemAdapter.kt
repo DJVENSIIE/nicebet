@@ -1,5 +1,6 @@
 package ca.usherbrooke.bonpari.views
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
+import ca.usherbrooke.bonpari.controller.ResumeMatchActivity
 
 class MatchItemAdapter(private val items: LiveData<List<Match>>) : ListAdapter<Match, MatchItemAdapter.ViewHolder>(DiffCallback) {
 
@@ -33,7 +35,7 @@ class MatchItemAdapter(private val items: LiveData<List<Match>>) : ListAdapter<M
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // todo: terrain? and nested views / clean this mess
         holder.itemView.context.apply {
-            val match = items.value!![position];
+            val match = items.value!![position]
             match.Player1.apply {
                 holder.playerName1.text = getString(R.string.player_name, "$firstName $lastName")
                 holder.playerCountry1.text = getString(R.string.player_country, country)
@@ -45,7 +47,15 @@ class MatchItemAdapter(private val items: LiveData<List<Match>>) : ListAdapter<M
                 holder.playerAge2.text = getString(R.string.player_age, age)
             }
             holder.matchStartingAt.text = getString(R.string.match_starting_at, match.tournament, match.startingAt)
+
+            holder.moreButton.setOnClickListener {
+                val intent = Intent(this, ResumeMatchActivity::class.java)
+                intent.putExtra("match", match)
+                startActivity(intent)
+            }
         }
+
+
     }
 
     override fun getItemCount(): Int {

@@ -5,4 +5,15 @@
     <string name="player_age">%d ans</string>
     <string name="more_button">Regarder le match</string>
     <string name="match_starting_at">Tournoi %s - %s</string>
+    <string name="tournois">Choisis ton match</string>
+    <string name="service1">°</string>
+    <string name="j1_s1">6</string>
+    <string name="j1_s2">3</string>
+    <string name="pipe2">|</string>
+    <string name="pipe1">|</string>
+    <string name="parier_joueur_1">Parier\nJoueur 1</string>
+    <string name="parier_joueur_2">Parier\nJoueur 2</string>
+    <string name="refresh">Refresh</string>
+    <string name="vs">VS</string>
+    <string name="resume">Resume</string>
 </resources>
