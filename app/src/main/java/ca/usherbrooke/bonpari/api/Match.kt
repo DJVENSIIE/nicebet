@@ -3,7 +3,6 @@ package ca.usherbrooke.bonpari.api
 import com.squareup.moshi.Json
 import java.io.Serializable
 
-// todo: 'serveur' attribute
 data class Match(
     @Json(name = "joueur1") val Player1: Player,
     @Json(name = "joueur2") val Player2: Player,

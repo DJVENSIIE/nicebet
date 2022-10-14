@@ -43,23 +43,16 @@ class ResumeMatchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_resume_match)
 
         match = findViewById(R.id.match)
-
         service1 = findViewById(R.id.service1)
         service2 = findViewById(R.id.service2)
-
-        val matchSerializable: Match? = intent.getSerializableExtra("match") as Match?
-
         buttonBet1 = findViewById(R.id.buttonBet1)
         buttonBet2 = findViewById(R.id.buttonBet2)
-
         player1 = findViewById(R.id.player1)
         player1set1 = findViewById(R.id.player1set1)
         player1set2 = findViewById(R.id.player1set2)
         player1set3 = findViewById(R.id.player1set3)
         player1game = findViewById(R.id.player1game)
         player1reclame = findViewById(R.id.reclamation1)
-
-
         player2 = findViewById(R.id.player2)
         player2set1 = findViewById(R.id.player2set1)
         player2set2 = findViewById(R.id.player2set2)
@@ -67,41 +60,12 @@ class ResumeMatchActivity : AppCompatActivity() {
         player2game = findViewById(R.id.player2game)
         player2reclame = findViewById(R.id.reclamation2)
 
-
-        player1.text = matchSerializable?.Player1?.firstName
-        player2.text = matchSerializable?.Player2?.firstName
-        player1reclame.text =  matchSerializable?.contestation?.get(0).toString()
-        player2reclame.text =  matchSerializable?.contestation?.get(1).toString()
-
-        val mpointage: Pointage? = matchSerializable?.score
-        if(mpointage != null) {
-            player1set1.text = mpointage.jeu[0][0].toString()
-            player2set1.text = mpointage.jeu[0][1].toString()
-            Log.d("CAL", "Size of 'jeu': ${mpointage.jeu.size}")
-            if (mpointage.jeu.size >= 2) {
-                player1set2.text = mpointage.jeu[1][0].toString()
-                player2set2.text = mpointage.jeu[1][1].toString()
-            }
-            if (mpointage.jeu.size == 3) {
-                player1set3.text = mpointage.jeu[2][0].toString()
-                player2set3.text = mpointage.jeu[2][1].toString()
-            }
-            player1game.text = mpointage.echange[0].toString()
-            player2game.text = mpointage.echange[1].toString()
-
-        }
-
-        if (matchSerializable?.serveur == 0) {
-            service1.text = "°"
-            service2.text = ""
-        } else {
-            service1.text = ""
-            service2.text = "°"
-        }
+        val match: Match? = intent.getSerializableExtra("match") as Match?
+        loadView(match!!)
 
         val buttonRefresh:Button = findViewById(R.id.buttonRefresh)
         buttonBet1.setOnClickListener {
-            var input : EditText = EditText(this)
+            val input : EditText = EditText(this)
 
             MaterialAlertDialogBuilder(this)
                 .setTitle("Montant à parier joueur1")
@@ -115,7 +79,7 @@ class ResumeMatchActivity : AppCompatActivity() {
                 .show()
         }
         buttonBet2.setOnClickListener {
-            var input : EditText = EditText(this)
+            val input : EditText = EditText(this)
 
             MaterialAlertDialogBuilder(this)
                 .setTitle("Montant à parier joueur2")
@@ -134,5 +98,43 @@ class ResumeMatchActivity : AppCompatActivity() {
             viewModel.updateMatch()
         }
 
+        viewModel.matches.observe(this) { p ->
+            Log.d("CAL", "UPDATE")
+            if (p.isNotEmpty()) {
+                // todo: ................
+                //  ....
+                loadView(p!![0])
+            }
+        }
+    }
+
+    private fun loadView(match: Match) {
+        player1.text = match.Player1.firstName
+        player2.text = match.Player2.firstName
+        player1reclame.text =  match.contestation.get(0).toString()
+        player2reclame.text =  match.contestation.get(1).toString()
+
+        val mpointage: Pointage = match.score
+        player1set1.text = mpointage.jeu[0][0].toString()
+        player2set1.text = mpointage.jeu[0][1].toString()
+        Log.d("CAL", "Size of 'jeu': ${mpointage.jeu.size}")
+        if (mpointage.jeu.size >= 2) {
+            player1set2.text = mpointage.jeu[1][0].toString()
+            player2set2.text = mpointage.jeu[1][1].toString()
+        }
+        if (mpointage.jeu.size == 3) {
+            player1set3.text = mpointage.jeu[2][0].toString()
+            player2set3.text = mpointage.jeu[2][1].toString()
+        }
+        player1game.text = mpointage.echange[0].toString()
+        player2game.text = mpointage.echange[1].toString()
+
+        if (match.serveur == 0) {
+            service1.text = "°"
+            service2.text = ""
+        } else {
+            service1.text = ""
+            service2.text = "°"
+        }
     }
 }
