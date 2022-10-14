@@ -11,6 +11,7 @@ import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.Pointage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+// todo: handle "service mark"
 class ResumeMatchActivity : AppCompatActivity() {
 
     private lateinit var match: TextView
@@ -73,10 +74,10 @@ class ResumeMatchActivity : AppCompatActivity() {
         val mpointage: Pointage? = matchSerializable?.score
         if(mpointage != null) {
             player1set1.text = mpointage.jeu[0][0].toString()
-            player1set2.text = mpointage.jeu[0][1].toString()
+            player1set2.text = mpointage.jeu[1][0].toString()
             //player1set3.text = mpointage.jeu[0][2].toString()
             player1game.text = mpointage.echange[0].toString()
-            player2set1.text = mpointage.jeu[1][0].toString()
+            player2set1.text = mpointage.jeu[0][1].toString()
             player2set2.text = mpointage.jeu[1][1].toString()
             //player2set3.text = mpointage.jeu[1][2].toString()
             player2game.text = mpointage.echange[1].toString()

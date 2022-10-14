@@ -1,9 +1,11 @@
 package ca.usherbrooke.bonpari.model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.Player
 import ca.usherbrooke.bonpari.api.Pointage
@@ -19,47 +21,47 @@ class MatchListViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-//            try {
-//                _matches.value = BonPariApi.retrofitService.getAllGames()
-//            } catch (e: Exception) {
-//                Log.e("CAL", e.message.toString())
-//            }
+            try {
+                _matches.value = BonPariApi.retrofitService.getAllGames()
+            } catch (e: Exception) {
+                Log.e("CAL", e.message.toString())
+            }
 
-            val score1 = Pointage(
-                listOf(1, 1),
-                listOf(listOf(4, 2), listOf(6, 4),listOf(0, 0)),
-                listOf(40,30),
-                false
-            )
-
-            val score2 = Pointage(
-                listOf(1, 1),
-                listOf(listOf(6, 2), listOf(3, 1),listOf(0, 0)),
-                listOf(15,40),
-                false
-            )
-
-            addMatch(Match(
-                AlbertRamos,
-                MilosRaonic,
-                '2',
-                "Hale",
-                "13h00",
-                score1,
-                0.0,
-                0,
-                1.0,
-                4,
-                listOf(1, 1)))
-            addMatch(Match(MilosRaonic, AndyRoddick,  '1',
-                "Hale",
-                "12h30",
-                score2,
-                0.0,
-                1,
-                1.0,
-                4,
-                listOf(1, 1)))
+//            val score1 = Pointage(
+//                listOf(1, 1),
+//                listOf(listOf(4, 2), listOf(6, 4),listOf(0, 0)),
+//                listOf(40,30),
+//                false
+//            )
+//
+//            val score2 = Pointage(
+//                listOf(1, 1),
+//                listOf(listOf(6, 2), listOf(3, 1),listOf(0, 0)),
+//                listOf(15,40),
+//                false
+//            )
+//
+//            addMatch(Match(
+//                AlbertRamos,
+//                MilosRaonic,
+//                '2',
+//                "Hale",
+//                "13h00",
+//                score1,
+//                0.0,
+//                0,
+//                1.0,
+//                4,
+//                listOf(1, 1)))
+//            addMatch(Match(MilosRaonic, AndyRoddick,  '1',
+//                "Hale",
+//                "12h30",
+//                score2,
+//                0.0,
+//                1,
+//                1.0,
+//                4,
+//                listOf(1, 1)))
 
             //addMatch(Match(AndyRoddick, AndyMurray, '1', "Hale", "16h30"))
             //addMatch(Match(AndyMurray, AlbertRamos, '2', "Hale", "17h30"))
