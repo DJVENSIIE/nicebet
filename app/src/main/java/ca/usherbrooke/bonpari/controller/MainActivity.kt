@@ -1,9 +1,13 @@
 package ca.usherbrooke.bonpari.controller
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.databinding.ActivityMainBinding
 import ca.usherbrooke.bonpari.model.MatchListViewModel
 import ca.usherbrooke.bonpari.views.MatchItemAdapter
@@ -30,6 +34,22 @@ class MainActivity : AppCompatActivity() {
             with(binding.recyclerView.adapter as MatchItemAdapter) {
                 submitList(p)
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.refresh_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.refresh_menu_item -> {
+                // .. code ...
+                Log.d("CAL","Refresh")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

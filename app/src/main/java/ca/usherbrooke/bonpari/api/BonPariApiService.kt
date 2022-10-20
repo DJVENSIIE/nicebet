@@ -29,11 +29,11 @@ object BonPariApi {
 }
 
 object BonPariFakeApi {
-    private val _matches = mutableListOf<Match>()
+    private val matches = mutableListOf<Match>()
+    private var requestId: Int = 0
 
-    private suspend fun addMatch(match: Match) {
-        _matches.add(match)
-        delay(5000)
+    private fun addMatch(match: Match) {
+        matches.add(match)
     }
 
     private val AlbertRamos = Player("Albert", "Ramos", 28, 56, "Espagne")
@@ -57,32 +57,38 @@ object BonPariFakeApi {
                 false
             )
 
-            addMatch(Match(
-                AlbertRamos,
-                MilosRaonic,
-                '2',
-                "Hale",
-                "13h00",
-                score1,
-                0.0,
-                0,
-                1.0,
-                4,
-                listOf(1, 1)))
-            addMatch(Match(MilosRaonic, AndyRoddick,  '1',
-                "Hale",
-                "12h30",
-                score2,
-                0.0,
-                1,
-                1.0,
-                4,
-                listOf(1, 1)))
+            when (++requestId) {
+                1 -> {
+                    addMatch(Match(
+                        AlbertRamos,
+                        MilosRaonic,
+                        '2',
+                        "Hale",
+                        "13h00",
+                        score1,
+                        0.0,
+                        0,
+                        1.0,
+                        4,
+                        listOf(1, 1)))
+                }
+                2 -> {
+                    addMatch(Match(MilosRaonic, AndyRoddick,  '1',
+                        "Hale",
+                        "12h30",
+                        score2,
+                        0.0,
+                        1,
+                        1.0,
+                        4,
+                        listOf(1, 1)))
+                }
+            }
 
 //            addMatch(Match(AndyRoddick, AndyMurray, '1', "Hale", "16h30"))
 //            addMatch(Match(AndyMurray, AlbertRamos, '2', "Hale", "17h30"))
 
-            return _matches;
+            return matches;
         }
     }
 }

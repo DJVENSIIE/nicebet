@@ -7,8 +7,6 @@
     <string name="match_starting_at">Tournoi %s - %s</string>
     <string name="tournois">Choisis ton match</string>
     <string name="service1">°</string>
-    <string name="j1_s1">6</string>
-    <string name="j1_s2">3</string>
     <string name="pipe2">|</string>
     <string name="pipe1">|</string>
     <string name="parier_joueur_1">Parier\nJoueur 1</string>

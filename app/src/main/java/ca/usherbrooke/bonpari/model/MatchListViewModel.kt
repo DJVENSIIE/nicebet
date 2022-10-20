@@ -6,10 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.usherbrooke.bonpari.api.BonPariApi
+import ca.usherbrooke.bonpari.api.BonPariFakeApi
 import ca.usherbrooke.bonpari.api.Match
-import ca.usherbrooke.bonpari.api.Player
-import ca.usherbrooke.bonpari.api.Pointage
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MatchListViewModel : ViewModel() {
@@ -30,6 +28,7 @@ class MatchListViewModel : ViewModel() {
                 Log.d("CAL", _matches.value.toString())
             } catch (e: Exception) {
                 Log.e("CAL", e.message.toString())
+                _matches.value = BonPariFakeApi.retrofitService.getAllGames()
             }
         }
     }
