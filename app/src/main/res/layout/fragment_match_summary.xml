@@ -44,7 +44,7 @@
                     tools:text="Elina Svitolina" />
 
                 <TextView
-                    android:id="@+id/service1"
+                    setServiceFlag="@{viewModel.selectedMatch.isAtService(1)}"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="4dp"
@@ -129,7 +129,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
-                    android:id="@+id/service2"
+                    setServiceFlag="@{viewModel.selectedMatch.isAtService(2)}"
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

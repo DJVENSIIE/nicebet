@@ -18,6 +18,9 @@ data class Match(
     @Json(name = "constestation") val contestation: List<Int>
 ) : Serializable {
 
+    // todo: one method for two players
+    //  and use enums instead of "0", "1"...
+
     fun getPlayer1Score(set: Int) = getPlayerScore(0, set)
     fun getPlayer2Score(set: Int) = getPlayerScore(1, set)
 
@@ -26,6 +29,14 @@ data class Match(
 
     fun getPlayer1Reclamations() = contestation[0].toString()
     fun getPlayer2Reclamations() = contestation[1].toString()
+
+    fun isAtService(player: Int): Boolean {
+        return if (player == 1) {
+            (serveur == 0)
+        } else {
+            (serveur != 0)
+        }
+    }
 
     private fun getPlayerScore(index: Int, set: Int): String {
 //        Log.d("CAL", "I: $index, set: $set size:${score.jeu.size}")
