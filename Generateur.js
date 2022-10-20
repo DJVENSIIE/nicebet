@@ -1,7 +1,8 @@
 const Partie = require('./Partie');
 const Joueur = require('./Joueur');
 
-const modificateurVitesse = Math.max(process.argv[2], 1);
+// const modificateurVitesse = Math.max(process.argv[2], 1);
+const modificateurVitesse = 1;
 
 const listePartie = [];
 

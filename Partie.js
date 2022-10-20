@@ -2,7 +2,10 @@ const Pointage = require('./Pointage.js');
 const Paris = require('./Paris.js');
 
 class Partie {
+  static game_id = 0;
+
   constructor (joueur1, joueur2, terrain, tournoi, heureDebut, tickDebut) {
+    this.id = Partie.game_id++;
     this.joueur1 = joueur1;
     this.joueur2 = joueur2;
     this.terrain = terrain;
@@ -114,6 +117,7 @@ class Partie {
 
   toJSON () {
     return {
+      'id': this.id,
       'joueur1': this.joueur1,
       'joueur2': this.joueur2,
       'terrain': this.terrain,
