@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.Pointage
 import ca.usherbrooke.bonpari.databinding.FragmentMatchSummaryBinding
@@ -15,6 +16,7 @@ import ca.usherbrooke.bonpari.model.MatchListViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 // todo: handle "service mark"
+// todo: proper refresh
 class MatchSummaryFragment : Fragment() {
     private val viewModel: MatchListViewModel by viewModels()
     private lateinit var binding: FragmentMatchSummaryBinding
@@ -29,11 +31,12 @@ class MatchSummaryFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val match: Match? = activity?.intent?.getSerializableExtra("match") as Match?
-        loadView(match!!)
+        val args by navArgs<MatchSummaryFragmentArgs>()
+        match = args.match
+        loadView(match)
 
         binding.buttonBet1.setOnClickListener {
-            val input : EditText = EditText(requireContext())
+            val input = EditText(requireContext())
 
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Montant à parier joueur1")
@@ -47,7 +50,7 @@ class MatchSummaryFragment : Fragment() {
                 .show()
         }
         binding.buttonBet2.setOnClickListener {
-            val input : EditText = EditText(requireContext())
+            val input = EditText(requireContext())
 
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Montant à parier joueur2")
@@ -69,8 +72,6 @@ class MatchSummaryFragment : Fragment() {
         viewModel.matches.observe(viewLifecycleOwner) { p ->
             Log.d("CAL", "UPDATE")
             if (p.isNotEmpty()) {
-                // todo: ................
-                //  ....
                 loadView(p!![0])
             }
         }
@@ -79,8 +80,8 @@ class MatchSummaryFragment : Fragment() {
     private fun loadView(match: Match) {
         binding.player1.text = match.Player1.firstName
         binding.player2.text = match.Player2.firstName
-        binding.reclamation1.text =  match.contestation.get(0).toString()
-        binding.reclamation2.text =  match.contestation.get(1).toString()
+        binding.reclamation1.text =  match.contestation[0].toString()
+        binding.reclamation2.text =  match.contestation[1].toString()
 
         val mpointage: Pointage = match.score
         binding.player1set1.text = mpointage.jeu[0][0].toString()

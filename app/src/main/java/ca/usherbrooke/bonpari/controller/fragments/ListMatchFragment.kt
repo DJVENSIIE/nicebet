@@ -5,11 +5,12 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import ca.usherbrooke.bonpari.R
+import ca.usherbrooke.bonpari.controller.MatchItemAdapter
 import ca.usherbrooke.bonpari.databinding.FragmentListMatchBinding
 import ca.usherbrooke.bonpari.model.MatchListViewModel
-import ca.usherbrooke.bonpari.views.MatchItemAdapter
 
 class ListMatchFragment : Fragment() {
     private val viewModel: MatchListViewModel by viewModels()
@@ -30,7 +31,13 @@ class ListMatchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // recyclerView
-        binding.recyclerView.adapter = MatchItemAdapter(viewModel.matches)
+        binding.recyclerView.adapter = MatchItemAdapter(viewModel.matches) {
+//            val intent = Intent(this, ResumeMatchActivity::class.java)
+//            intent.putExtra("match", it)
+//            startActivity(intent)
+            val action = ListMatchFragmentDirections.actionListMatchFragmentToMatchSummaryFragment(it)
+            findNavController().navigate(action)
+        }
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
