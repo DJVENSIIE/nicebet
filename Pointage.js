@@ -26,6 +26,9 @@ class Pointage {
       this.manches[joueur] += 1;
       this.parent.nouvelleManche();
       if (this.manches[joueur] < 2) {
+        if (mancheCourante == 1) {
+          this.pariPossible = false
+        }
         this.jeu.push([0, 0]);
       }
     }

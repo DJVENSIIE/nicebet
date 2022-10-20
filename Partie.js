@@ -49,11 +49,11 @@ class Partie {
     let coeff;
     let choix;
 
-    if (vainqueur == this.joueur1){
+    if (!vainqueur){
       coeff = this.montantTotal * (75 / 100) / this.montantJoueur1;
       choix = 0;
     }
-    else if (vainqueur == this.joueur2){
+    else if (vainqueur){
       coeff = this.montantTotal * (75 / 100) / this.montantJoueur2;
       choix = 1;
     }
