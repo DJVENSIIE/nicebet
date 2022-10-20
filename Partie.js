@@ -112,6 +112,13 @@ class Partie {
   }
 
   estTerminee () {
+    if (this.pointage.manches[this.joueur1] == 2){
+      this.vainqueur = 0
+    }
+
+    if (this.pointage.manches[this.joueur2] == 2){
+      this.vainqueur = 1
+    }
     return this.pointage.final;
   }
 
