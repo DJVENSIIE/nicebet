@@ -54,8 +54,6 @@ class MatchItemAdapter(private val items: LiveData<List<Match>>) : ListAdapter<M
                 startActivity(intent)
             }
         }
-
-
     }
 
     override fun getItemCount(): Int {
