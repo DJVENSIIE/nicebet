@@ -18,9 +18,5 @@
         android:id="@+id/matchSummaryFragment"
         android:name="ca.usherbrooke.bonpari.controller.fragments.MatchSummaryFragment"
         android:label="fragment_match_summary"
-        tools:layout="@layout/fragment_match_summary" >
-        <argument
-            android:name="match"
-            app:argType="integer" />
-    </fragment>
+        tools:layout="@layout/fragment_match_summary" />
 </navigation>

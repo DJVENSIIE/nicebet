@@ -10,7 +10,7 @@ import ca.usherbrooke.bonpari.api.Match
 class MatchItemViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
     // todo: terrain? and nested views / clean this mess
-    fun bind(match: Match, onMatchSelected: (Int)->Unit) {
+    fun bind(match: Match, onMatchSelected: (Match)->Unit) {
         itemView.context.apply {
             match.Player1.apply {
                 playerName1.text = getString(R.string.player_name, "$firstName $lastName")
@@ -24,7 +24,7 @@ class MatchItemViewHolder (view: View) : RecyclerView.ViewHolder(view) {
             }
             matchStartingAt.text = getString(R.string.match_starting_at, match.tournament, match.startingAt)
             moreButton.setOnClickListener {
-                onMatchSelected(match.id)
+                onMatchSelected(match)
             }
         }
     }

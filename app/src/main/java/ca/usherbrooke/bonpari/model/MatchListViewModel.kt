@@ -12,15 +12,19 @@ import kotlinx.coroutines.launch
 
 class MatchListViewModel : ViewModel() {
     private var _matches = MutableLiveData(listOf<Match>())
+    private var _selectedMatch = MutableLiveData<Match>(null)
 
     val matches: LiveData<List<Match>>
         get() = _matches
+
+    val selectedMatch : LiveData<Match>
+        get() = _selectedMatch
 
     init {
         updateMatch()
     }
 
-    fun updateMatch() {
+    private fun updateMatch() {
         viewModelScope.launch {
             try {
                 _matches.value = BonPariApi.retrofitService.getAllGames()
@@ -32,14 +36,7 @@ class MatchListViewModel : ViewModel() {
         }
     }
 
-    fun getMatchById(id: Int): Match =
-        internalGetMatchById(id)!!
-
-    private fun internalGetMatchById(id: Int): Match? {
-        for (match in matches.value!!) {
-            if (match.id == id)
-                return match
-        }
-        return null
+    fun updateSelectedMatch(match: Match) {
+        _selectedMatch.value = match
     }
 }

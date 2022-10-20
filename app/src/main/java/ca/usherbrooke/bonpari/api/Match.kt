@@ -16,4 +16,21 @@ data class Match(
     @Json(name = "vitesse_dernier_service") val vitesse_dernier_service: Double,
     @Json(name = "nombre_coup_dernier_echange") val nombre_coup_dernier_echange: Int,
     @Json(name = "constestation") val contestation: List<Int>
-) : Serializable
+) : Serializable {
+
+    fun getPlayer1Score(set: Int) = getPlayerScore(0, set)
+    fun getPlayer2Score(set: Int) = getPlayerScore(1, set)
+
+    fun getPlayer1Game() = score.echange[0]
+    fun getPlayer2Game() = score.echange[1]
+
+    private fun getPlayerScore(index: Int, set: Int): String {
+//        Log.d("CAL", "I: $index, set: $set size:${score.jeu.size}")
+        return if (score.game.size >= set) {
+            // sets are 0, 1, 2, not "1", "2", "3" as provided
+            score.game[set-1][index].toString()
+        } else {
+            ""
+        }
+    }
+}

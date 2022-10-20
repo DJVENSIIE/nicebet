@@ -8,6 +8,9 @@ data class Player(
     @Json(name = "nom") val lastName: String,
     @Json(name = "age") val age: Int,
     @Json(name = "rang") val rank: Int,
-    @Json(name = "pays") val country: String) : Serializable
+    @Json(name = "pays") val country: String) : Serializable {
+
+    fun getFullName() : String = "$firstName $lastName"
+}
 
 

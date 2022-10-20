@@ -32,8 +32,8 @@ class ListMatchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // recyclerView
         binding.recyclerView.adapter = MatchItemAdapter(viewModel.matches) {
-            val action = ListMatchFragmentDirections.actionListMatchFragmentToMatchSummaryFragment(it)
-            findNavController().navigate(action)
+            viewModel.updateSelectedMatch(it)
+            findNavController().navigate(R.id.action_listMatchFragment_to_matchSummaryFragment)
         }
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
