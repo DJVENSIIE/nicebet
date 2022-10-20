@@ -21,8 +21,11 @@ data class Match(
     fun getPlayer1Score(set: Int) = getPlayerScore(0, set)
     fun getPlayer2Score(set: Int) = getPlayerScore(1, set)
 
-    fun getPlayer1Game() = score.echange[0]
-    fun getPlayer2Game() = score.echange[1]
+    fun getPlayer1Game() = score.echange[0].toString()
+    fun getPlayer2Game() = score.echange[1].toString()
+
+    fun getPlayer1Reclamations() = contestation[0].toString()
+    fun getPlayer2Reclamations() = contestation[1].toString()
 
     private fun getPlayerScore(index: Int, set: Int): String {
 //        Log.d("CAL", "I: $index, set: $set size:${score.jeu.size}")

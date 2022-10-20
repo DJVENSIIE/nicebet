@@ -94,7 +94,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/player1game"
+                    android:text="@{viewModel.selectedMatch.getPlayer1Game()}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -106,7 +106,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/reclamation1"
+                android:text="@{viewModel.selectedMatch.getPlayer1Reclamations()}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="#ffffff"
@@ -180,7 +180,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/player2game"
+                    android:text="@{viewModel.selectedMatch.getPlayer2Game()}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -193,11 +193,10 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/reclamation2"
+                android:text="@{viewModel.selectedMatch.getPlayer2Reclamations()}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="#ffffff"
-
                 tools:text="3" />
 
             <LinearLayout
