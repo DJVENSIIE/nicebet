@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/listMatchFragment"
         android:name="ca.usherbrooke.bonpari.controller.fragments.ListMatchFragment"
-        android:label="fragment_list_match"
-        tools:layout="@layout/fragment_list_match" >
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_list_match">
         <action
             android:id="@+id/action_listMatchFragment_to_matchSummaryFragment"
             app:destination="@id/matchSummaryFragment" />
@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_match_summary" >
         <argument
             android:name="match"
-            app:argType="ca.usherbrooke.bonpari.api.Match" />
+            app:argType="integer" />
     </fragment>
 </navigation>

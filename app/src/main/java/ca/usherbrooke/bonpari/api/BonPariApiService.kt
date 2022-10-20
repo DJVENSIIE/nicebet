@@ -2,7 +2,6 @@ package ca.usherbrooke.bonpari.api
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.delay
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -60,6 +59,7 @@ object BonPariFakeApi {
             when (++requestId) {
                 1 -> {
                     addMatch(Match(
+                        1,
                         AlbertRamos,
                         MilosRaonic,
                         '2',
@@ -73,7 +73,7 @@ object BonPariFakeApi {
                         listOf(1, 1)))
                 }
                 2 -> {
-                    addMatch(Match(MilosRaonic, AndyRoddick,  '1',
+                    addMatch(Match(2, MilosRaonic, AndyRoddick,  '1',
                         "Hale",
                         "12h30",
                         score2,

@@ -9,7 +9,7 @@ import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.view.MatchItemViewHolder
 
-class MatchItemAdapter(private val items: LiveData<List<Match>>, private val onMatchSelected: (Match)->Unit)
+class MatchItemAdapter(private val items: LiveData<List<Match>>, private val onMatchSelected: (Int)->Unit)
     : ListAdapter<Match, MatchItemViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchItemViewHolder {

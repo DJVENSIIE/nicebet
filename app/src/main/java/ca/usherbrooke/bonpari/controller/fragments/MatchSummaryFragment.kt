@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.Pointage
@@ -18,7 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 // todo: handle "service mark"
 // todo: proper refresh
 class MatchSummaryFragment : Fragment() {
-    private val viewModel: MatchListViewModel by viewModels()
+    private val viewModel: MatchListViewModel by activityViewModels()
     private lateinit var binding: FragmentMatchSummaryBinding
     private lateinit var match: Match
 
@@ -32,7 +32,7 @@ class MatchSummaryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val args by navArgs<MatchSummaryFragmentArgs>()
-        match = args.match
+        match = viewModel.getMatchById(args.match)
         loadView(match)
 
         binding.buttonBet1.setOnClickListener {

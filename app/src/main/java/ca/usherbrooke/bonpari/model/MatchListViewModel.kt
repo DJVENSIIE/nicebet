@@ -11,7 +11,6 @@ import ca.usherbrooke.bonpari.api.Match
 import kotlinx.coroutines.launch
 
 class MatchListViewModel : ViewModel() {
-
     private var _matches = MutableLiveData(listOf<Match>())
 
     val matches: LiveData<List<Match>>
@@ -31,5 +30,16 @@ class MatchListViewModel : ViewModel() {
                 _matches.value = BonPariFakeApi.retrofitService.getAllGames()
             }
         }
+    }
+
+    fun getMatchById(id: Int): Match =
+        internalGetMatchById(id)!!
+
+    private fun internalGetMatchById(id: Int): Match? {
+        for (match in matches.value!!) {
+            if (match.id == id)
+                return match
+        }
+        return null
     }
 }
