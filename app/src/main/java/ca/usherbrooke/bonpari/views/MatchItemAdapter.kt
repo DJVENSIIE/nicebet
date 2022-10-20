@@ -1,6 +1,5 @@
 package ca.usherbrooke.bonpari.views
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
-import ca.usherbrooke.bonpari.controller.ResumeMatchActivity
 
 class MatchItemAdapter(private val items: LiveData<List<Match>>) : ListAdapter<Match, MatchItemAdapter.ViewHolder>(DiffCallback) {
 
@@ -49,9 +47,9 @@ class MatchItemAdapter(private val items: LiveData<List<Match>>) : ListAdapter<M
             holder.matchStartingAt.text = getString(R.string.match_starting_at, match.tournament, match.startingAt)
 
             holder.moreButton.setOnClickListener {
-                val intent = Intent(this, ResumeMatchActivity::class.java)
-                intent.putExtra("match", match)
-                startActivity(intent)
+//                val intent = Intent(this, ResumeMatchActivity::class.java)
+//                intent.putExtra("match", match)
+//                startActivity(intent)
             }
         }
     }

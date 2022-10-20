@@ -1,20 +1,16 @@
 package ca.usherbrooke.bonpari.controller
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.databinding.ActivityMainBinding
-import ca.usherbrooke.bonpari.model.MatchListViewModel
-import ca.usherbrooke.bonpari.views.MatchItemAdapter
 
 // https://www.oddschecker.com/us/tennis
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MatchListViewModel by viewModels()
+    private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,34 +18,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // recyclerView
-        binding.recyclerView.adapter = MatchItemAdapter(viewModel.matches)
-        binding.recyclerView.addItemDecoration(
-            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        )
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navController = navHostFragment.navController
 
-        // when the list of matches changes
-        // update recycleView reference
-        viewModel.matches.observe(this) { p ->
-            with(binding.recyclerView.adapter as MatchItemAdapter) {
-                submitList(p)
-            }
-        }
+        setupActionBarWithNavController(navController)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.refresh_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.refresh_menu_item -> {
-                // .. code ...
-                Log.d("CAL","Refresh")
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
