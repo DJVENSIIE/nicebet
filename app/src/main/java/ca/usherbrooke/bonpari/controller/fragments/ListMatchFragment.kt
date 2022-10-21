@@ -48,8 +48,9 @@ class ListMatchFragment : Fragment() {
         // update recycleView reference
         viewModel.matches.observe(viewLifecycleOwner) { p ->
             with(binding.recyclerView.adapter as MatchItemAdapter) {
-                Log.d("CAL","Refresh received")
-                submitList(p)
+                Log.d("CAL","Adapter will be updated.")
+                if (p != null)
+                    submitList(p)
             }
         }
     }

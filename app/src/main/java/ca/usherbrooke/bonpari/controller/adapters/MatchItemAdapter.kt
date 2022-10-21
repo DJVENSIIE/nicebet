@@ -21,6 +21,6 @@ class MatchItemAdapter(private val items: LiveData<List<Match>>, private val onM
     }
 
     override fun getItemCount(): Int {
-        return items.value!!.size
+        return items.value?.size ?: 0
     }
 }
