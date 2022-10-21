@@ -11,13 +11,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import ca.usherbrooke.bonpari.R
-import ca.usherbrooke.bonpari.controller.MatchItemAdapter
+import ca.usherbrooke.bonpari.controller.adapters.MatchItemAdapter
 import ca.usherbrooke.bonpari.controller.menus.RefreshMenuProvider
 import ca.usherbrooke.bonpari.databinding.FragmentListMatchBinding
 import ca.usherbrooke.bonpari.model.MatchListViewModel
+import ca.usherbrooke.bonpari.model.MatchListViewModelFactory
 
 class ListMatchFragment : Fragment() {
-    private val viewModel: MatchListViewModel by activityViewModels()
+    private val viewModel: MatchListViewModel by activityViewModels { MatchListViewModelFactory(requireContext()) }
     private lateinit var binding: FragmentListMatchBinding
 
     override fun onCreateView(

@@ -1,16 +1,18 @@
 package ca.usherbrooke.bonpari.model
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.api.BonPariFakeApi
 import ca.usherbrooke.bonpari.api.Match
+import ca.usherbrooke.bonpari.controller.workers.XXXWorker
 import kotlinx.coroutines.launch
 
-class MatchListViewModel : ViewModel() {
+class MatchListViewModel(context: Context) : ViewModel() {
+    private val workManager = WorkManager.getInstance(context)
     private var _matches = MutableLiveData(listOf<Match>())
     private var _selectedMatch = MutableLiveData<Match>(null)
 
@@ -22,6 +24,7 @@ class MatchListViewModel : ViewModel() {
 
     init {
         refreshMatches()
+        workManager.enqueue(OneTimeWorkRequest.from(XXXWorker::class.java))
     }
 
     fun refreshSelected() = internalRefreshSelected(false)
@@ -65,5 +68,12 @@ class MatchListViewModel : ViewModel() {
 
     fun updateSelectedMatch(match: Match) {
         _selectedMatch.value = match
+    }
+}
+
+class MatchListViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return MatchListViewModel(context) as T
     }
 }

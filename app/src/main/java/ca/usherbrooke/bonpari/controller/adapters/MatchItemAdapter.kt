@@ -1,4 +1,4 @@
-package ca.usherbrooke.bonpari.controller
+package ca.usherbrooke.bonpari.controller.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
