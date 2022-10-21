@@ -43,6 +43,7 @@ class ListMatchFragment : Fragment() {
         // update recycleView reference
         viewModel.matches.observe(viewLifecycleOwner) { p ->
             with(binding.recyclerView.adapter as MatchItemAdapter) {
+                Log.d("CAL","Refresh received")
                 submitList(p)
             }
         }
@@ -57,8 +58,8 @@ class ListMatchFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.refresh_menu_item -> {
-                // .. code ...
-                Log.d("CAL","Refresh")
+                Log.d("CAL","Refresh called")
+                viewModel.refreshMatches()
                 true
             }
             else -> super.onOptionsItemSelected(item)

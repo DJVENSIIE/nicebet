@@ -23,6 +23,7 @@ class MatchSummaryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.matchMarker = "°"
     }
 }

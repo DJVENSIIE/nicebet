@@ -21,14 +21,24 @@ class MatchListViewModel : ViewModel() {
         get() = _selectedMatch
 
     init {
-        updateMatch()
+        refreshMatches()
     }
 
-    private fun updateMatch() {
+    fun refreshMatches() {
         viewModelScope.launch {
             try {
                 _matches.value = BonPariApi.retrofitService.getAllGames()
-                Log.d("CAL", _matches.value.toString())
+                _selectedMatch.value?.apply {
+                    for (match in _matches.value!!) {
+                        if (match.id == id) {
+                            Log.d("CAL", "Update selected OK.")
+                            _selectedMatch.value = match
+                            break
+                        }
+                    }
+                }
+
+                Log.d("CAL", "Has found ${_matches.value!!.size} matches.")
             } catch (e: Exception) {
                 Log.e("CAL", e.message.toString())
                 _matches.value = BonPariFakeApi.retrofitService.getAllGames()
