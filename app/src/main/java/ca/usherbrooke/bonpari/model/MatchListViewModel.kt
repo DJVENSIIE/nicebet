@@ -9,23 +9,48 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class MatchListViewModel(context: Context) : ViewModel() {
-    private var _matchesRefresh = generateRefreshLiveData()
-    private var _selectedMatch = MutableLiveData<Match>(null)
+    private val _matchesRefreshAuto = generateRefreshLiveData()
+    private val _matchesRefreshManual = MutableLiveData<List<Match>>()
+    private val liveDataMerger = MediatorLiveData<List<Match>>()
+    val matches: LiveData<List<Match>> = liveDataMerger
 
-    val matches: LiveData<List<Match>> = _matchesRefresh
+    private val _selectedMatch = MutableLiveData<Match>(null)
+    val selectedMatch : LiveData<Match> = _selectedMatch
 
-    val selectedMatch : LiveData<Match>
-        get() = _selectedMatch
-
+    init {
+        liveDataMerger.addSource(_matchesRefreshAuto) {
+            liveDataMerger.value = it
+        }
+        liveDataMerger.addSource(_matchesRefreshManual) {
+            liveDataMerger.value = it
+        }
+    }
 
     fun refreshSelected() {
         Log.d("CAL", "#refreshSelected")
+        viewModelScope.launch {
+            try {
+                _selectedMatch.value = BonPariApi.retrofitService.getGame(_selectedMatch.value!!.id)
+                Log.d("CAL", "Update selected: ${_selectedMatch.value}")
+            } catch (e: Exception) {
+                Log.e("CAL", e.message.toString())
+            }
+        }
     }
 
     fun refreshMatches() {
         Log.d("CAL", "#refreshMatches")
+        viewModelScope.launch {
+            try {
+                _matchesRefreshManual.value = BonPariApi.retrofitService.getAllGames()
+                Log.d("CAL", "refreshMatches#Has found ${_matchesRefreshManual.value!!.size} matches.")
+            } catch (e: Exception) {
+                Log.e("CAL", e.message.toString())
+            }
+        }
     }
 
     fun updateSelectedMatch(match: Match) {
@@ -37,8 +62,22 @@ class MatchListViewModel(context: Context) : ViewModel() {
             try {
                 val allGames = BonPariApi.retrofitService.getAllGames()
                 Log.d("CAL", "generateRefresh#Has found ${allGames.size} matches.")
+
+                // update selected match
+                if (_selectedMatch.value != null) {
+                    _selectedMatch.value?.apply {
+                        for (match in matches.value!!) {
+                            if (match.id == id) {
+                                Log.d("CAL", "Update selected OK.")
+                                _selectedMatch.value = match
+                                break
+                            }
+                        }
+                    }
+                }
+
                 emit(allGames) // Emits the result of the request to the flow
-                delay(5000) // Suspends the coroutine for some time
+                delay(30000) // Suspends the coroutine for some time
             } catch (ce: CancellationException) {
                 break
             } catch (e: Exception) {
