@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+    android:label="@string/summary"
     app:startDestination="@id/listMatchFragment">
 
     <fragment
@@ -17,6 +18,6 @@
     <fragment
         android:id="@+id/matchSummaryFragment"
         android:name="ca.usherbrooke.bonpari.controller.fragments.MatchSummaryFragment"
-        android:label="fragment_match_summary"
+        android:label="@string/summary"
         tools:layout="@layout/fragment_match_summary" />
 </navigation>

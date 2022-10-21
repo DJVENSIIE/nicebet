@@ -12,9 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.controller.MatchItemAdapter
+import ca.usherbrooke.bonpari.controller.menus.RefreshMenuProvider
 import ca.usherbrooke.bonpari.databinding.FragmentListMatchBinding
 import ca.usherbrooke.bonpari.model.MatchListViewModel
-import ca.usherbrooke.bonpari.view.RefreshMenuProvider
 
 class ListMatchFragment : Fragment() {
     private val viewModel: MatchListViewModel by activityViewModels()
@@ -30,7 +30,9 @@ class ListMatchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // menu
-        activity?.addMenuProvider(RefreshMenuProvider(viewModel), viewLifecycleOwner, Lifecycle.State.RESUMED)
+        activity?.addMenuProvider(RefreshMenuProvider {
+            viewModel.refreshMatches()
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         // recyclerView
         binding.recyclerView.adapter = MatchItemAdapter(viewModel.matches) {

@@ -1,4 +1,4 @@
-package ca.usherbrooke.bonpari.view
+package ca.usherbrooke.bonpari.controller.menus
 
 import android.util.Log
 import android.view.Menu
@@ -6,9 +6,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.MenuProvider
 import ca.usherbrooke.bonpari.R
-import ca.usherbrooke.bonpari.model.MatchListViewModel
 
-class RefreshMenuProvider(private val viewModel: MatchListViewModel) : MenuProvider {
+class RefreshMenuProvider(private val onRefresh: () -> Unit) : MenuProvider {
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.refresh_menu, menu)
     }
@@ -17,7 +16,7 @@ class RefreshMenuProvider(private val viewModel: MatchListViewModel) : MenuProvi
         return when (menuItem.itemId) {
             R.id.refresh_menu_item -> {
                 Log.d("CAL","Refresh called")
-                viewModel.refreshMatches()
+                onRefresh()
                 true
             }
             else -> false

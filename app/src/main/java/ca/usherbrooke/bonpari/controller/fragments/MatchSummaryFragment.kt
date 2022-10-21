@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
+import ca.usherbrooke.bonpari.controller.menus.RefreshMenuProvider
 import ca.usherbrooke.bonpari.databinding.FragmentMatchSummaryBinding
 import ca.usherbrooke.bonpari.model.MatchListViewModel
-import ca.usherbrooke.bonpari.view.RefreshMenuProvider
 
 class MatchSummaryFragment : Fragment() {
     private val viewModel: MatchListViewModel by activityViewModels()
@@ -25,7 +25,9 @@ class MatchSummaryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // menu
-        activity?.addMenuProvider(RefreshMenuProvider(viewModel), viewLifecycleOwner, Lifecycle.State.RESUMED)
+        activity?.addMenuProvider(RefreshMenuProvider {
+            viewModel.refreshSelected()
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
         // set variables
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

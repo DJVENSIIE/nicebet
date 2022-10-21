@@ -13,5 +13,5 @@
     <string name="parier_joueur_2">Parier\nJoueur 2</string>
     <string name="refresh">Refresh</string>
     <string name="vs">VS</string>
-    <string name="resume">Resume</string>
+    <string name="summary">Summary</string>
 </resources>

@@ -1,5 +1,6 @@
 package ca.usherbrooke.bonpari.api
 
+import androidx.recyclerview.widget.DiffUtil
 import com.squareup.moshi.Json
 import java.io.Serializable
 
@@ -45,6 +46,20 @@ data class Match(
             score.game[set-1][index].toString()
         } else {
             ""
+        }
+    }
+
+    companion object MatchDiffCallback : DiffUtil.ItemCallback<Match>() {
+        // ex: id changed
+        override fun areItemsTheSame(oldItem: Match, newItem: Match): Boolean {
+            return oldItem == newItem || oldItem.id == newItem.id
+        }
+
+        // ex: attributes/values changed
+        // FOR NOW, there is no information displayed on the list, that may change
+        // so, we don't need that
+        override fun areContentsTheSame(oldItem: Match, newItem: Match): Boolean {
+            return oldItem == newItem || oldItem.id == newItem.id
         }
     }
 }

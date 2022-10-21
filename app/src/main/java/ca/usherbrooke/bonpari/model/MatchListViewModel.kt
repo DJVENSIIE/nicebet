@@ -24,20 +24,37 @@ class MatchListViewModel : ViewModel() {
         refreshMatches()
     }
 
+    fun refreshSelected() = internalRefreshSelected(false)
+
+    private fun internalRefreshSelected(fromMatches: Boolean) {
+        if (_selectedMatch.value == null) return
+        if (fromMatches) {
+            _selectedMatch.value?.apply {
+                for (match in _matches.value!!) {
+                    if (match.id == id) {
+                        Log.d("CAL", "Update selected OK.")
+                        _selectedMatch.value = match
+                        break
+                    }
+                }
+            }
+        } else {
+            viewModelScope.launch {
+                try {
+                    _selectedMatch.value = BonPariApi.retrofitService.getGame(_selectedMatch.value!!.id)
+                    Log.d("CAL", "Update selected (only): ${_selectedMatch.value}")
+                } catch (e: Exception) {
+                    Log.e("CAL", e.message.toString())
+                }
+            }
+        }
+    }
+
     fun refreshMatches() {
         viewModelScope.launch {
             try {
                 _matches.value = BonPariApi.retrofitService.getAllGames()
-                _selectedMatch.value?.apply {
-                    for (match in _matches.value!!) {
-                        if (match.id == id) {
-                            Log.d("CAL", "Update selected OK.")
-                            _selectedMatch.value = match
-                            break
-                        }
-                    }
-                }
-
+                internalRefreshSelected(true)
                 Log.d("CAL", "Has found ${_matches.value!!.size} matches.")
             } catch (e: Exception) {
                 Log.e("CAL", e.message.toString())
