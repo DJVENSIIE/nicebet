@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable
-            name="viewModel"
-            type="ca.usherbrooke.bonpari.model.MatchListViewModel" />
-        <variable
-            name="matchMarker"
-            type="String" />
+        <variable name="viewModel" type="ca.usherbrooke.bonpari.model.MatchListViewModel" />
+        <variable name="matchMarker" type="String" />
+        <variable name="player1" type="ca.usherbrooke.bonpari.api.Match.PlayerIndex" />
+        <variable name="player2" type="ca.usherbrooke.bonpari.api.Match.PlayerIndex" />
+        <variable name="set1" type="ca.usherbrooke.bonpari.api.Match.SetIndex" />
+        <variable name="set2" type="ca.usherbrooke.bonpari.api.Match.SetIndex" />
+        <variable name="set3" type="ca.usherbrooke.bonpari.api.Match.SetIndex" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -50,14 +51,14 @@
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="4dp"
-                    android:text='@{viewModel.selectedMatch.isAtService(1) ? matchMarker : "" }'
+                    android:text='@{viewModel.selectedMatch.isAtService(player1) ? matchMarker : "" }'
                     android:textAlignment="center"
                     android:textColor="#ffffff"
                     android:textSize="25sp"
                     tools:text="°" />
 
                 <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayer1Score(1)}"
+                    android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set1)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="40dp"
@@ -68,7 +69,7 @@
                     tools:text="6" />
 
                 <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayer1Score(2)}"
+                    android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set2)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -78,7 +79,7 @@
                     tools:text="3" />
 
                 <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayer1Score(3)}"
+                    android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set3)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -97,7 +98,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayer1Game()}"
+                    android:text="@{viewModel.selectedMatch.getPlayerGame(player1)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -109,7 +110,7 @@
             </LinearLayout>
 
             <TextView
-                android:text="@{viewModel.selectedMatch.getPlayer1Reclamations()}"
+                android:text="@{viewModel.selectedMatch.getPlayerReclamations(player1)}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="#ffffff"
@@ -135,14 +136,14 @@
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text='@{viewModel.selectedMatch.isAtService(2) ? matchMarker : "" }'
+                    android:text='@{viewModel.selectedMatch.isAtService(player2) ? matchMarker : "" }'
                     android:textAlignment="center"
                     android:textColor="#ffffff"
                     android:textSize="25sp"
                     tools:text="°" />
 
                 <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayer2Score(1)}"
+                    android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set1)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="40dp"
@@ -153,7 +154,7 @@
                     tools:text="2" />
 
                 <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayer2Score(2)}"
+                    android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set2)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -163,7 +164,7 @@
                     tools:text="5" />
 
                 <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayer2Score(3)}"
+                    android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set3)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -182,7 +183,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayer2Game()}"
+                    android:text="@{viewModel.selectedMatch.getPlayerGame(player2)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -195,7 +196,7 @@
             </LinearLayout>
 
             <TextView
-                android:text="@{viewModel.selectedMatch.getPlayer2Reclamations()}"
+                android:text="@{viewModel.selectedMatch.getPlayerReclamations(player2)}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="#ffffff"
@@ -224,20 +225,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="20sp"
                     android:text="@string/parier_joueur_2" />
-
-
             </LinearLayout>
-
         </LinearLayout>
-
-
-        <Button
-            android:id="@+id/buttonRefresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
-            android:text="@string/refresh" />
 
     </LinearLayout>
 </layout>

@@ -19,31 +19,23 @@ data class Match(
     @Json(name = "constestation") val contestation: List<Int>
 ) : Serializable {
 
-    // todo: one method for two players
-    //  and use enums instead of "0", "1"...
+    fun getPlayerGame(player: PlayerIndex) = score.echange[player.index].toString()
 
-    fun getPlayer1Score(set: Int) = getPlayerScore(0, set)
-    fun getPlayer2Score(set: Int) = getPlayerScore(1, set)
+    fun getPlayerReclamations(player: PlayerIndex) = contestation[player.index].toString()
 
-    fun getPlayer1Game() = score.echange[0].toString()
-    fun getPlayer2Game() = score.echange[1].toString()
-
-    fun getPlayer1Reclamations() = contestation[0].toString()
-    fun getPlayer2Reclamations() = contestation[1].toString()
-
-    fun isAtService(player: Int): Boolean {
-        return if (player == 1) {
+    fun isAtService(player: PlayerIndex): Boolean {
+        return if (player == PlayerIndex.Player1) {
             (serveur == 0)
         } else {
             (serveur != 0)
         }
     }
 
-    private fun getPlayerScore(index: Int, set: Int): String {
-//        Log.d("CAL", "I: $index, set: $set size:${score.jeu.size}")
-        return if (score.game.size >= set) {
+    fun getPlayerScore(playerIndex: PlayerIndex, setIndex: SetIndex): String {
+//        Log.d("CAL", "I: ${playerIndex.index}, set: ${setIndex.index} size:${score.game.size}")
+        return if (score.game.size >= setIndex.index+1) {
             // sets are 0, 1, 2, not "1", "2", "3" as provided
-            score.game[set-1][index].toString()
+            score.game[setIndex.index][playerIndex.index].toString()
         } else {
             ""
         }
@@ -61,5 +53,16 @@ data class Match(
         override fun areContentsTheSame(oldItem: Match, newItem: Match): Boolean {
             return oldItem == newItem || oldItem.id == newItem.id
         }
+    }
+
+    enum class PlayerIndex(val index: Int) {
+        Player1(0),
+        Player2(1),
+    }
+
+    enum class SetIndex(val index: Int) {
+        Set1(0),
+        Set2(1),
+        Set3(2),
     }
 }
