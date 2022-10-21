@@ -4,6 +4,9 @@
         <variable
             name="viewModel"
             type="ca.usherbrooke.bonpari.model.MatchListViewModel" />
+        <variable
+            name="matchMarker"
+            type="String" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,10 +47,10 @@
                     tools:text="Elina Svitolina" />
 
                 <TextView
-                    setServiceFlag="@{viewModel.selectedMatch.isAtService(1)}"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="4dp"
+                    android:text='@{viewModel.selectedMatch.isAtService(1) ? matchMarker : "" }'
                     android:textAlignment="center"
                     android:textColor="#ffffff"
                     android:textSize="25sp"
@@ -129,11 +132,10 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
-                    setServiceFlag="@{viewModel.selectedMatch.isAtService(2)}"
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text=""
+                    android:text='@{viewModel.selectedMatch.isAtService(2) ? matchMarker : "" }'
                     android:textAlignment="center"
                     android:textColor="#ffffff"
                     android:textSize="25sp"
