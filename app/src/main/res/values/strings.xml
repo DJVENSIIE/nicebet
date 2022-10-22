@@ -19,4 +19,10 @@
     <string name="how_much_to_bet">Combien voulez vous parier sur %s</string>
     <string name="cancel_bet_popup">Annuler</string>
     <string name="parier">Parier</string>
+    <string name="contestation_notification_title">Contestation</string>
+    <string name="point_score_notification_title">Point marqué</string>
+    <string name="point_scored_by">Un point a été marqué par %s</string>
+    <string name="contestation_by">La contestation de %s a été %s</string>
+    <string name="contestation_accepted">acceptée</string>
+    <string name="contestation_refused">refusée</string>
 </resources>

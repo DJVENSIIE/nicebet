@@ -35,29 +35,23 @@ class PeriodicFetchEventsForFollowedMatch(c: Context, args: WorkerParameters) : 
                         var s = ""
                         var t = ""
                         if (event.isContestation()) {
-                            t = "Contestation"
-                            s += "Contestation requested by "
-                            event.contestation?.let {
-                                s += if (it.isPlayer1)
-                                    game.Player1.getFullName()
-                                else
-                                    game.Player2.getFullName()
-
-                                s += if (it.hasContestationPassed)
-                                    " was accepted."
-                                else
-                                    " was refused."
-                            }
+                            t = applicationContext.getString(R.string.contestation_notification_title)
+                            s = applicationContext.getString(R.string.contestation_by, event.contestation?.let {
+                                if (it.isPlayer1) game.Player1.getFullName()
+                                else game.Player2.getFullName()
+                            }, event.contestation?.let {
+                                if (it.hasContestationPassed) applicationContext.getString(R.string.contestation_accepted)
+                                else applicationContext.getString(R.string.contestation_refused)
+                            })
                         }
                         if (event.isPointScored()) {
-                            t = "Point Scored"
-                            s += "A point was scored by "
-                            s += event.point?.let {
+                            t = applicationContext.getString(R.string.point_score_notification_title)
+                            s = applicationContext.getString(R.string.point_scored_by, event.point?.let {
                                 if (it.isPlayer1)
                                     game.Player1.getFullName()
                                 else
                                     game.Player2.getFullName()
-                            }
+                            })
                         }
                         sendNotification(j, t, s)
                     }
