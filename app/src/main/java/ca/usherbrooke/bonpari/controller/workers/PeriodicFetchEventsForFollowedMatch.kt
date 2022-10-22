@@ -19,7 +19,8 @@ class PeriodicFetchEventsForFollowedMatch(c: Context, args: WorkerParameters) : 
             return Result.success()
 
         val id = LocalStorage.currentMatchFollowedId
-        var previousEventCount = 0
+        var previousEventCount = LocalStorage.lastEventReceived
+        Log.d("CAL", "No notification for the first $previousEventCount events.")
         while (true) {
             val game = BonPariApi.retrofitService.getGame(id)
             Log.d("CAL", "worker executed: $game")
@@ -70,7 +71,6 @@ class PeriodicFetchEventsForFollowedMatch(c: Context, args: WorkerParameters) : 
             .setContentTitle(title)
             .setContentText(body)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
         with(NotificationManagerCompat.from(applicationContext)) {
             notify(notificationId, builder.build())
         }
