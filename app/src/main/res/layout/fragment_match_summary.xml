@@ -2,6 +2,7 @@
 <layout>
     <data>
         <variable name="viewModel" type="ca.usherbrooke.bonpari.model.MatchListViewModel" />
+        <variable name="matchSummary" type="ca.usherbrooke.bonpari.controller.fragments.MatchSummaryFragment" />
         <variable name="matchMarker" type="String" />
         <variable name="player1" type="ca.usherbrooke.bonpari.api.Match.PlayerIndex" />
         <variable name="player2" type="ca.usherbrooke.bonpari.api.Match.PlayerIndex" />
@@ -215,8 +216,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginEnd="20dp"
-
-                    android:text="@string/parier_joueur_1" />
+                    android:text="@string/parier_joueur_1"
+                    android:onClick="@{ () -> matchSummary.betOn(player1) }" />
 
                 <Button
                     android:id="@+id/buttonBet2"
@@ -224,7 +225,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="20sp"
-                    android:text="@string/parier_joueur_2" />
+                    android:text="@string/parier_joueur_2"
+                    android:onClick="@{ () -> matchSummary.betOn(player2) }" />
             </LinearLayout>
         </LinearLayout>
 

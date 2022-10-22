@@ -16,4 +16,7 @@
     <string name="summary">Summary</string>
     <string name="channel_name">bonpari_channel</string>
     <string name="channel_description">bonpari_score_updated</string>
+    <string name="how_much_to_bet">Combien voulez vous parier sur %s</string>
+    <string name="cancel_bet_popup">Annuler</string>
+    <string name="parier">Parier</string>
 </resources>

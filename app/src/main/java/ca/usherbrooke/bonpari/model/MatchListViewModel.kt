@@ -63,4 +63,7 @@ class MatchListViewModel : ViewModel() {
             LocalStorage.currentMatchFollowedId = it.id
         }
     }
+
+    fun betOn(playerId: Match.PlayerIndex, amount: Int) {
+    }
 }

@@ -42,6 +42,9 @@ data class Match(
         }
     }
 
+    fun getPlayer(playerId: PlayerIndex) =
+        if (playerId.index == 0) Player1 else Player2
+
     companion object MatchDiffCallback : DiffUtil.ItemCallback<Match>() {
         // ex: id changed
         override fun areItemsTheSame(oldItem: Match, newItem: Match): Boolean {

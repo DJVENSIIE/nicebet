@@ -28,6 +28,7 @@ class ListMatchFragment : Fragment() {
         return binding.root
     }
 
+    // todo: loading not handled
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // menu
         activity?.addMenuProvider(RefreshMenuProvider {

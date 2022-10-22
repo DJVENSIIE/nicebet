@@ -33,21 +33,11 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+            <meta-data android:name="android.app.lib_name" android:value="" />
         </activity>
-        <service android:name=".BackgroundService" />
-        <service
-            android:name="MyService"
-            android:icon="@drawable/ic_baseline_android_24"
-            android:label="toto"
-            >
-        </service>
     </application>
 
 </manifest>
