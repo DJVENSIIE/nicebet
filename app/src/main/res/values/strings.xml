@@ -11,9 +11,9 @@
     <string name="pipe1">|</string>
     <string name="parier_joueur_1">Parier\nJoueur 1</string>
     <string name="parier_joueur_2">Parier\nJoueur 2</string>
-    <string name="refresh">Refresh</string>
+    <string name="refresh">Rafraîchir</string>
     <string name="vs">VS</string>
-    <string name="summary">Summary</string>
+    <string name="summary">Résumé</string>
     <string name="channel_name">bonpari_channel</string>
     <string name="channel_description">bonpari_score_updated</string>
     <string name="how_much_to_bet">Combien voulez vous parier sur %s</string>
