@@ -3,7 +3,7 @@ const Joueur = require('./Joueur');
 
 // const modificateurVitesse = Math.max(process.argv[2], 1);
 // const modificateurVitesse = 1;
-const modificateurVitesse = 0.05; // every 20 second, there is an event
+const modificateurVitesse = 0.5; // every 5 second, there is an event
 
 const listePartie = [];
 
