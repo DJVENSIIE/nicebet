@@ -1,32 +1,20 @@
 package ca.usherbrooke.bonpari.model
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.api.Match
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class MatchListViewModel : ViewModel() {
-    private val _matchesRefreshAuto = generateRefreshLiveData()
     private val _matchesRefreshManual = MutableLiveData<List<Match>>()
-    private val liveDataMerger = MediatorLiveData<List<Match>>()
-    val matches: LiveData<List<Match>> = liveDataMerger
+    val matches: LiveData<List<Match>> = _matchesRefreshManual
 
     private val _selectedMatch = MutableLiveData<Match>(null)
     val selectedMatch : LiveData<Match> = _selectedMatch
-
-    init {
-        liveDataMerger.addSource(_matchesRefreshAuto) {
-            liveDataMerger.value = it
-        }
-        liveDataMerger.addSource(_matchesRefreshManual) {
-            liveDataMerger.value = it
-        }
-    }
 
     fun refreshSelected() {
         Log.d("CAL", "#refreshSelected")
@@ -45,23 +33,6 @@ class MatchListViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _matchesRefreshManual.value = BonPariApi.retrofitService.getAllGames()
-                Log.d("CAL", "refreshMatches#Has found ${_matchesRefreshManual.value!!.size} matches.")
-            } catch (e: Exception) {
-                Log.e("CAL", e.message.toString())
-            }
-        }
-    }
-
-    fun updateSelectedMatch(match: Match) {
-        _selectedMatch.value = match
-    }
-
-    private fun generateRefreshLiveData() = flow {
-        while(true) {
-            try {
-                val allGames = BonPariApi.retrofitService.getAllGames()
-                Log.d("CAL", "generateRefresh#Has found ${allGames.size} matches.")
-
                 // update selected match
                 if (_selectedMatch.value != null) {
                     _selectedMatch.value?.apply {
@@ -74,14 +45,14 @@ class MatchListViewModel : ViewModel() {
                         }
                     }
                 }
-
-                emit(allGames) // Emits the result of the request to the flow
-                delay(30000) // Suspends the coroutine for some time
-            } catch (ce: CancellationException) {
-                break
+                Log.d("CAL", "refreshMatches#Has found ${_matchesRefreshManual.value!!.size} matches.")
             } catch (e: Exception) {
                 Log.e("CAL", e.message.toString())
             }
         }
-    }.cancellable().asLiveData(viewModelScope.coroutineContext, 1500000L)
+    }
+
+    fun updateSelectedMatch(match: Match) {
+        _selectedMatch.value = match
+    }
 }
