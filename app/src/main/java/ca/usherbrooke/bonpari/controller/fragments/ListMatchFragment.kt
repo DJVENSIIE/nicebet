@@ -53,4 +53,10 @@ class ListMatchFragment : Fragment() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        // no selection anymore
+        viewModel.updateSelectedMatch(null)
+    }
 }

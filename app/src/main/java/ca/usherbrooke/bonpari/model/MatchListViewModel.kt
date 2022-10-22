@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.usherbrooke.bonpari.api.BonPariApi
+import ca.usherbrooke.bonpari.api.LocalStorage
 import ca.usherbrooke.bonpari.api.Match
 import kotlinx.coroutines.launch
 
@@ -52,7 +53,15 @@ class MatchListViewModel : ViewModel() {
         }
     }
 
-    fun updateSelectedMatch(match: Match) {
-        _selectedMatch.value = match
+    fun updateSelectedMatch(match: Match?) {
+        if (match == null) {
+            LocalStorage.currentMatchFollowedId = LocalStorage.NO_FOLLOWED_MATCH
+            return
+        }
+
+        match.let {
+            _selectedMatch.value = it
+            LocalStorage.currentMatchFollowedId = it.id
+        }
     }
 }
