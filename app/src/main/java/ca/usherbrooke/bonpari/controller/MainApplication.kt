@@ -11,7 +11,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import ca.usherbrooke.bonpari.R
-import ca.usherbrooke.bonpari.controller.workers.PeriodicUpdateMatchListWorker
+import ca.usherbrooke.bonpari.controller.workers.PeriodicFetchEventsForFollowedMatch
 
 class MainApplication : Application(), DefaultLifecycleObserver {
     private lateinit var workManager : WorkManager
@@ -31,7 +31,7 @@ class MainApplication : Application(), DefaultLifecycleObserver {
         workManager.enqueueUniqueWork(
             UNIQUE_WORK_NAME,
             ExistingWorkPolicy.REPLACE,
-            OneTimeWorkRequest.from(PeriodicUpdateMatchListWorker::class.java)
+            OneTimeWorkRequest.from(PeriodicFetchEventsForFollowedMatch::class.java)
         )
     }
 

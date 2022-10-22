@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.usherbrooke.bonpari.api.BonPariApi
-import ca.usherbrooke.bonpari.api.LocalStorage
 import ca.usherbrooke.bonpari.api.Match
 import kotlinx.coroutines.launch
 
@@ -35,10 +34,10 @@ class MatchListViewModel : ViewModel() {
             try {
                 _matchesRefreshManual.value = BonPariApi.retrofitService.getAllGames()
                 // update selected match
-                if (_selectedMatch.value != null) {
-                    _selectedMatch.value?.apply {
+                if (LocalStorage.isFollowingAMatch()) {
+                    LocalStorage.currentMatchFollowedId.let {
                         for (match in matches.value!!) {
-                            if (match.id == id) {
+                            if (match.id == it) {
                                 Log.d("CAL", "Update selected OK.")
                                 _selectedMatch.value = match
                                 break
