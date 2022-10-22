@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="viewModel" type="ca.usherbrooke.bonpari.model.MatchListViewModel" />
         <variable name="matchSummary" type="ca.usherbrooke.bonpari.controller.fragments.MatchSummaryFragment" />
@@ -11,224 +13,250 @@
         <variable name="set3" type="ca.usherbrooke.bonpari.api.Match.SetIndex" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".controller.fragments.MatchSummaryFragment">
+
+        <TextView
+            android:id="@+id/match_starting_at"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{@string/match_starting_at(viewModel.selectedMatch.tournament, viewModel.selectedMatch.startingAt)}"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Tournoi Hale - 18h30" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginRight="20dp"
-            android:background="#111"
-            android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingTop="0dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="10dp">
+            android:layout_marginTop="10dp"
+            android:background="#8BC34A"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingStart="0dp"
+                android:paddingEnd="10dp">
 
-                <TextView
-                    android:text="@{viewModel.selectedMatch.player1.getFullName()}"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:paddingStart="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    tools:ignore="RtlSymmetry"
-                    tools:text="Elina Svitolina" />
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
 
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:text='@{viewModel.selectedMatch.isAtService(player1) ? matchMarker : "" }'
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="25sp"
-                    tools:text="°" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.4"
+                        android:gravity="center|start"
+                        android:text="@{viewModel.selectedMatch.player1.getFullName()}"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="aaa" />
 
-                <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set1)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="40dp"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
-                    tools:text="6" />
+                    <ImageView
+                        app:showServiceIcon="@{viewModel.selectedMatch.isAtService(player1)}"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_column="1"
+                        android:layout_weight="0.1"
+                        app:srcCompat="@drawable/tennis"
+                        tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set2)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
-                    tools:text="3" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set1)}"
+                        android:textStyle="bold"
+                        tools:text="0" />
 
-                <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set3)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
-                    tools:text="0" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set2)}"
+                        android:textStyle="bold"
+                        tools:text="0" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:text="@string/pipe1"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@{viewModel.selectedMatch.getPlayerScore(player1, set3)}"
+                        android:textStyle="bold"
+                        tools:text="0" />
 
-                <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayerGame(player1)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
-                    tools:text="15" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@string/pipe1"
+                        android:textStyle="bold" />
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@{viewModel.selectedMatch.getPlayerGame(player1)}"
+                        android:textStyle="bold"
+                        tools:text="0" />
 
-            <TextView
-                android:text="@{viewModel.selectedMatch.getPlayerReclamations(player1)}"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="#ffffff"
-                tools:text="3" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:text="@{viewModel.selectedMatch.player2.getFullName()}"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:paddingStart="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    tools:text="Victoria Azarenka"
-                    tools:ignore="RtlSymmetry" />
-
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text='@{viewModel.selectedMatch.isAtService(player2) ? matchMarker : "" }'
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="25sp"
-                    tools:text="°" />
-
-                <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set1)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="40dp"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
-                    tools:text="2" />
-
-                <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set2)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
-                    tools:text="5" />
-
-                <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set3)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
-                    tools:text="0" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:text="@string/pipe2"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:text="@{viewModel.selectedMatch.getPlayerGame(player2)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
-                    tools:text="40" />
-
-
-            </LinearLayout>
-
-            <TextView
-                android:text="@{viewModel.selectedMatch.getPlayerReclamations(player2)}"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="#ffffff"
-                tools:text="3" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonBet1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/parier_joueur_1"
-                    android:onClick="@{ () -> matchSummary.betOn(player1) }" />
-
-                <Button
-                    android:id="@+id/buttonBet2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="20sp"
-                    android:text="@string/parier_joueur_2"
-                    android:onClick="@{ () -> matchSummary.betOn(player2) }" />
-            </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/vs"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="VS" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#8BC34A"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingStart="0dp"
+                android:paddingEnd="10dp">
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.4"
+                        android:gravity="center|start"
+                        android:text="@{viewModel.selectedMatch.player2.getFullName()}"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="aaa" />
+
+                    <ImageView
+                        app:showServiceIcon="@{viewModel.selectedMatch.isAtService(player2)}"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_column="1"
+                        android:layout_weight="0.1"
+                        app:srcCompat="@drawable/tennis"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set1)}"
+                        android:textStyle="bold"
+                        tools:text="0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set2)}"
+                        android:textStyle="bold"
+                        tools:text="0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set3)}"
+                        android:textStyle="bold"
+                        tools:text="0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@string/pipe1"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="0.025"
+                        android:gravity="center"
+                        android:text="@{viewModel.selectedMatch.getPlayerGame(player2)}"
+                        android:textStyle="bold"
+                        tools:text="0" />
+
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/parier_joueur_1"
+                android:onClick="@{ () -> matchSummary.betOn(player1) }" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/parier_joueur_2"
+                android:onClick="@{ () -> matchSummary.betOn(player2) }" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/events_recycler_view"
+            app:eventList="@{viewModel.selectedMatch.events}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:scrollbars="horizontal"
+            app:layoutManager="LinearLayoutManager" />
 
     </LinearLayout>
 </layout>

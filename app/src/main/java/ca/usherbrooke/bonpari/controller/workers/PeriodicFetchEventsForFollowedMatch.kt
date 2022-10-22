@@ -10,6 +10,7 @@ import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.controller.MainApplication
 import ca.usherbrooke.bonpari.model.LocalStorage
+import ca.usherbrooke.bonpari.view.formatToString
 import kotlinx.coroutines.delay
 
 class PeriodicFetchEventsForFollowedMatch(c: Context, args: WorkerParameters) : CoroutineWorker(c, args) {
@@ -33,28 +34,14 @@ class PeriodicFetchEventsForFollowedMatch(c: Context, args: WorkerParameters) : 
                     // todo: use strings.xml
                     for (j in previousEventCount until eventsCount) {
                         val event = game.events[j]
-                        var s = ""
                         var t = ""
                         if (event.isContestation()) {
                             t = applicationContext.getString(R.string.contestation_notification_title)
-                            s = applicationContext.getString(R.string.contestation_by, event.contestation?.let {
-                                if (it.isPlayer1) game.Player1.getFullName()
-                                else game.Player2.getFullName()
-                            }, event.contestation?.let {
-                                if (it.hasContestationPassed) applicationContext.getString(R.string.contestation_accepted)
-                                else applicationContext.getString(R.string.contestation_refused)
-                            })
                         }
                         if (event.isPointScored()) {
                             t = applicationContext.getString(R.string.point_score_notification_title)
-                            s = applicationContext.getString(R.string.point_scored_by, event.point?.let {
-                                if (it.isPlayer1)
-                                    game.Player1.getFullName()
-                                else
-                                    game.Player2.getFullName()
-                            })
                         }
-                        sendNotification(j, t, s)
+                        sendNotification(j, t, event.formatToString(game, applicationContext))
                     }
 
                     previousEventCount = eventsCount

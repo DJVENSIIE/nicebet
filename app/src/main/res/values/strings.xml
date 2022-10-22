@@ -6,7 +6,8 @@
     <string name="more_button">Regarder le match</string>
     <string name="match_starting_at">Tournoi %s - %s</string>
     <string name="tournois">Choisis ton match</string>
-    <string name="service1">°</string>
+    <string name="at_service">Au service</string>
+    <string name="not_at_service">Pas au service</string>
     <string name="pipe2">|</string>
     <string name="pipe1">|</string>
     <string name="parier_joueur_1">Parier\nJoueur 1</string>

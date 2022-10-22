@@ -6,11 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
+import ca.usherbrooke.bonpari.api.MatchEvent
+import ca.usherbrooke.bonpari.controller.adapters.EventListAdapter
 import ca.usherbrooke.bonpari.controller.menus.RefreshMenuProvider
 import ca.usherbrooke.bonpari.databinding.FragmentMatchSummaryBinding
 import ca.usherbrooke.bonpari.model.MatchListViewModel
@@ -33,6 +38,11 @@ class MatchSummaryFragment : Fragment() {
         activity?.addMenuProvider(RefreshMenuProvider {
             viewModel.refreshSelected()
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        // recyclerView
+        val recyclerView: RecyclerView = requireActivity().findViewById(R.id.events_recycler_view)
+        recyclerView.adapter = EventListAdapter(viewModel.selectedMatch, requireContext())
+
         // set variables
         binding.let {
             it.lifecycleOwner = viewLifecycleOwner
@@ -64,5 +74,19 @@ class MatchSummaryFragment : Fragment() {
                 viewModel.betOn(playerId, input.text.toString().toInt())
             }
             .show()
+    }
+
+    companion object {
+        @BindingAdapter("app:showServiceIcon") @JvmStatic
+        fun bindImageView(imageView: ImageView, show: Boolean) {
+            imageView.visibility = if (show) View.VISIBLE else View.INVISIBLE
+            imageView.contentDescription = if (show) "@string/at_service" else "@string/not_at_service"
+        }
+
+        @BindingAdapter("app:eventList") @JvmStatic
+        fun bindRecyclerView(recyclerView: RecyclerView, data: List<MatchEvent>) {
+            val adapter = recyclerView.adapter as EventListAdapter
+            adapter.submitList(data)
+        }
     }
 }

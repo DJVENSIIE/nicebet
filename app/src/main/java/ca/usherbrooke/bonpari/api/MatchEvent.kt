@@ -1,11 +1,13 @@
 package ca.usherbrooke.bonpari.api
 
+import androidx.recyclerview.widget.DiffUtil
 import com.squareup.moshi.Json
 import java.io.Serializable
 
 // todo: not a problem in the code, but "-0" is "0"
 data class MatchEvent(@Json(name = "type") val type : Int,
-                      @Json(name = "result") val result : String) : Serializable {
+                      @Json(name = "result") val result : String,
+                      @Json(name = "time") val time : Long) : Serializable {
 
     fun isContestation() = type == 1
     fun isPointScored() = type == 2
@@ -31,4 +33,14 @@ data class MatchEvent(@Json(name = "type") val type : Int,
             else
                 null
         }
+
+    companion object MatchEventDiffCallback : DiffUtil.ItemCallback<MatchEvent>() {
+        override fun areItemsTheSame(oldItem: MatchEvent, newItem: MatchEvent): Boolean {
+            return oldItem.type == newItem.type && oldItem.result == newItem.result
+        }
+
+        override fun areContentsTheSame(oldItem: MatchEvent, newItem: MatchEvent): Boolean {
+            return oldItem.type == newItem.type && oldItem.result == newItem.result
+        }
+    }
 }
