@@ -6,8 +6,6 @@ const Joueur = require('../Joueur.js');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  const p = new Partie(new Joueur('Albert', 'Ramos', 28, 56, 'Espagne'), new Joueur('Milos', 'Raonic', 28, 16, 'Canada'), '1', 'hale', '12h30');
-  // res.send('Bienvenu dans le serveur du service Échanges.');
-  res.send(p);
+  res.send('Bienvenue dans le serveur du service Échanges.');
 });
 module.exports = router;
