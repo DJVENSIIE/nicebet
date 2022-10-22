@@ -15,10 +15,9 @@ import ca.usherbrooke.bonpari.controller.adapters.MatchItemAdapter
 import ca.usherbrooke.bonpari.controller.menus.RefreshMenuProvider
 import ca.usherbrooke.bonpari.databinding.FragmentListMatchBinding
 import ca.usherbrooke.bonpari.model.MatchListViewModel
-import ca.usherbrooke.bonpari.model.MatchListViewModelFactory
 
 class ListMatchFragment : Fragment() {
-    private val viewModel: MatchListViewModel by activityViewModels { MatchListViewModelFactory(requireContext()) }
+    private val viewModel: MatchListViewModel by activityViewModels()
     private lateinit var binding: FragmentListMatchBinding
 
     override fun onCreateView(

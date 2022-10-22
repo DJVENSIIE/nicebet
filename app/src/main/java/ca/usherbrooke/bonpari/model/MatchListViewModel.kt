@@ -1,6 +1,5 @@
 package ca.usherbrooke.bonpari.model
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import ca.usherbrooke.bonpari.api.BonPariApi
@@ -11,7 +10,7 @@ import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
-class MatchListViewModel(context: Context) : ViewModel() {
+class MatchListViewModel : ViewModel() {
     private val _matchesRefreshAuto = generateRefreshLiveData()
     private val _matchesRefreshManual = MutableLiveData<List<Match>>()
     private val liveDataMerger = MediatorLiveData<List<Match>>()
@@ -85,11 +84,4 @@ class MatchListViewModel(context: Context) : ViewModel() {
             }
         }
     }.cancellable().asLiveData(viewModelScope.coroutineContext, 1500000L)
-}
-
-class MatchListViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MatchListViewModel(context) as T
-    }
 }
