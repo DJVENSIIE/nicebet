@@ -26,4 +26,9 @@
     <string name="contestation_by">La contestation de %s a été %s</string>
     <string name="contestation_accepted">acceptée</string>
     <string name="contestation_refused">refusée</string>
+    <string name="events">Evénements</string>
+    <string name="you_won">Vous avez gagné %d</string>
+    <string name="you_lost">Vous avez perdu %d</string>
+    <string name="betting_closed">Le match est en cours, les paris sont fermés.</string>
+    <string name="betting_done">Le match est terminé.</string>
 </resources>

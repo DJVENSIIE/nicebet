@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -87,6 +88,11 @@ class MatchSummaryFragment : Fragment() {
         fun bindRecyclerView(recyclerView: RecyclerView, data: List<MatchEvent>) {
             val adapter = recyclerView.adapter as EventListAdapter
             adapter.submitList(data)
+        }
+
+        @BindingAdapter("app:updateIfAvailable") @JvmStatic
+        fun bindView(view: LinearLayout, show: Boolean) {
+            view.visibility = if (show) View.VISIBLE else View.GONE
         }
     }
 }

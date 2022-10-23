@@ -45,10 +45,10 @@ object BonPariFakeApi {
 
     private val Match1 = Match(1, AD, MR, '2', "Hale", "13h00",
         Pointage(listOf(1, 1), listOf(listOf(4, 2), listOf(6, 4),listOf(0, 0)), listOf(40,30), false),
-        0.0, 0, 1.0, 4, listOf(1, 1), listOf())
+        0.0, 0, 1.0, 4, listOf(1, 1), true, listOf())
     private val Match2 = Match(2, AM, AR,  '1', "Hale", "12h30",
         Pointage(listOf(1, 1), listOf(listOf(6, 2), listOf(3, 1),listOf(0, 0)), listOf(15,40), false),
-        0.0, 1, 1.0, 4, listOf(1, 1), listOf())
+        0.0, 1, 1.0, 4, listOf(1, 1), true, listOf())
 
     val retrofitService : BonPariApiService = object : BonPariApiService {
         override suspend fun getAllGames(): List<Match> {

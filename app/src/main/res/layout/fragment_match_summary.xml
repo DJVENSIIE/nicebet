@@ -156,7 +156,7 @@
                         android:layout_weight="0.4"
                         android:gravity="center|start"
                         android:text="@{viewModel.selectedMatch.player2.getFullName()}"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="aaa" />
 
@@ -176,6 +176,7 @@
                         android:layout_weight="0.025"
                         android:gravity="center"
                         android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set1)}"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="0" />
 
@@ -186,6 +187,7 @@
                         android:layout_weight="0.025"
                         android:gravity="center"
                         android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set2)}"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="0" />
 
@@ -196,6 +198,7 @@
                         android:layout_weight="0.025"
                         android:gravity="center"
                         android:text="@{viewModel.selectedMatch.getPlayerScore(player2, set3)}"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="0" />
 
@@ -206,6 +209,7 @@
                         android:layout_weight="0.025"
                         android:gravity="center"
                         android:text="@string/pipe1"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -215,6 +219,7 @@
                         android:layout_weight="0.025"
                         android:gravity="center"
                         android:text="@{viewModel.selectedMatch.getPlayerGame(player2)}"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="0" />
 
@@ -223,18 +228,21 @@
         </LinearLayout>
 
         <LinearLayout
+            app:updateIfAvailable="@{viewModel.selectedMatch.bettingAvailable}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            android:visibility="visible"
+            tools:visibility="gone">
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="@string/parier_joueur_1"
-                android:onClick="@{ () -> matchSummary.betOn(player1) }" />
+                android:onClick="@{ () -> matchSummary.betOn(player1) }"
+                android:text="@string/parier_joueur_1" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -245,9 +253,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="@string/parier_joueur_2"
-                android:onClick="@{ () -> matchSummary.betOn(player2) }" />
+                android:onClick="@{ () -> matchSummary.betOn(player2) }"
+                android:text="@string/parier_joueur_2" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/betting_outcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:visibility="gone"
+            tools:text="@string/betting_closed"
+            tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/events"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/events_recycler_view"

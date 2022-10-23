@@ -17,6 +17,7 @@ data class Match(
     @Json(name = "vitesse_dernier_service") val vitesse_dernier_service: Double,
     @Json(name = "nombre_coup_dernier_echange") val nombre_coup_dernier_echange: Int,
     @Json(name = "constestation") val contestation: List<Int>,
+    @Json(name = "pariPossible") val bettingAvailable: Boolean,
     @Json(name = "events") val events: List<MatchEvent>
 ) : Serializable {
 
