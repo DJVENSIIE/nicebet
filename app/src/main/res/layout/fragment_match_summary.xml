@@ -307,11 +307,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/events_recycler_view"
-            app:eventList="@{viewModel.selectedMatch.events}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:scrollbars="horizontal"
+            app:eventList="@{viewModel.selectedMatch.events}"
             app:layoutManager="LinearLayoutManager" />
 
     </LinearLayout>

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.api.Match
+import ca.usherbrooke.bonpari.model.LocalStorage.lastEventReceived
 import kotlinx.coroutines.launch
 
 class MatchListViewModel : ViewModel() {
@@ -21,7 +22,9 @@ class MatchListViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _selectedMatch.value = BonPariApi.retrofitService.getGame(_selectedMatch.value!!.id)
-                LocalStorage.lastEventReceived = _selectedMatch.value!!.events.size
+                _selectedMatch.value?.let {
+                    lastEventReceived[it.id] = it.events.size
+                }
                 Log.d("CAL", "Update selected: ${_selectedMatch.value}")
             } catch (e: Exception) {
                 Log.e("CAL", e.message.toString())
@@ -41,11 +44,11 @@ class MatchListViewModel : ViewModel() {
                             if (match.id == it) {
                                 Log.d("CAL", "Update selected OK.")
                                 _selectedMatch.value = match
+                                lastEventReceived[match.id] = match.events.size
                                 break
                             }
                         }
                     }
-                    LocalStorage.lastEventReceived = _selectedMatch.value!!.events.size
                 }
                 Log.d("CAL", "refreshMatches#Has found ${_matchesRefreshManual.value!!.size} matches.")
             } catch (e: Exception) {
@@ -63,6 +66,9 @@ class MatchListViewModel : ViewModel() {
         match.let {
             _selectedMatch.value = it
             LocalStorage.currentMatchFollowedId = it.id
+            // fix the fact that if no refresh
+            // was called, then the "lastEventReceivedFlag" was not set
+            lastEventReceived[it.id] = it.events.size
         }
     }
 

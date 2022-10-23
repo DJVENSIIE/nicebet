@@ -21,7 +21,7 @@ class EventListAdapter(private val match: LiveData<Match>,
 
     override fun onBindViewHolder(holder: EventItemViewHolder, position: Int) {
         match.value!!.let {
-            holder.bind(it, it.events[it.events.size-position-1], context)
+            holder.bind(it, it.events[position], context)
         }
     }
 

@@ -12,7 +12,7 @@ import java.util.*
 
 class EventItemViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
-    private val formatter = SimpleDateFormat("H:m:s", Locale.getDefault())
+    private val formatter = SimpleDateFormat("H:mm:ss", Locale.getDefault())
 
     fun bind(match: Match, matchEvent: MatchEvent, context: Context) {
         body.text = matchEvent.formatToString(match, context)

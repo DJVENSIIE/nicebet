@@ -20,19 +20,28 @@ class PeriodicFetchEventsForFollowedMatch(c: Context, args: WorkerParameters) : 
             return Result.success()
 
         val id = LocalStorage.currentMatchFollowedId
-        var previousEventCount = LocalStorage.lastEventReceived
-        Log.d("CAL", "No notification for the first $previousEventCount events.")
+        var previousEventCount = -1
         while (true) {
             val game = BonPariApi.retrofitService.getGame(id)
-            Log.d("CAL", "worker executed: $game")
+
+//            Log.d("CAL", "worker executed: $game")
+            Log.d("CAL", "with events: ${game?.events}")
 
             game?.let {
+                if (previousEventCount == -1) {
+                    previousEventCount = LocalStorage.lastEventReceived[game.id] ?: 0
+                    Log.d("CAL", "No notification for the first $previousEventCount events.")
+                }
+
                 val eventsCount = game.events.size
                 if (previousEventCount != eventsCount) {
                     Log.d("CAL", "${eventsCount-previousEventCount} new events")
 
-                    // todo: use strings.xml
-                    for (j in previousEventCount until eventsCount) {
+                    // if there are 10 elements, the user saw 4 events
+                    // Indexes are from 0 to 9
+                    // we are checking [0,1,2,3,4,5]
+                    // we need to explore 0..6
+                    for (j in 0 until eventsCount - previousEventCount) {
                         val event = game.events[j]
                         var t = ""
                         if (event.isContestation()) {

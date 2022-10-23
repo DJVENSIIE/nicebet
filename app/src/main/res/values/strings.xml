@@ -23,7 +23,7 @@
     <string name="contestation_notification_title">Contestation</string>
     <string name="point_score_notification_title">Point marqué</string>
     <string name="point_scored_by">Un point a été marqué par %s</string>
-    <string name="contestation_by">La contestation de %s a été %s</string>
+    <string name="contestation_by">Contestation de %s %s</string>
     <string name="contestation_accepted">acceptée</string>
     <string name="contestation_refused">refusée</string>
     <string name="events">Evénements</string>
