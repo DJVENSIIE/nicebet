@@ -121,16 +121,43 @@
             </TableLayout>
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:text="@string/vs"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            tools:text="VS" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.001"
+                android:paddingStart="10dp"
+                android:text="@{@string/contestation(viewModel.selectedMatch.getPlayerReclamations(player1))}"
+                android:textSize="12sp"
+                tools:text="3 cont. restantes" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/vs"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:text="VS" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.001"
+                android:gravity="bottom"
+                android:paddingEnd="10dp"
+                android:text="@{@string/contestation(viewModel.selectedMatch.getPlayerReclamations(player2))}"
+                android:textSize="12sp"
+                tools:text="2 cont. restantes" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
