@@ -10,22 +10,19 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.MatchEvent
 import ca.usherbrooke.bonpari.controller.adapters.EventListAdapter
-import ca.usherbrooke.bonpari.controller.menus.RefreshMenuProvider
 import ca.usherbrooke.bonpari.databinding.FragmentMatchSummaryBinding
-import ca.usherbrooke.bonpari.model.MatchListViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class MatchSummaryFragment : Fragment() {
-    private val viewModel: MatchListViewModel by activityViewModels()
+class MatchSummaryFragment : BaseFragment() {
     private lateinit var binding: FragmentMatchSummaryBinding
+    override val onRefresh = {
+        viewModel.refreshSelected()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,10 +33,7 @@ class MatchSummaryFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // menu
-        activity?.addMenuProvider(RefreshMenuProvider {
-            viewModel.refreshSelected()
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        super.onViewCreated(view, savedInstanceState)
 
         // recyclerView
         val recyclerView: RecyclerView = requireActivity().findViewById(R.id.events_recycler_view)

@@ -5,20 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.controller.adapters.MatchItemAdapter
-import ca.usherbrooke.bonpari.controller.menus.RefreshMenuProvider
 import ca.usherbrooke.bonpari.databinding.FragmentListMatchBinding
-import ca.usherbrooke.bonpari.model.MatchListViewModel
 
-class ListMatchFragment : Fragment() {
-    private val viewModel: MatchListViewModel by activityViewModels()
+class ListMatchFragment : BaseFragment() {
     private lateinit var binding: FragmentListMatchBinding
+    override val onRefresh = {
+        viewModel.refreshMatches()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +25,8 @@ class ListMatchFragment : Fragment() {
         return binding.root
     }
 
-    // todo: loading not handled
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // menu
-        activity?.addMenuProvider(RefreshMenuProvider {
-            viewModel.refreshMatches()
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        super.onViewCreated(view, savedInstanceState)
 
         // recyclerView
         binding.recyclerView.adapter = MatchItemAdapter(viewModel.matches) {

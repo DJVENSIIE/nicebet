@@ -32,4 +32,6 @@
     <string name="betting_closed">Le match est en cours, les paris sont fermés.</string>
     <string name="betting_done">Le match est terminé.</string>
     <string name="contestation">%s contestations restantes</string>
+    <string name="no_connection">Connection avec le serveur impossible</string>
+    <string name="unknown_error">Erreur inconnue: %s</string>
 </resources>

@@ -9,6 +9,7 @@ import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.model.LocalStorage.lastEventReceived
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 
 class MatchListViewModel : ViewModel() {
     private val _matchesRefreshManual = MutableLiveData<List<Match>>()
@@ -17,43 +18,50 @@ class MatchListViewModel : ViewModel() {
     private val _selectedMatch = MutableLiveData<Match>(null)
     val selectedMatch : LiveData<Match> = _selectedMatch
 
-    fun refreshSelected() {
-        Log.d("CAL", "#refreshSelected")
+    private val _fetchingRepositoryError = MutableLiveData<RepositoryError>()
+    val fetchingRepositoryError : LiveData<RepositoryError> = _fetchingRepositoryError
+
+    private fun executeRequest(logName: String, request: suspend () -> Unit) {
+        Log.d("CAL", "#$logName")
         viewModelScope.launch {
             try {
-                _selectedMatch.value = BonPariApi.retrofitService.getGame(_selectedMatch.value!!.id)
-                _selectedMatch.value?.let {
-                    lastEventReceived[it.id] = it.events.size
-                }
-                Log.d("CAL", "Update selected: ${_selectedMatch.value}")
+               request()
+            } catch (e: SocketTimeoutException) {
+                _fetchingRepositoryError.value = RepositoryError(e.message.toString(), ErrorCode.CONNECTION_TIME_OUT)
             } catch (e: Exception) {
-                Log.e("CAL", e.message.toString())
+                Log.e("CAL", e.toString())
+                _fetchingRepositoryError.value = RepositoryError(e.message.toString(), ErrorCode.UNKNOWN)
             }
         }
     }
 
+    fun refreshSelected() {
+        executeRequest("refreshSelected") {
+            _selectedMatch.value = BonPariApi.retrofitService.getGame(_selectedMatch.value!!.id)
+            _selectedMatch.value?.let {
+                lastEventReceived[it.id] = it.events.size
+            }
+            Log.d("CAL", "Update selected: ${_selectedMatch.value}")
+        }
+    }
+
     fun refreshMatches() {
-        Log.d("CAL", "#refreshMatches")
-        viewModelScope.launch {
-            try {
-                _matchesRefreshManual.value = BonPariApi.retrofitService.getAllGames()
-                // update selected match
-                if (LocalStorage.isFollowingAMatch()) {
-                    LocalStorage.currentMatchFollowedId.let {
-                        for (match in matches.value!!) {
-                            if (match.id == it) {
-                                Log.d("CAL", "Update selected OK.")
-                                _selectedMatch.value = match
-                                lastEventReceived[match.id] = match.events.size
-                                break
-                            }
+        executeRequest("refreshMatches") {
+            _matchesRefreshManual.value = BonPariApi.retrofitService.getAllGames()
+            // update selected match
+            if (LocalStorage.isFollowingAMatch()) {
+                LocalStorage.currentMatchFollowedId.let {
+                    for (match in matches.value!!) {
+                        if (match.id == it) {
+                            Log.d("CAL", "Update selected OK.")
+                            _selectedMatch.value = match
+                            lastEventReceived[match.id] = match.events.size
+                            break
                         }
                     }
                 }
-                Log.d("CAL", "refreshMatches#Has found ${_matchesRefreshManual.value!!.size} matches.")
-            } catch (e: Exception) {
-                Log.e("CAL", e.message.toString())
             }
+            Log.d("CAL", "refreshMatches#Has found ${_matchesRefreshManual.value!!.size} matches.")
         }
     }
 
@@ -73,5 +81,11 @@ class MatchListViewModel : ViewModel() {
     }
 
     fun betOn(playerId: Match.PlayerIndex, amount: Int) {
+    }
+
+    data class RepositoryError(val rawMessage: String, val code: ErrorCode)
+    enum class ErrorCode {
+        CONNECTION_TIME_OUT,
+        UNKNOWN
     }
 }
