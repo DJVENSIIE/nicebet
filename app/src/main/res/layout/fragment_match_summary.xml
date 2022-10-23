@@ -228,7 +228,7 @@
         </LinearLayout>
 
         <LinearLayout
-            app:updateIfAvailable="@{viewModel.selectedMatch.bettingAvailable}"
+            app:enableIfAvailable="@{viewModel.selectedMatch.bettingAvailable}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -258,6 +258,7 @@
         </LinearLayout>
 
         <TextView
+            app:updateIfAvailable="@{viewModel.selectedMatch}"
             android:id="@+id/betting_outcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

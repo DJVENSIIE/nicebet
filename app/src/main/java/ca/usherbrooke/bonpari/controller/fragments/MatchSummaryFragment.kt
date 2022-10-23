@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -81,7 +82,7 @@ class MatchSummaryFragment : Fragment() {
         @BindingAdapter("app:showServiceIcon") @JvmStatic
         fun bindImageView(imageView: ImageView, show: Boolean) {
             imageView.visibility = if (show) View.VISIBLE else View.INVISIBLE
-            imageView.contentDescription = if (show) "@string/at_service" else "@string/not_at_service"
+            imageView.contentDescription = imageView.context.getString(if (show) R.string.at_service else R.string.not_at_service)
         }
 
         @BindingAdapter("app:eventList") @JvmStatic
@@ -90,9 +91,15 @@ class MatchSummaryFragment : Fragment() {
             adapter.submitList(data)
         }
 
-        @BindingAdapter("app:updateIfAvailable") @JvmStatic
-        fun bindView(view: LinearLayout, show: Boolean) {
+        @BindingAdapter("app:enableIfAvailable") @JvmStatic
+        fun bindEnableIfAvailable(view: LinearLayout, show: Boolean) {
             view.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        @BindingAdapter("app:updateIfAvailable") @JvmStatic
+        fun bindUpdateIfAvailable(view: TextView, selectedMatch: Match) {
+            view.visibility = if (!selectedMatch.bettingAvailable) View.VISIBLE else View.GONE
+            view.setText(R.string.betting_done)
         }
     }
 }
