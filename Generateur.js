@@ -1,5 +1,7 @@
 const Partie = require('./Partie');
 const Joueur = require('./Joueur');
+const Pari = require('./Pari');
+
 
 // const modificateurVitesse = Math.max(process.argv[2], 1);
 // const modificateurVitesse = 1;
@@ -54,11 +56,33 @@ function demarrerPartie (partie) {
   const timer = setInterval(function () {
     partie.jouerTour();
     if (partie.estTerminee()) {
+      console.log('terminee');
+      partie.DistribuerGains();
       clearInterval(timer);
     }
   }, Math.floor(1000 / modificateurVitesse));
 }
 
+function effectuerPari(partie,client,joueur,montant){
+  (listePartie[partie]).parier(client,joueur,montant);
+}
+
+function getGain(partie,client){
+  console.log(listePartie[partie].gains);
+  for (x of listePartie[partie].gains){
+    console.log('getGain');
+    console.log(x.client, client);
+    if (x.client == client){
+      console.log('bon client');
+
+      return x.montant;
+    }
+  }
+}
+
 module.exports = {};
 module.exports.demarrer = demarrer;
+module.exports.effectuerPari = effectuerPari;
+module.exports.getGain = getGain;
+
 module.exports.liste_partie = listePartie;

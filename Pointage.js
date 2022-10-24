@@ -4,6 +4,7 @@ class Pointage {
     this.jeu = [[0, 0]];
     this.echange = [0, 0];
     this.final = false;
+    this.pariPossible = true;
 
     this.parent = parent;
   }
@@ -25,10 +26,13 @@ class Pointage {
     if (this.jeu[mancheCourante][joueur] === 6) {
       this.manches[joueur] += 1;
       this.parent.nouvelleManche();
+      console.log('changement de manche');
+      if (mancheCourante === 0) {
+        console.log('pari impossible');
+        this.pariPossible = false
+      }
+
       if (this.manches[joueur] < 2) {
-        if (mancheCourante == 1) {
-          this.pariPossible = false
-        }
         this.jeu.push([0, 0]);
       }
     }
@@ -44,7 +48,8 @@ class Pointage {
       'manches': this.manches,
       'jeu': this.jeu,
       'echange': this.echange,
-      'final': this.final
+      'final': this.final,
+      'pariPossible': this.pariPossible
     };
   }
 }

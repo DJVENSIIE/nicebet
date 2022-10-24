@@ -1,5 +1,6 @@
 const Pointage = require('./Pointage.js');
-const Paris = require('./Paris.js');
+const Pari = require('./Pari.js');
+const Gain = require('./gain.js');
 const MatchEvent = require('./MatchEvent');
 
 class Partie {
@@ -19,7 +20,9 @@ class Partie {
     this.nombre_coup_dernier_echange = 0;
     this.constestation = [3, 3];
     this.tick_debut = tickDebut;
+    this.clients = [];
     this.paris = [];
+    this.gains = [];
     this.montantTotal = 0.00;
     this.montantJoueur1 = 0.00;
     this.montantJoueur2 = 0.00;
@@ -29,14 +32,18 @@ class Partie {
   }
 
   parier (client,joueur,montant){
-    let paris = new Paris(this);
-    paris.ajouterParis(client,joueur,montant);
+    let pari = new Pari(this);
+    pari.ajouterPari(client,joueur,montant);
 
-    this.paris.push(paris);
+    if (!this.clients.includes(client)){
+      this.clients.push(client);
+    }
+
+    this.paris.push(pari);
     
-    this.paris.montantTotal += montant;
+    this.montantTotal += montant;
     
-    if (joueur == joueur1){
+    if (joueur==0){
       this.montantJoueur1 += montant;
     }
     else {
@@ -45,39 +52,49 @@ class Partie {
   }
 
 
-  ObtenirGains (client, vainqueur){
-    
+  DistribuerGains (){
+    console.log('distribution des gains');
+
     let coeff;
-    let choix;
-
-    if (!vainqueur){
-      coeff = this.montantTotal * (75 / 100) / this.montantJoueur1;
-      choix = 0;
-    }
-    else if (vainqueur){
-      coeff = this.montantTotal * (75 / 100) / this.montantJoueur2;
-      choix = 1;
-    }
-
-    let gains = 0.00;
-    
-    for (let i = 0; i < this.paris.length; i++) {
-
-      if (this.paris[i].client == client && this.paris[i].choix == choix ){
-
-        gains += this.paris[i].montantParié;
+    let vainqueur;
+    if (this.pointage.manches[0] == 2){
+      vainqueur = 0;
+      if(this.montantJoueur1 > 0){
+        coeff = this.montantTotal * (75 / 100) / this.montantJoueur1;
       }
-    } 
-
-    gains = gains * coeff
-
-    return gains;
+      else{
+        coeff = 0;
+      }
+    }
+    else if (this.pointage.manches[1] == 2){
+      vainqueur = 1;
+      if(this.montantJoueur2 > 0){
+        coeff = this.montantTotal * (75 / 100) / this.montantJoueur2;
+      }
+      else{
+        coeff = 0;
+      }
+    }
     
+    for (let client of (this.clients) ){
+      let montantgagné = 0.00;
+      for (let i = 0; i < this.paris.length; i++) {
+    
+        if (this.paris[i].client == client && this.paris[i].choix == vainqueur ){
+          montantgagné += this.paris[i].montantParié;
+        }
+      } 
+
+      montantgagné = montantgagné * coeff;
+
+      if (this.paris != []){
+
+        let gain = new Gain();
+        gain.ajouterGain(client,montantgagné);
+        this.gains.push(gain);
+      }
+    }
   }
-
-
-
-
 
   jouerTour () {
     let contestationReussi = false;
@@ -117,13 +134,6 @@ class Partie {
   }
 
   estTerminee () {
-    if (this.pointage.manches[this.joueur1] == 2){
-      this.vainqueur = 0
-    }
-
-    if (this.pointage.manches[this.joueur2] == 2){
-      this.vainqueur = 1
-    }
     return this.pointage.final;
   }
 
@@ -143,7 +153,13 @@ class Partie {
       'constestation': this.constestation,
       // todo: temp
       'pariPossible': this.pariPossible && !this.pointage.final,
-      'events': this.events
+      'events': this.events,
+      'clients':this.clients,
+      'paris':this.paris,
+      'gains':this.gains,
+      'montantTotal':this.montantTotal,
+      'montantJoueur1':this.montantJoueur1,
+      'montantJoueur2': this.montantJoueur2,
     };
   }
 }

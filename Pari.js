@@ -1,15 +1,15 @@
-class Paris {
+class Pari {
   constructor (parent) {
     this.client = '';
-    this.choix = 0; // O for player 1 | 1 for player 2
+    this.choix = -1; // O for player 1 | 1 for player 2
     this.montantParié = 0.00;
     this.parent = parent;
   }
 
-  ajouterParis (client, joueur, montant){
-    this.paris.client = client
-    this.choix = joueur
-    this.montantParié = montant
+  ajouterPari (client, joueur, montant){
+    this.client = client;
+    this.choix = joueur;
+    this.montantParié = montant;
   }
 
 
@@ -22,4 +22,4 @@ class Paris {
   }
 }
 
-module.exports = Paris;
+module.exports = Pari;
