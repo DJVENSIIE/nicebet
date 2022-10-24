@@ -87,7 +87,7 @@ class Partie {
 
       montantgagné = montantgagné * coeff;
 
-      if (this.paris != []){
+      if (this.paris.length > 0){
 
         let gain = new Gain();
         gain.ajouterGain(client,montantgagné);
