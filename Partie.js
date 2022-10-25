@@ -20,9 +20,8 @@ class Partie {
     this.nombre_coup_dernier_echange = 0;
     this.constestation = [3, 3];
     this.tick_debut = tickDebut;
-    this.clients = [];
-    this.paris = [];
-    this.gains = [];
+    this.paris = {};
+    this.gains = {};
     this.montantTotal = 0.00;
     this.montantJoueur1 = 0.00;
     this.montantJoueur2 = 0.00;
@@ -32,19 +31,17 @@ class Partie {
 
   parier (client,joueur,montant, isOpen){
     let tag = "PARI_ACCEPTED"
+
+    // never bet once
+    if (!this.paris[client]) {
+      this.paris[client] = new Pari(client)
+    }
+
     if (isOpen) {
-      let pari = new Pari(this);
-      pari.ajouterPari(client,joueur,montant);
-
-      if (!this.clients.includes(client)){
-        this.clients.push(client);
-      }
-
-      this.paris.push(pari);
-
+      this.paris[client].addBet(joueur, montant)
       this.montantTotal += montant;
 
-      if (joueur==0){
+      if (joueur === 0) {
         this.montantJoueur1 += montant;
       }
       else {
@@ -54,22 +51,10 @@ class Partie {
       tag = "PARIS_CLOSED"
     }
 
-    let amountJ1 = 0
-    let amountJ2 = 0
-    for (let pari of this.paris) {
-      if (pari.client === client){
-        if (pari.choix === 0) {
-          amountJ1 += pari.montantParié
-        } else {
-          amountJ2 += pari.montantParié
-        }
-      }
-    }
-
     return {
       tag: tag,
-      bet_on_j1: amountJ1,
-      bet_on_j2: amountJ2,
+      bet_on_j1: this.paris[client].amountOnJ1,
+      bet_on_j2: this.paris[client].amountOnJ2,
       total_j1: this.montantJoueur1,
       total_j2: this.montantJoueur2
     }
@@ -80,7 +65,7 @@ class Partie {
 
     let coeff;
     let vainqueur;
-    if (this.pointage.manches[0] == 2){
+    if (this.pointage.manches[0] == 2) {
       vainqueur = 0;
       if(this.montantJoueur1 > 0){
         coeff = this.montantTotal * (75 / 100) / this.montantJoueur1;
@@ -89,33 +74,22 @@ class Partie {
         coeff = 0;
       }
     }
-    else if (this.pointage.manches[1] == 2){
+    else if (this.pointage.manches[1] == 2) {
       vainqueur = 1;
       if(this.montantJoueur2 > 0){
         coeff = this.montantTotal * (75 / 100) / this.montantJoueur2;
       }
-      else{
+      else {
         coeff = 0;
       }
     }
-    
-    for (let client of (this.clients) ){
-      let montantgagné = 0.00;
-      for (let i = 0; i < this.paris.length; i++) {
-    
-        if (this.paris[i].client == client && this.paris[i].choix == vainqueur ){
-          montantgagné += this.paris[i].montantParié;
-        }
-      } 
 
-      montantgagné = montantgagné * coeff;
+    // try of if it's work
+    for (let x in this.paris) {
+      const bet = this.paris[x]
+      const amount = (vainqueur === 0 ? bet.amountOnJ1 : bet.amountOnJ2) * coeff
 
-      if (this.paris.length > 0){
-
-        let gain = new Gain();
-        gain.ajouterGain(client,montantgagné);
-        this.gains.push(gain);
-      }
+      this.gains[bet.client] = new Gain(bet.client, amount)
     }
   }
 
@@ -175,13 +149,12 @@ class Partie {
       'nombre_coup_dernier_echange': this.nombre_coup_dernier_echange,
       'constestation': this.constestation,
       'pariPossible': this.pointage.pariPossible,
-      'events': this.events,
-      'clients':this.clients,
       'paris':this.paris,
       'gains':this.gains,
       'montantTotal':this.montantTotal,
       'montantJoueur1':this.montantJoueur1,
       'montantJoueur2': this.montantJoueur2,
+      'events': this.events
     };
   }
 }

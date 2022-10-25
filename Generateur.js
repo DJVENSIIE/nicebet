@@ -1,11 +1,9 @@
 const Partie = require('./Partie');
 const Joueur = require('./Joueur');
-const Pari = require('./Pari');
-
 
 // const modificateurVitesse = Math.max(process.argv[2], 1);
 // const modificateurVitesse = 1;
-const modificateurVitesse = 3; // every 5 second, there is an event
+const modificateurVitesse = 0.2; // every 5 second, there is an event
 
 const listePartie = [];
 
@@ -68,22 +66,8 @@ function effectuerPari(partie,client,joueur,montant){
   return match.parier(client,joueur,montant, match.pointage.pariPossible)
 }
 
-function getGain(partie,client){
-  console.log(listePartie[partie].gains);
-  for (x of listePartie[partie].gains){
-    console.log('getGain');
-    console.log(x.client, client);
-    if (x.client == client){
-      console.log('bon client');
-
-      return x.montant;
-    }
-  }
-}
-
 module.exports = {};
 module.exports.demarrer = demarrer;
 module.exports.effectuerPari = effectuerPari;
-module.exports.getGain = getGain;
 
 module.exports.liste_partie = listePartie;

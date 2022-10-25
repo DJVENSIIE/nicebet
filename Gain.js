@@ -1,19 +1,13 @@
 class Gain {
-  constructor () {
-    this.client = '';
-    this.montant = 0.00;
-  }
-
-
-  ajouterGain (client, montant){
+  constructor (client, amount) {
     this.client = client;
-    this.montant = montant;
+    this.montant = amount;
   }
 
   toJSON () {
     return {
       'client': this.client,
-      'montant': this.montant
+      'amount': this.montant
     };
   }
 }

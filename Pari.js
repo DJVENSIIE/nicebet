@@ -1,23 +1,24 @@
 class Pari {
-  constructor (parent) {
-    this.client = '';
-    this.choix = -1; // O for player 1 | 1 for player 2
-    this.montantParié = 0.00;
-    this.parent = parent;
-  }
-
-  ajouterPari (client, joueur, montant){
+  constructor (client) {
     this.client = client;
-    this.choix = joueur;
-    this.montantParié = montant;
+    this.amountOnJ1 = 0;
+    this.amountOnJ2 = 0;
   }
 
+  addBet (index, amount){
+    // O for player 1 | 1 for player 2
+    if (index === 0) {
+      this.amountOnJ1 += amount
+    } else {
+      this.amountOnJ2 += amount
+    }
+  }
 
   toJSON () {
     return {
       'client': this.client,
-      'choix': this.choix,
-      'montantParié': this.montantParié
+      'bet_on_j1': this.amountOnJ1,
+      'bet_on_j2': this.amountOnJ2
     };
   }
 }

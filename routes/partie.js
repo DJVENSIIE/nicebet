@@ -21,13 +21,5 @@ router.post('/parier', function (req, res, next) {
   res.send(gen.effectuerPari(partie,client,joueur,montant))
 });
 
-/* Get recuperer gain */
-router.get('/:partie/:client', function (req, res, next) {
-  const client = req.params.client;
-  const partie = req.params.partie;
-  const gain = gen.getGain(partie,client);
-  res.send(''+gain);
-});
-
 module.exports = router;
 
