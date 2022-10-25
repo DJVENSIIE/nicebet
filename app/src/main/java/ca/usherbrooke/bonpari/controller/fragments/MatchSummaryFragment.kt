@@ -14,7 +14,9 @@ import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.MatchEvent
 import ca.usherbrooke.bonpari.controller.adapters.EventListAdapter
 import ca.usherbrooke.bonpari.databinding.FragmentMatchSummaryBinding
+import ca.usherbrooke.bonpari.model.LocalStorage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.text.NumberFormat
 
 class MatchSummaryFragment : BaseFragment() {
     private lateinit var binding: FragmentMatchSummaryBinding
@@ -32,7 +34,7 @@ class MatchSummaryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setDeviceId(activity?.contentResolver)
+        LocalStorage.setDeviceId(activity?.contentResolver)
 
         // recyclerView
         val recyclerView: RecyclerView = requireActivity().findViewById(R.id.events_recycler_view)
@@ -90,9 +92,29 @@ class MatchSummaryFragment : BaseFragment() {
 
         @BindingAdapter("app:showResultsIfAvailable") @JvmStatic
         fun bindShowResultsIfAvailable(view: TextView, match: Match) {
-            if (!match.bettingAvailable) {
-                view.visibility = View.VISIBLE
-                view.setText(R.string.bet_closed)
+            val deviceId = LocalStorage.deviceId
+            // show bet
+            if (!match.score.final) {
+                // if no bet
+                if (!match.bets.containsKey(deviceId)) {
+                    // and can't bet: show closed
+                    if (!match.bettingAvailable) {
+                        view.setText(R.string.betting_closed)
+                    }
+                } // otherwise, show bet
+                else {
+                    Log.d("CAL", "Match: $match")
+                    val bet = match.bets[deviceId]!!
+                    showBetInView(view, bet.betOnJ1, bet.betOnJ2)
+                }
+            }
+            // show outcome
+            else if (match.earnings.containsKey(deviceId)) {
+                val bet = match.earnings[deviceId]!!
+                view.text = view.context.getString(R.string.you_won, NumberFormat.getCurrencyInstance().format(bet.amount))
+            } else {
+                // well, no bet, no earning
+                view.setText(R.string.match_ended)
             }
         }
 
@@ -101,11 +123,17 @@ class MatchSummaryFragment : BaseFragment() {
             if (bet == null) return
             val context = view.context
             if (bet.wasAccepted()) {
-                view.visibility = View.VISIBLE
-                view.text = context.getString(R.string.your_bets, bet.betOnJ1, bet.betOnJ2)
+                showBetInView(view, bet.betOnJ1, bet.betOnJ2)
             } else {
-                Toast.makeText(context, context.getString(R.string.bet_closed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.betting_closed), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        @JvmStatic
+        fun showBetInView(view: TextView, bet1: Float, bet2: Float) {
+            val ci = NumberFormat.getCurrencyInstance()
+            view.text = view.context.getString(R.string.your_bets, ci.format(bet1), ci.format(bet2))
+            Log.d("CAL", "Show bet: $bet1-$bet2")
         }
     }
 }

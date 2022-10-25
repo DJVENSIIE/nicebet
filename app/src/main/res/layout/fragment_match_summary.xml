@@ -257,14 +257,14 @@
         </LinearLayout>
 
         <LinearLayout
-            app:enableIfAvailable="@{viewModel.selectedMatch.bettingAvailable}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:visibility="visible"
-            tools:visibility="gone">
+            app:enableIfAvailable="@{viewModel.selectedMatch.bettingAvailable}"
+            tools:visibility="visible">
 
             <Button
                 android:layout_width="wrap_content"
@@ -287,15 +287,15 @@
         </LinearLayout>
 
         <TextView
-            app:updateIfAvailable="@{viewModel.betStatus}"
-            app:showResultsIfAvailable="@{viewModel.selectedMatch}"
             android:id="@+id/betting_outcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textAlignment="center"
             android:textSize="16sp"
-            android:visibility="gone"
+            android:visibility="visible"
+            app:showResultsIfAvailable="@{viewModel.selectedMatch}"
+            app:updateIfAvailable="@{viewModel.betStatus}"
             tools:text="@string/betting_closed"
             tools:visibility="visible" />
 

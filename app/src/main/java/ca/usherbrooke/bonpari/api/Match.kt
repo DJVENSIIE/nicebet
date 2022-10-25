@@ -18,7 +18,9 @@ data class Match(
     @Json(name = "nombre_coup_dernier_echange") val nombre_coup_dernier_echange: Int,
     @Json(name = "constestation") val contestation: List<Int>,
     @Json(name = "pariPossible") val bettingAvailable: Boolean,
-    @Json(name = "events") val events: List<MatchEvent>
+    @Json(name = "events") val events: List<MatchEvent>,
+    @Json(name = "paris") val bets: Map<String, Bet>,
+    @Json(name = "gains") val earnings: Map<String, Earning>
 ) : Serializable {
 
     fun getPlayerGame(player: PlayerIndex) = score.echange[player.index].toString()

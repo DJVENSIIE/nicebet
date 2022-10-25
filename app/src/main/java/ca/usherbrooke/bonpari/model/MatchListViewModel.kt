@@ -1,23 +1,20 @@
 package ca.usherbrooke.bonpari.model
 
-import android.annotation.SuppressLint
-import android.content.ContentResolver
-import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ca.usherbrooke.bonpari.api.BetBody
+import ca.usherbrooke.bonpari.api.BetPostBody
 import ca.usherbrooke.bonpari.api.BetResult
 import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.model.LocalStorage.lastEventReceived
 import kotlinx.coroutines.launch
 import java.net.SocketTimeoutException
+import kotlin.collections.set
 
 class MatchListViewModel : ViewModel() {
-    private var deviceId: String? = null
     private val _matchesRefreshManual = MutableLiveData<List<Match>>()
     val matches: LiveData<List<Match>> = _matchesRefreshManual
 
@@ -27,9 +24,9 @@ class MatchListViewModel : ViewModel() {
     private val _fetchingRepositoryError = MutableLiveData<RepositoryError>()
     val fetchingRepositoryError : LiveData<RepositoryError> = _fetchingRepositoryError
 
-    private val _betStatus = MutableLiveData<BetResult>()
-    val betStatus: LiveData<BetResult>
-        get() = _betStatus
+    private val _betStatuts = HashMap<Int, BetResult?>()
+    private val _betStatut = MutableLiveData<BetResult?>()
+    val betStatus: LiveData<BetResult?> = _betStatut
 
     private fun executeRequest(logName: String, request: suspend () -> Unit) {
         Log.d("CAL", "#$logName")
@@ -40,6 +37,7 @@ class MatchListViewModel : ViewModel() {
                 _fetchingRepositoryError.value = RepositoryError(e.message.toString(), ErrorCode.CONNECTION_TIME_OUT)
             } catch (e: Exception) {
                 Log.e("CAL", e.toString())
+                e.printStackTrace()
                 _fetchingRepositoryError.value = RepositoryError(e.message.toString(), ErrorCode.UNKNOWN)
             }
         }
@@ -82,7 +80,11 @@ class MatchListViewModel : ViewModel() {
         }
 
         match.let {
+            _selectedMatch.value?.let { m ->
+                _betStatuts[m.id] = _betStatut.value
+            }
             _selectedMatch.value = it
+            _betStatut.value = _betStatuts[it.id]
             LocalStorage.currentMatchFollowedId = it.id
             // fix the fact that if no refresh
             // was called, then the "lastEventReceivedFlag" was not set
@@ -92,22 +94,16 @@ class MatchListViewModel : ViewModel() {
 
     fun betOn(playerId: Match.PlayerIndex, amount: Float) {
         executeRequest("betOn") {
-            _betStatus.value = BonPariApi.retrofitService.bet(
-                BetBody(
-                    deviceId!!,
+            _betStatut.value = BonPariApi.retrofitService.bet(
+                BetPostBody(
+                    LocalStorage.deviceId,
                     amount,
                     playerId.index,
                     _selectedMatch.value!!.id
                 )
             )
-            Log.d("CAL", "bet: ${_betStatus.value}")
+            Log.d("CAL", "bet: ${_betStatut.value}")
         }
-    }
-
-    @SuppressLint("HardwareIds")
-    fun setDeviceId(contentResolver: ContentResolver?) {
-        if (deviceId != null) return
-        deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
     }
 
     data class RepositoryError(val rawMessage: String, val code: ErrorCode)

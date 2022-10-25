@@ -26,7 +26,7 @@ interface BonPariApiService {
     @GET("parties/{id}")
     suspend fun getGame(@Path("id") id: Int) : Match?
     @POST("parties/parier")
-    suspend fun bet(@Body body: BetBody) : BetResult
+    suspend fun bet(@Body body: BetPostBody) : BetResult
 }
 
 object BonPariApi {
