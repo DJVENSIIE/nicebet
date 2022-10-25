@@ -133,6 +133,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.001"
                 android:paddingStart="10dp"
+                android:paddingEnd="0dp"
                 android:text="@{@string/contestation(viewModel.selectedMatch.getPlayerReclamations(player1))}"
                 android:textSize="12sp"
                 tools:text="3 cont. restantes" />
@@ -152,6 +153,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.001"
                 android:gravity="bottom"
+                android:paddingStart="0dp"
                 android:paddingEnd="10dp"
                 android:text="@{@string/contestation(viewModel.selectedMatch.getPlayerReclamations(player2))}"
                 android:textSize="12sp"
@@ -285,7 +287,8 @@
         </LinearLayout>
 
         <TextView
-            app:updateIfAvailable="@{viewModel.selectedMatch}"
+            app:updateIfAvailable="@{viewModel.betStatus}"
+            app:showResultsIfAvailable="@{viewModel.selectedMatch}"
             android:id="@+id/betting_outcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

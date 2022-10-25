@@ -1,10 +1,15 @@
 package ca.usherbrooke.bonpari.model
 
+import android.annotation.SuppressLint
+import android.content.ContentResolver
+import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ca.usherbrooke.bonpari.api.BetBody
+import ca.usherbrooke.bonpari.api.BetResult
 import ca.usherbrooke.bonpari.api.BonPariApi
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.model.LocalStorage.lastEventReceived
@@ -12,14 +17,19 @@ import kotlinx.coroutines.launch
 import java.net.SocketTimeoutException
 
 class MatchListViewModel : ViewModel() {
+    private var deviceId: String? = null
     private val _matchesRefreshManual = MutableLiveData<List<Match>>()
     val matches: LiveData<List<Match>> = _matchesRefreshManual
 
-    private val _selectedMatch = MutableLiveData<Match>(null)
+    private val _selectedMatch = MutableLiveData<Match>()
     val selectedMatch : LiveData<Match> = _selectedMatch
 
     private val _fetchingRepositoryError = MutableLiveData<RepositoryError>()
     val fetchingRepositoryError : LiveData<RepositoryError> = _fetchingRepositoryError
+
+    private val _betStatus = MutableLiveData<BetResult>()
+    val betStatus: LiveData<BetResult>
+        get() = _betStatus
 
     private fun executeRequest(logName: String, request: suspend () -> Unit) {
         Log.d("CAL", "#$logName")
@@ -80,7 +90,24 @@ class MatchListViewModel : ViewModel() {
         }
     }
 
-    fun betOn(playerId: Match.PlayerIndex, amount: Int) {
+    fun betOn(playerId: Match.PlayerIndex, amount: Float) {
+        executeRequest("betOn") {
+            _betStatus.value = BonPariApi.retrofitService.bet(
+                BetBody(
+                    deviceId!!,
+                    amount,
+                    playerId.index,
+                    _selectedMatch.value!!.id
+                )
+            )
+            Log.d("CAL", "bet: ${_betStatus.value}")
+        }
+    }
+
+    @SuppressLint("HardwareIds")
+    fun setDeviceId(contentResolver: ContentResolver?) {
+        if (deviceId != null) return
+        deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
     }
 
     data class RepositoryError(val rawMessage: String, val code: ErrorCode)

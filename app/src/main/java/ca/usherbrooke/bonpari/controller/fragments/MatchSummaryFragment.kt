@@ -5,13 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ca.usherbrooke.bonpari.R
+import ca.usherbrooke.bonpari.api.BetResult
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.MatchEvent
 import ca.usherbrooke.bonpari.controller.adapters.EventListAdapter
@@ -34,6 +32,7 @@ class MatchSummaryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setDeviceId(activity?.contentResolver)
 
         // recyclerView
         val recyclerView: RecyclerView = requireActivity().findViewById(R.id.events_recycler_view)
@@ -65,9 +64,8 @@ class MatchSummaryFragment : BaseFragment() {
             .setNegativeButton(getString(R.string.cancel_bet_popup)) { _, _ ->
             }
             .setPositiveButton(getString(R.string.parier)) { _, _ ->
-                // todo: errors are not handled
                 Log.d("CAL", "Bet ${input.text} on $fullName.")
-                viewModel.betOn(playerId, input.text.toString().toInt())
+                viewModel.betOn(playerId, input.text.toString().toFloat())
             }
             .show()
     }
@@ -90,10 +88,24 @@ class MatchSummaryFragment : BaseFragment() {
             view.visibility = if (show) View.VISIBLE else View.GONE
         }
 
+        @BindingAdapter("app:showResultsIfAvailable") @JvmStatic
+        fun bindShowResultsIfAvailable(view: TextView, match: Match) {
+            if (!match.bettingAvailable) {
+                view.visibility = View.VISIBLE
+                view.setText(R.string.bet_closed)
+            }
+        }
+
         @BindingAdapter("app:updateIfAvailable") @JvmStatic
-        fun bindUpdateIfAvailable(view: TextView, selectedMatch: Match) {
-            view.visibility = if (!selectedMatch.bettingAvailable) View.VISIBLE else View.GONE
-            view.setText(R.string.betting_done)
+        fun bindUpdateIfAvailable(view: TextView, bet: BetResult?) {
+            if (bet == null) return
+            val context = view.context
+            if (bet.wasAccepted()) {
+                view.visibility = View.VISIBLE
+                view.text = context.getString(R.string.your_bets, bet.betOnJ1, bet.betOnJ2)
+            } else {
+                Toast.makeText(context, context.getString(R.string.bet_closed), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
