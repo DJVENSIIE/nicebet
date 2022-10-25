@@ -18,8 +18,7 @@ router.post('/parier', function (req, res, next) {
   const montant = parseFloat(req.body.montant);
   const joueur = parseInt(req.body.joueur);
   const partie = parseInt(req.body.partie);
-  gen.effectuerPari(partie,client,joueur,montant);
-  res.send(gen.liste_partie[partie]);
+  res.send(gen.effectuerPari(partie,client,joueur,montant))
 });
 
 /* Get recuperer gain */

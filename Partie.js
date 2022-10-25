@@ -26,31 +26,54 @@ class Partie {
     this.montantTotal = 0.00;
     this.montantJoueur1 = 0.00;
     this.montantJoueur2 = 0.00;
-    this.pariPossible = true;
     this.vainqueur = -1;
     this.events = []
   }
 
-  parier (client,joueur,montant){
-    let pari = new Pari(this);
-    pari.ajouterPari(client,joueur,montant);
+  parier (client,joueur,montant, isOpen){
+    let tag = "PARI_ACCEPTED"
+    if (isOpen) {
+      let pari = new Pari(this);
+      pari.ajouterPari(client,joueur,montant);
 
-    if (!this.clients.includes(client)){
-      this.clients.push(client);
+      if (!this.clients.includes(client)){
+        this.clients.push(client);
+      }
+
+      this.paris.push(pari);
+
+      this.montantTotal += montant;
+
+      if (joueur==0){
+        this.montantJoueur1 += montant;
+      }
+      else {
+        this.montantJoueur2 += montant;
+      }
+    } else {
+      tag = "PARIS_CLOSED"
     }
 
-    this.paris.push(pari);
-    
-    this.montantTotal += montant;
-    
-    if (joueur==0){
-      this.montantJoueur1 += montant;
+    let amountJ1 = 0
+    let amountJ2 = 0
+    for (let pari of this.paris) {
+      if (pari.client === client){
+        if (pari.choix === 0) {
+          amountJ1 += pari.montantParié
+        } else {
+          amountJ2 += pari.montantParié
+        }
+      }
     }
-    else {
-      this.montantJoueur2 += montant;
+
+    return {
+      tag: tag,
+      bet_on_j1: amountJ1,
+      bet_on_j2: amountJ2,
+      total_j1: this.montantJoueur1,
+      total_j2: this.montantJoueur2
     }
   }
-
 
   DistribuerGains (){
     console.log('distribution des gains');
@@ -103,18 +126,18 @@ class Partie {
       if (!Partie.contester()) {
         this.constestation[contestant] = Math.max(0, this.constestation[contestant] - 1);
         console.log('contestation echouee');
-        this.events.push(MatchEvent.contestation(false, contestant))
+        this.events.splice(0, 0, MatchEvent.contestation(false, contestant))
       } else {
         contestationReussi = true;
         console.log('contestation reussie');
-        this.events.push(MatchEvent.contestation(true, contestant))
+        this.events.splice(0, 0, MatchEvent.contestation(true, contestant))
       }
     }
 
     if (!contestationReussi) {
       const j = Math.floor(Math.random() * 2)
       this.pointage.ajouterPoint(j);
-      this.events.push(MatchEvent.score(j))
+      this.events.splice(0, 0, MatchEvent.score(j))
     }
     this.temps_partie += Math.floor(Math.random() * 60); // entre 0 et 60 secondes entre chaque point
     this.vitesse_dernier_service = Math.floor(Math.random() * (250 - 60 + 1)) + 60; // entre 60 et 250 km/h
@@ -151,8 +174,7 @@ class Partie {
       'vitesse_dernier_service': this.vitesse_dernier_service,
       'nombre_coup_dernier_echange': this.nombre_coup_dernier_echange,
       'constestation': this.constestation,
-      // todo: temp
-      'pariPossible': this.pariPossible && !this.pointage.final,
+      'pariPossible': this.pointage.pariPossible,
       'events': this.events,
       'clients':this.clients,
       'paris':this.paris,

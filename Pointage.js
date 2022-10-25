@@ -48,8 +48,7 @@ class Pointage {
       'manches': this.manches,
       'jeu': this.jeu,
       'echange': this.echange,
-      'final': this.final,
-      'pariPossible': this.pariPossible
+      'final': this.final
     };
   }
 }

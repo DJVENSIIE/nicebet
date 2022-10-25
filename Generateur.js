@@ -5,7 +5,7 @@ const Pari = require('./Pari');
 
 // const modificateurVitesse = Math.max(process.argv[2], 1);
 // const modificateurVitesse = 1;
-const modificateurVitesse = 0.2; // every 5 second, there is an event
+const modificateurVitesse = 3; // every 5 second, there is an event
 
 const listePartie = [];
 
@@ -64,7 +64,8 @@ function demarrerPartie (partie) {
 }
 
 function effectuerPari(partie,client,joueur,montant){
-  (listePartie[partie]).parier(client,joueur,montant);
+  const match = listePartie[partie]
+  return match.parier(client,joueur,montant, match.pointage.pariPossible)
 }
 
 function getGain(partie,client){
