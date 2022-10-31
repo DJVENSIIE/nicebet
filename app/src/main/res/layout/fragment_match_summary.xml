@@ -303,6 +303,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="#9F9267C3"
             android:text="@string/events"
             android:textAlignment="center"
             android:textSize="20sp"
