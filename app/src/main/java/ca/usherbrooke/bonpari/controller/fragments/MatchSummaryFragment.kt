@@ -79,6 +79,12 @@ class MatchSummaryFragment : BaseFragment() {
             imageView.contentDescription = imageView.context.getString(if (show) R.string.at_service else R.string.not_at_service)
         }
 
+        @BindingAdapter("app:showWinIcon") @JvmStatic
+        fun bindShowWinIcon(imageView: ImageView, show: Boolean) {
+            if (show) return
+            imageView.visibility = View.VISIBLE
+        }
+
         @BindingAdapter("app:eventList") @JvmStatic
         fun bindRecyclerView(recyclerView: RecyclerView, data: List<MatchEvent>) {
             val adapter = recyclerView.adapter as EventListAdapter
@@ -88,6 +94,15 @@ class MatchSummaryFragment : BaseFragment() {
         @BindingAdapter("app:enableIfAvailable") @JvmStatic
         fun bindEnableIfAvailable(view: LinearLayout, show: Boolean) {
             view.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        @BindingAdapter("app:matchDuration") @JvmStatic
+        fun bindMatchDuration(view: TextView, selectedMatch: Double) {
+            val seconds = selectedMatch.toInt()
+            view.text = view.context.getString(
+                R.string.match_duration,
+                String.format("%d:%d", seconds/60, seconds%60)
+            )
         }
 
         @BindingAdapter("app:showResultsIfAvailable") @JvmStatic

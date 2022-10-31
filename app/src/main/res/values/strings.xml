@@ -4,10 +4,12 @@
     <string name="player_country">%s</string>
     <string name="player_age">%d ans</string>
     <string name="more_button">Regarder le match</string>
-    <string name="match_starting_at">Tournoi %s - %s</string>
+    <string name="match_starting_at">Tournoi %s - %s - Terrain %d</string>
+    <string name="match_duration">Durée du match: %s</string>
     <string name="tournois">Choisis ton match</string>
     <string name="at_service">Au service</string>
-    <string name="not_at_service">Pas au service</string>
+    <string name="not_at_service">Au retour</string>
+    <string name="has_win">A gagné</string>
     <string name="pipe2">|</string>
     <string name="pipe1">|</string>
     <string name="parier_joueur_1">Parier\nJoueur 1</string>

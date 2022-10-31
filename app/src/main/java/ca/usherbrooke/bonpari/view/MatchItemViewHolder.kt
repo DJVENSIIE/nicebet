@@ -22,7 +22,7 @@ class MatchItemViewHolder (view: View) : RecyclerView.ViewHolder(view) {
                 playerCountry2.text = getString(R.string.player_country, country)
                 playerAge2.text = getString(R.string.player_age, age)
             }
-            matchStartingAt.text = getString(R.string.match_starting_at, match.tournament, match.startingAt)
+            matchStartingAt.text = getString(R.string.match_starting_at, match.tournament, match.startingAt, match.terrain.digitToInt())
             moreButton.setOnClickListener {
                 onMatchSelected(match)
             }

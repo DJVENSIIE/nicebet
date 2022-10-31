@@ -23,17 +23,24 @@ data class Match(
     @Json(name = "gains") val earnings: Map<String, Earning>
 ) : Serializable {
 
+    fun terrainAsInt() = terrain.digitToInt()
+
     fun getPlayerGame(player: PlayerIndex) = score.echange[player.index].toString()
 
     fun getPlayerReclamations(player: PlayerIndex) = contestation[player.index].toString()
 
-    fun isAtService(player: PlayerIndex): Boolean {
+    fun isAtServiceAndFinished(player: PlayerIndex): Boolean
+        = !score.final && isAtService(player)
+
+    private fun isAtService(player: PlayerIndex): Boolean {
         return if (player == PlayerIndex.Player1) {
             (serveur == 0)
         } else {
             (serveur != 0)
         }
     }
+
+    fun hasWon(player: PlayerIndex) = score.final && score.manches[player.index] != 2
 
     fun getPlayerScore(playerIndex: PlayerIndex, setIndex: SetIndex): String {
 //        Log.d("CAL", "I: ${playerIndex.index}, set: ${setIndex.index} size:${score.game.size}")

@@ -20,15 +20,24 @@
         tools:context=".controller.fragments.MatchSummaryFragment">
 
         <TextView
-            android:id="@+id/match_starting_at"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@{@string/match_starting_at(viewModel.selectedMatch.tournament, viewModel.selectedMatch.startingAt)}"
+            android:text="@{@string/match_starting_at(viewModel.selectedMatch.tournament, viewModel.selectedMatch.startingAt, viewModel.selectedMatch.terrainAsInt)}"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            tools:text="Tournoi Hale - 18h30" />
+            tools:text="Tournoi Hale - 18h30 - Terrain 2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:matchDuration="@{viewModel.selectedMatch.temps_partie}"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Durée du match: %s." />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,19 +57,32 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_column="1"
                         android:layout_weight="0.4"
-                        android:gravity="center|start"
-                        android:text="@{viewModel.selectedMatch.player1.getFullName()}"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        tools:text="aaa" />
+                        android:gravity="center|start">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@{viewModel.selectedMatch.player1.getFullName()}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="Jean-pierre Pizza" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="@string/has_win"
+                            android:visibility="invisible"
+                            app:showWinIcon="@{viewModel.selectedMatch.hasWon(player1)}"
+                            app:srcCompat="@drawable/win" />
+                    </LinearLayout>
 
                     <ImageView
-                        app:showServiceIcon="@{viewModel.selectedMatch.isAtService(player1)}"
+                        app:showServiceIcon="@{viewModel.selectedMatch.isAtServiceAndFinished(player1)}"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_column="1"
@@ -178,19 +200,32 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_column="1"
                         android:layout_weight="0.4"
-                        android:gravity="center|start"
-                        android:text="@{viewModel.selectedMatch.player2.getFullName()}"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="aaa" />
+                        android:gravity="center|start">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@{viewModel.selectedMatch.player2.getFullName()}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="Jean-pierre Pizza" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="@string/has_win"
+                            android:visibility="invisible"
+                            app:showWinIcon="@{viewModel.selectedMatch.hasWon(player2)}"
+                            app:srcCompat="@drawable/win" />
+                    </LinearLayout>
 
                     <ImageView
-                        app:showServiceIcon="@{viewModel.selectedMatch.isAtService(player2)}"
+                        app:showServiceIcon="@{viewModel.selectedMatch.isAtServiceAndFinished(player2)}"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_column="1"
