@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:orientation="horizontal">
+    app:strokeColor="@color/purple_500"
+    app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/event_time"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.1"
-        tools:text="18:32:05"
-        />
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/event_item_body"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.9"
-        android:textAlignment="textStart"
-        tools:text="xxx" />
+        <TextView
+            android:id="@+id/event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            tools:text="18:32:05" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/event_item_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:textAlignment="textStart"
+            tools:text="xxx" />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
