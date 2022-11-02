@@ -67,7 +67,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="@{viewModel.selectedMatch.player1.getFullName()}"
+                            android:text="@{viewModel.selectedMatch.getPlayerNormalizedName(player1)}"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             tools:text="Jean-pierre Pizza" />
@@ -211,7 +211,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="@{viewModel.selectedMatch.player2.getFullName()}"
+                            android:text="@{viewModel.selectedMatch.getPlayerNormalizedName(player2)}"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             tools:text="Jean-pierre Pizza" />
@@ -343,6 +343,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="#C148A6C3"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:text="@string/events"
             android:textAlignment="center"
             android:textSize="20sp"

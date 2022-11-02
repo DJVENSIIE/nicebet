@@ -23,6 +23,11 @@ data class Match(
     @Json(name = "gains") val earnings: Map<String, Earning>
 ) : Serializable {
 
+    fun getPlayerNormalizedName(player: PlayerIndex): String {
+        return if (player.index == PlayerIndex.Player1.index) Player1.getFullName()
+        else Player2.getFullName()
+    }
+
     fun terrainAsInt() = terrain.digitToInt()
 
     fun getPlayerGame(player: PlayerIndex) = score.echange[player.index].toString()

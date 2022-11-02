@@ -89,6 +89,8 @@ class MatchSummaryFragment : BaseFragment() {
         fun bindRecyclerView(recyclerView: RecyclerView, data: List<MatchEvent>) {
             val adapter = recyclerView.adapter as EventListAdapter
             adapter.submitList(data)
+            // https://stackoverflow.com/questions/53248736/listadapter-submitlist-how-to-scroll-to-beginning
+            recyclerView.scrollToPosition(0)
         }
 
         @BindingAdapter("app:enableIfAvailable") @JvmStatic
@@ -100,7 +102,7 @@ class MatchSummaryFragment : BaseFragment() {
         fun bindMatchDuration(view: TextView, seconds: Int) {
             view.text = view.context.getString(
                 R.string.match_duration,
-                formatSecondToHoursMinutes(seconds)
+                formatSecondToHoursMinutes(seconds, true)
             )
         }
 

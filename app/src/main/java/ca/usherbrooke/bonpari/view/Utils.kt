@@ -5,11 +5,18 @@ import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.MatchEvent
 
-fun formatSecondToHoursMinutes(seconds: Int): String {
+fun formatSecondToHoursMinutes(seconds: Int, addSeconds: Boolean = false): String {
     var h = (seconds / 3600).toString()
     var m = ((seconds / 60) % 60).toString()
     if (h.length == 1) h = "0$h"
     if (m.length == 1) m = "0$m"
+
+    if (addSeconds) {
+        var s = (seconds % 60).toString()
+        if (s.length == 1) s = "0$s"
+        return "$h:$m:$s"
+    }
+
     return "$h:$m"
 }
 
