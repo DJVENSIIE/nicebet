@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="#8BC34A"
+            android:background="#B95EB17C"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -63,6 +63,7 @@
                         android:layout_column="1"
                         android:layout_weight="0.4"
                         android:gravity="center|start">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -82,11 +83,11 @@
                     </LinearLayout>
 
                     <ImageView
-                        app:showServiceIcon="@{viewModel.selectedMatch.isAtServiceAndFinished(player1)}"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_column="1"
                         android:layout_weight="0.1"
+                        app:showServiceIcon="@{viewModel.selectedMatch.isAtServiceAndFinished(player1)}"
                         app:srcCompat="@drawable/tennis"
                         tools:ignore="ContentDescription" />
 
@@ -186,7 +187,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#8BC34A"
+            android:background="#B95EB17C"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -206,6 +207,7 @@
                         android:layout_column="1"
                         android:layout_weight="0.4"
                         android:gravity="center|start">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -225,11 +227,11 @@
                     </LinearLayout>
 
                     <ImageView
-                        app:showServiceIcon="@{viewModel.selectedMatch.isAtServiceAndFinished(player2)}"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_column="1"
                         android:layout_weight="0.1"
+                        app:showServiceIcon="@{viewModel.selectedMatch.isAtServiceAndFinished(player2)}"
                         app:srcCompat="@drawable/tennis"
                         tools:ignore="ContentDescription" />
 
@@ -305,6 +307,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:backgroundTint="#AD3561AE"
                 android:onClick="@{ () -> matchSummary.betOn(player1) }"
                 android:text="@string/parier_joueur_1" />
 
@@ -317,6 +320,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:backgroundTint="#AD3561AE"
                 android:onClick="@{ () -> matchSummary.betOn(player2) }"
                 android:text="@string/parier_joueur_2" />
         </LinearLayout>
@@ -338,7 +342,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="#9F9267C3"
+            android:background="#C148A6C3"
             android:text="@string/events"
             android:textAlignment="center"
             android:textSize="20sp"
