@@ -100,18 +100,18 @@ class Partie {
       if (!Partie.contester()) {
         this.constestation[contestant] = Math.max(0, this.constestation[contestant] - 1);
         console.log('contestation echouee');
-        this.events.splice(0, 0, MatchEvent.contestation(false, contestant))
+        this.events.splice(0, 0, MatchEvent.contestation(false, contestant, this.temps_partie))
       } else {
         contestationReussi = true;
         console.log('contestation reussie');
-        this.events.splice(0, 0, MatchEvent.contestation(true, contestant))
+        this.events.splice(0, 0, MatchEvent.contestation(true, contestant, this.temps_partie))
       }
     }
 
     if (!contestationReussi) {
       const j = Math.floor(Math.random() * 2)
       this.pointage.ajouterPoint(j);
-      this.events.splice(0, 0, MatchEvent.score(j))
+      this.events.splice(0, 0, MatchEvent.score(j, this.temps_partie))
     }
     this.temps_partie += Math.floor(Math.random() * 60); // entre 0 et 60 secondes entre chaque point
     this.vitesse_dernier_service = Math.floor(Math.random() * (250 - 60 + 1)) + 60; // entre 60 et 250 km/h

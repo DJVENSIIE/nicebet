@@ -1,16 +1,17 @@
 class MatchEvent {
-  constructor (type, r) {
+  constructor (type, r, time) {
     this.type = type
     this.result = r
-    this.time = Date.now()
+    this.time = time
+    // this.time = Date.now()
   }
 
-  static score (by) {
-    return new MatchEvent(2, by+"");
+  static score (by, time) {
+    return new MatchEvent(2, by+"", time);
   }
 
-  static contestation (accepted, by) {
-    return new MatchEvent(1, accepted? by+"" :  "-"+by);
+  static contestation (accepted, by, time) {
+    return new MatchEvent(1, accepted? by+"" :  "-"+by, time);
   }
 
   toJSON () {
