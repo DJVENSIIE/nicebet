@@ -1,16 +1,21 @@
 package ca.usherbrooke.bonpari.view
 
 import android.content.Context
+import android.util.Log
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
 import ca.usherbrooke.bonpari.api.MatchEvent
 
 fun formatSecondToHoursMinutes(seconds: Int): String {
-    var h = (seconds/60).toString()
-    if (h.length == 1) h = "00"
-    var m = (seconds%60).toString()
-    if (m.length == 1) m = "00"
-    return "$h:$m"
+    var h = (seconds / 3600).toString()
+    var m = ((seconds / 60) % 60).toString()
+    var s = (seconds % 60).toString()
+    if (h.length == 1) h = "0$h"
+    if (m.length == 1) m = "0$m"
+    if (s.length == 1) s = "0$s"
+    val r = "$h:$m:$s"
+    Log.d("CAL", "Show $r for $seconds")
+    return r
 }
 
 fun MatchEvent.formatToString (match: Match, context: Context) : String {
