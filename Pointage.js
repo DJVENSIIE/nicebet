@@ -13,10 +13,10 @@ class Pointage {
     const mancheCourante = this.manches.reduce((a, b) => a + b, 0);
 
     // incrementer l'echange
-    this.echange[joueur] += 1;
+    this.echange[joueur] += this.echange[joueur] === 30 ? 10 : 15;
 
     // si requis, incrementer le jeu
-    if (this.echange[joueur] === 4) {
+    if (this.echange[joueur] > 40) {
       this.echange = [0, 0];
       this.jeu[mancheCourante][joueur] += 1;
       this.parent.changerServeur();

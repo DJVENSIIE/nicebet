@@ -18,7 +18,35 @@ router.post('/parier', function (req, res, next) {
   const montant = parseFloat(req.body.montant);
   const joueur = parseInt(req.body.joueur);
   const partie = parseInt(req.body.partie);
-  res.send(gen.effectuerPari(partie,client,joueur,montant))
+  let result = undefined
+
+  if (!(joueur in [0,1])) {
+    result = { tag: "NO_SUCH_PLAYER" }
+  }
+
+  else if (gen.liste_partie[partie] === undefined) {
+    result = {
+      tag: "NO_SUCH_MATCH"
+    }
+  }
+
+  else if (isNaN(montant)) {
+    result = {
+      tag: "INVALID_AMOUNT"
+    }
+  }
+
+  else if (client === undefined) {
+    result = {
+      tag: "NO_CLIENT"
+    }
+  }
+
+  if (result === undefined) {
+    res.send(gen.effectuerPari(partie,client,joueur,montant))
+  } else {
+    res.status(402).send(result)
+  }
 });
 
 module.exports = router;
