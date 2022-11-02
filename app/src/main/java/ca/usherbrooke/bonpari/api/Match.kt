@@ -12,7 +12,7 @@ data class Match(
     @Json(name = "tournoi") val tournament: String,
     @Json(name = "heure_debut") val startingAt: String,
     @Json(name = "pointage") val score: Pointage,
-    @Json(name = "temps_partie") val temps_partie: Double,
+    @Json(name = "temps_partie") val temps_partie: Int,
     @Json(name = "serveur") val serveur: Int,
     @Json(name = "vitesse_dernier_service") val vitesse_dernier_service: Double,
     @Json(name = "nombre_coup_dernier_echange") val nombre_coup_dernier_echange: Int,
@@ -40,7 +40,8 @@ data class Match(
         }
     }
 
-    fun hasWon(player: PlayerIndex) = score.final && score.manches[player.index] != 2
+    fun hasWon(player: PlayerIndex) =
+        score.final && score.manches[player.index] != 2
 
     fun getPlayerScore(playerIndex: PlayerIndex, setIndex: SetIndex): String {
 //        Log.d("CAL", "I: ${playerIndex.index}, set: ${setIndex.index} size:${score.game.size}")

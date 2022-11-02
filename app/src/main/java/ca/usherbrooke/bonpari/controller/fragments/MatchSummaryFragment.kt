@@ -15,6 +15,7 @@ import ca.usherbrooke.bonpari.api.MatchEvent
 import ca.usherbrooke.bonpari.controller.adapters.EventListAdapter
 import ca.usherbrooke.bonpari.databinding.FragmentMatchSummaryBinding
 import ca.usherbrooke.bonpari.model.LocalStorage
+import ca.usherbrooke.bonpari.view.formatSecondToHoursMinutes
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.NumberFormat
 
@@ -81,8 +82,7 @@ class MatchSummaryFragment : BaseFragment() {
 
         @BindingAdapter("app:showWinIcon") @JvmStatic
         fun bindShowWinIcon(imageView: ImageView, show: Boolean) {
-            if (show) return
-            imageView.visibility = View.VISIBLE
+            imageView.visibility = if (show) View.VISIBLE else View.INVISIBLE
         }
 
         @BindingAdapter("app:eventList") @JvmStatic
@@ -97,11 +97,10 @@ class MatchSummaryFragment : BaseFragment() {
         }
 
         @BindingAdapter("app:matchDuration") @JvmStatic
-        fun bindMatchDuration(view: TextView, selectedMatch: Double) {
-            val seconds = selectedMatch.toInt()
+        fun bindMatchDuration(view: TextView, seconds: Int) {
             view.text = view.context.getString(
                 R.string.match_duration,
-                String.format("%d:%d", seconds/60, seconds%60)
+                formatSecondToHoursMinutes(seconds)
             )
         }
 

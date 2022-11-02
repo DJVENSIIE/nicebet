@@ -7,7 +7,7 @@ import java.io.Serializable
 // todo: not a problem in the code, but "-0" is "0"
 data class MatchEvent(@Json(name = "type") val type : Int,
                       @Json(name = "result") val result : String,
-                      @Json(name = "time") val time : Long) : Serializable {
+                      @Json(name = "time") val time : Int) : Serializable {
 
     fun isContestation() = type == 1
     fun isPointScored() = type == 2
@@ -36,11 +36,14 @@ data class MatchEvent(@Json(name = "type") val type : Int,
 
     companion object MatchEventDiffCallback : DiffUtil.ItemCallback<MatchEvent>() {
         override fun areItemsTheSame(oldItem: MatchEvent, newItem: MatchEvent): Boolean {
-            return oldItem.type == newItem.type && oldItem.result == newItem.result
+            return oldItem.time == newItem.time
         }
 
+        // fix bug, same result + type, but not same time :(
         override fun areContentsTheSame(oldItem: MatchEvent, newItem: MatchEvent): Boolean {
-            return oldItem.type == newItem.type && oldItem.result == newItem.result
+            return oldItem.type == newItem.type
+                    && oldItem.result == newItem.result
+                    && oldItem.time == newItem.time
         }
     }
 }
