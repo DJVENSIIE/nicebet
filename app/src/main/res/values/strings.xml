@@ -19,7 +19,7 @@
     <string name="summary">Résumé</string>
     <string name="channel_name">bonpari_channel</string>
     <string name="channel_description">bonpari_score_updated</string>
-    <string name="how_much_to_bet">Combien voulez vous parier sur %s</string>
+    <string name="how_much_to_bet">Parier sur %s</string>
     <string name="cancel_bet_popup">Annuler</string>
     <string name="parier">Parier</string>
     <string name="contestation_notification_title">Contestation</string>
@@ -30,7 +30,7 @@
     <string name="contestation_refused">refusée</string>
     <string name="events">Evénements</string>
     <string name="your_bets">Vos paris: %s - %s</string>
-    <string name="you_won">Vous avez gagné %s</string>
+    <string name="you_won">Vos gains: %s</string>
     <string name="you_lost">Vous avez perdu %s</string>
     <string name="betting_closed">Le match est en cours, les paris sont fermés.</string>
     <string name="match_ended">Le match est terminé.</string>
