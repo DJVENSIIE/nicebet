@@ -90,7 +90,10 @@ class MatchSummaryFragment : BaseFragment() {
             val adapter = recyclerView.adapter as EventListAdapter
             adapter.submitList(data)
             // https://stackoverflow.com/questions/53248736/listadapter-submitlist-how-to-scroll-to-beginning
-            recyclerView.scrollToPosition(0)
+            // shitty code be like:
+            // java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter
+            if (data.size > 10)
+                recyclerView.scrollToPosition(0)
         }
 
         @BindingAdapter("app:enableIfAvailable") @JvmStatic
