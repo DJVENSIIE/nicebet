@@ -97,8 +97,8 @@ class MatchSummaryFragment : BaseFragment() {
             // https://stackoverflow.com/questions/53248736/listadapter-submitlist-how-to-scroll-to-beginning
             // shitty code be like:
             // java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter
-            if (data.size > 10)
-                recyclerView.scrollToPosition(0)
+//            if (data.size > 10)
+//                recyclerView.scrollToPosition(0)
         }
 
         @BindingAdapter("app:enableIfAvailable") @JvmStatic

@@ -46,7 +46,7 @@ data class Match(
     }
 
     fun hasWon(player: PlayerIndex) =
-        score.final && score.manches[player.index] != 2
+        score.final && score.manches[player.index] == 2
 
     fun getPlayerScore(playerIndex: PlayerIndex, setIndex: SetIndex): String {
 //        Log.d("CAL", "I: ${playerIndex.index}, set: ${setIndex.index} size:${score.game.size}")
