@@ -22,7 +22,10 @@ import java.text.NumberFormat
 class MatchSummaryFragment : BaseFragment() {
     private lateinit var binding: FragmentMatchSummaryBinding
     override val onRefresh = {
-        viewModel.refreshSelected()
+        viewModel.refreshMatches()
+        // we could this for more optimization
+        // but, it would mean more requets
+        // viewModel.refreshSelected()
     }
 
     override fun onCreateView(
@@ -36,6 +39,9 @@ class MatchSummaryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         LocalStorage.setDeviceId(activity?.contentResolver)
+
+        // refresh
+        onRefresh()
 
         // recyclerView
         val recyclerView: RecyclerView = requireActivity().findViewById(R.id.events_recycler_view)
@@ -94,6 +100,7 @@ class MatchSummaryFragment : BaseFragment() {
         fun bindRecyclerView(recyclerView: RecyclerView, data: List<MatchEvent>) {
             val adapter = recyclerView.adapter as EventListAdapter
             adapter.submitList(data)
+            recyclerView.recycledViewPool.clear()
             // https://stackoverflow.com/questions/53248736/listadapter-submitlist-how-to-scroll-to-beginning
             // shitty code be like:
             // java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter
