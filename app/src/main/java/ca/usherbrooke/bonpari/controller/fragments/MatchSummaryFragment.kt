@@ -68,7 +68,12 @@ class MatchSummaryFragment : BaseFragment() {
             }
             .setPositiveButton(getString(R.string.parier)) { _, _ ->
                 Log.d("CAL", "Bet ${input.text} on $fullName.")
-                viewModel.betOn(playerId, input.text.toString().toFloat())
+                val amount = input.text.toString().toFloatOrNull()
+                if (amount == null) {
+                    Toast.makeText(context, getString(R.string.bet_invalid), Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.betOn(playerId, amount)
+                }
             }
             .show()
     }

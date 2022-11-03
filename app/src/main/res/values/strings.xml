@@ -37,4 +37,5 @@
     <string name="contestation">%s contestations restantes</string>
     <string name="no_connection">Connection avec le serveur impossible</string>
     <string name="unknown_error">Erreur inconnue: %s</string>
+    <string name="bet_invalid">Montant invalide</string>
 </resources>
