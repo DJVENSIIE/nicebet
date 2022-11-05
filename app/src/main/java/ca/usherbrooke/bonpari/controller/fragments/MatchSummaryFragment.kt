@@ -131,6 +131,8 @@ class MatchSummaryFragment : BaseFragment() {
                     // and can't bet: show closed
                     if (!match.bettingAvailable) {
                         view.setText(R.string.betting_closed)
+                    } else {
+                        view.text = ""
                     }
                 } // otherwise, show bet
                 else {
@@ -153,7 +155,7 @@ class MatchSummaryFragment : BaseFragment() {
         fun bindUpdateIfAvailable(view: TextView, bet: BetResult?) {
             if (bet == null) return
             val context = view.context
-            if (bet.wasAccepted()) {
+            if (bet.wasAccepted() || bet.wasRefresh()) {
                 showBetInView(view, bet.betOnJ1, bet.betOnJ2)
             } else {
                 Toast.makeText(context, context.getString(R.string.betting_closed), Toast.LENGTH_SHORT).show()

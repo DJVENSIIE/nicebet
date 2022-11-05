@@ -21,10 +21,12 @@ data class BetResult(@Json(name = "tag") private val tag: String,
                      @Json(name = "total_j2") val totalJ2: Float) {
 
     fun wasAccepted() = tag == ACCEPTED
+    fun wasRefresh() = tag == REFRESH
     fun isClosed() = tag == CLOSED
 
     companion object {
         const val CLOSED = "PARIS_CLOSED"
         const val ACCEPTED = "PARI_ACCEPTED"
+        const val REFRESH = "REFRESH"
     }
 }

@@ -17,7 +17,9 @@ class Match(
     @Json(name = "pariPossible") val bettingAvailable: Boolean,
     @Json(name = "events") val events: List<MatchEvent>,
     @Json(name = "paris") val bets: Map<String, Bet>,
-    @Json(name = "gains") val earnings: Map<String, Earning>
+    @Json(name = "gains") val earnings: Map<String, Earning>,
+    @Json(name = "montantJoueur1") val amountPlayer1: Float,
+    @Json(name = "montantJoueur2") val amountPlayer2: Float
 ) : MatchSummary(id, Player1, Player2, terrain, tournament, startingAt) {
 
     fun getPlayerNormalizedName(player: PlayerIndex): String {
@@ -79,9 +81,8 @@ class Match(
                 -1,
                 listOf(0,0),
                 false,
-                listOf(),
-                mapOf(),
-                mapOf()
+                listOf(), mapOf(), mapOf(),
+                0f, 0f
             )
         }
     }

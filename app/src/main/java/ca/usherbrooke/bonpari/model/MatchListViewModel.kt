@@ -41,6 +41,14 @@ class MatchListViewModel : ViewModel() {
         if (!LocalStorage.isFollowingAMatch()) return
         executeRequest("refreshSelected") {
             _selectedMatch.value = BonPariApi.retrofitService.getGame(_selectedMatch.value!!.id)
+            _betStatus.value = _selectedMatch.value?.let {
+                if (!it.bettingAvailable) return@let null
+                val id = LocalStorage.deviceId
+                val bet = selectedMatch.value!!.bets[id]
+                // if not finished, we can still update
+                if (bet != null) BetResult(BetResult.REFRESH, bet.betOnJ1, bet.betOnJ2, it.amountPlayer1, it.amountPlayer2)
+                else null
+            }
             Log.d("CAL", "Update selected: ${_selectedMatch.value}")
         }
     }
