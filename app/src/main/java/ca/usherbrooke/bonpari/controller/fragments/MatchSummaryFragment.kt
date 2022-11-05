@@ -144,7 +144,12 @@ class MatchSummaryFragment : BaseFragment() {
             // show outcome
             else if (match.earnings.containsKey(deviceId)) {
                 val bet = match.earnings[deviceId]!!
-                view.text = view.context.getString(R.string.you_won, NumberFormat.getCurrencyInstance().format(bet.amount))
+                if (bet.amount < 0 ){
+                    view.text = view.context.getString(R.string.you_lost, NumberFormat.getCurrencyInstance().format(bet.amount))
+                }
+                else {
+                    view.text = view.context.getString(R.string.you_won, NumberFormat.getCurrencyInstance().format(bet.amount))
+                }
             } else {
                 // well, no bet, no earning
                 view.setText(R.string.match_ended)
