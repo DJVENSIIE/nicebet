@@ -6,7 +6,7 @@ const MatchEvent = require('./MatchEvent');
 class Partie {
   static game_id = 0;
 
-  constructor (joueur1, joueur2, terrain, tournoi, heureDebut, tickDebut) {
+  constructor (joueur1, joueur2, terrain, tournoi, heureDebut, tickDebut, onMatchEvent) {
     this.id = Partie.game_id++;
     this.joueur1 = joueur1;
     this.joueur2 = joueur2;
@@ -27,6 +27,7 @@ class Partie {
     this.montantJoueur2 = 0.00;
     this.vainqueur = -1;
     this.events = []
+    this.onMatchEvent = onMatchEvent
   }
 
   parier (client,joueur,montant, isOpen){
@@ -93,6 +94,11 @@ class Partie {
     }
   }
 
+  addEvent (matchEvent) {
+    this.events.splice(0, 0, matchEvent)
+    this.onMatchEvent(matchEvent)
+  }
+
   jouerTour () {
     let contestationReussi = false;
     if ((Math.random() * 100) < 3) { // 3% de contestation
@@ -100,18 +106,18 @@ class Partie {
       if (!Partie.contester()) {
         this.constestation[contestant] = Math.max(0, this.constestation[contestant] - 1);
         console.log('contestation echouee');
-        this.events.splice(0, 0, MatchEvent.contestation(false, contestant, this.temps_partie))
+        this.addEvent(MatchEvent.contestation(false, contestant, this.temps_partie))
       } else {
         contestationReussi = true;
         console.log('contestation reussie');
-        this.events.splice(0, 0, MatchEvent.contestation(true, contestant, this.temps_partie))
+        this.addEvent(MatchEvent.contestation(true, contestant, this.temps_partie))
       }
     }
 
     if (!contestationReussi) {
       const j = Math.floor(Math.random() * 2)
       this.pointage.ajouterPoint(j);
-      this.events.splice(0, 0, MatchEvent.score(j, this.temps_partie))
+      this.addEvent(MatchEvent.score(j, this.temps_partie))
     }
     this.temps_partie += Math.floor(Math.random() * 60); // entre 0 et 60 secondes entre chaque point
     this.vitesse_dernier_service = Math.floor(Math.random() * (250 - 60 + 1)) + 60; // entre 60 et 250 km/h
@@ -128,6 +134,8 @@ class Partie {
 
   nouvelleManche () {
     this.constestation = [3, 3];
+    console.log('changement de manche');
+    // this.addEvent(MatchEvent.setChanged(this.temps_partie))
   }
 
   estTerminee () {

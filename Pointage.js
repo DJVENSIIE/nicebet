@@ -26,7 +26,6 @@ class Pointage {
     if (this.jeu[mancheCourante][joueur] === 6) {
       this.manches[joueur] += 1;
       this.parent.nouvelleManche();
-      console.log('changement de manche');
       if (mancheCourante === 0) {
         console.log('pari impossible');
         this.pariPossible = false
