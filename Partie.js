@@ -152,6 +152,17 @@ class Partie {
       'joueur2': this.joueur2,
       'terrain': this.terrain,
       'tournoi': this.tournoi,
+      'heure_debut': this.heure_debut
+    };
+  }
+
+  toCompleteJSON() {
+    return {
+      'id': this.id,
+      'joueur1': this.joueur1,
+      'joueur2': this.joueur2,
+      'terrain': this.terrain,
+      'tournoi': this.tournoi,
       'heure_debut': this.heure_debut,
       'pointage': this.pointage,
       'temps_partie': this.temps_partie,
@@ -162,11 +173,10 @@ class Partie {
       'pariPossible': this.pointage.pariPossible,
       'paris':this.paris,
       'gains':this.gains,
-      'montantTotal':this.montantTotal,
       'montantJoueur1':this.montantJoueur1,
       'montantJoueur2': this.montantJoueur2,
       'events': this.events
-    };
+    }
   }
 }
 module.exports = Partie;

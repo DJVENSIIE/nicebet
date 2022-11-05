@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:id', function (req, res, next) {
-  res.send(gen.liste_partie[req.params.id]);
+  res.send(gen.liste_partie[req.params.id].toCompleteJSON());
 });
 
 /* Post ajouter un pari sur une partie . */
