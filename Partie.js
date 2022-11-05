@@ -28,6 +28,12 @@ class Partie {
     this.vainqueur = -1;
     this.events = []
     this.onMatchEvent = onMatchEvent
+
+    // this.parier(0, 0, 10, true)
+    // this.parier(0, 1, 20, true)
+    // this.parier(1, 1, 20, true)
+    // this.parier(2, 1, 20, true)
+    // this.parier(5, 0, 100, true)
   }
 
   parier (client,joueur,montant, isOpen){
@@ -85,12 +91,15 @@ class Partie {
       }
     }
 
+    console.log("Has win:"+vainqueur)
+
     // try of if it's work
     for (let x in this.paris) {
       const bet = this.paris[x]
+      console.log(bet)
       const amount = (this.vainqueur === 0 ? bet.amountOnJ1 : bet.amountOnJ2) * coeff - (bet.amountOnJ1 + bet.amountOnJ2)
-
       this.gains[bet.client] = new Gain(bet.client, amount)
+      console.log(this.gains[bet.client])
     }
   }
 

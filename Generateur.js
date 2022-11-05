@@ -24,14 +24,14 @@ const onMatchEvent = function (event) {
 }
 
 listePartie.push(new Partie(new Joueur('Albert', 'Ramos', 28, 56, 'Espagne'), new Joueur('Milos', 'Raonic', 28, 16, 'Canada'), '1', 'Hale', '12h30', 0, onMatchEvent));
-listePartie.push(new Partie(new Joueur('Andy', 'Murray', 28, 132, 'Angleterre'), new Joueur('Andy', 'Roddick', 36, 1000, 'États-Unis'), '2', 'Hale', '13h00', 30, onMatchEvent));
+// listePartie.push(new Partie(new Joueur('Andy', 'Murray', 28, 132, 'Angleterre'), new Joueur('Andy', 'Roddick', 36, 1000, 'États-Unis'), '2', 'Hale', '13h00', 30, onMatchEvent));
 
 const demarrer = function () {
   let tick = 0;
-  console.log(process.uptime())
+  // console.log(process.uptime())
   setInterval(function () {
     let uptime = process.uptime();
-    console.log(uptime)
+    // console.log(uptime)
     if (uptime > s(10) && listePartie.length === 2)
       listePartie.push(new Partie(new Joueur('Kristopher', 'Spear', r100(), r1000(), 'Guam'), new Joueur('Dominik', 'Noel', r100(), r1000(), 'États-Unis'), '3', 'Hale', '14h25',  t(20+tick), onMatchEvent));
     else if (uptime > s(20) && listePartie.length === 3)
