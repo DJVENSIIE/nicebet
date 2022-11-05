@@ -1,6 +1,7 @@
 package ca.usherbrooke.bonpari.api
 
 import androidx.recyclerview.widget.DiffUtil
+import ca.usherbrooke.bonpari.api.events.MatchEvent
 import com.squareup.moshi.Json
 import java.io.Serializable
 

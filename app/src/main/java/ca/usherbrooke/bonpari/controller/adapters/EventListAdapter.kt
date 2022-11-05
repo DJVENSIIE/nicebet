@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ListAdapter
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
-import ca.usherbrooke.bonpari.api.MatchEvent
+import ca.usherbrooke.bonpari.api.events.MatchEvent
 import ca.usherbrooke.bonpari.view.EventItemViewHolder
 
 class EventListAdapter(private val match: LiveData<Match>,

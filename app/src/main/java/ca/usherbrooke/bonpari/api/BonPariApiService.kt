@@ -1,5 +1,6 @@
 package ca.usherbrooke.bonpari.api
 
+import ca.usherbrooke.bonpari.api.events.MatchEventJsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -12,6 +13,7 @@ import retrofit2.http.Path
 private const val BASE_URL = "http://10.0.2.2:3000/"
 
 private val moshi = Moshi.Builder()
+    .add(MatchEventJsonAdapter())
     .add(KotlinJsonAdapterFactory())
     .build()
 

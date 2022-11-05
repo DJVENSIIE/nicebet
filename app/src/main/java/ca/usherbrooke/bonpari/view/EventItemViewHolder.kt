@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
-import ca.usherbrooke.bonpari.api.MatchEvent
+import ca.usherbrooke.bonpari.api.events.MatchEvent
 
 class EventItemViewHolder (view: View) : RecyclerView.ViewHolder(view) {
     fun bind(match: Match, matchEvent: MatchEvent, context: Context) {

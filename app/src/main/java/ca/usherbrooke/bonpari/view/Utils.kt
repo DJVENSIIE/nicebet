@@ -3,7 +3,10 @@ package ca.usherbrooke.bonpari.view
 import android.content.Context
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
-import ca.usherbrooke.bonpari.api.MatchEvent
+import ca.usherbrooke.bonpari.api.events.ContestationMatchEvent
+import ca.usherbrooke.bonpari.api.events.MatchEvent
+import ca.usherbrooke.bonpari.api.events.PointMatchEvent
+import ca.usherbrooke.bonpari.api.events.SetMatchEvent
 
 fun formatSecondToHoursMinutes(seconds: Int, addSeconds: Boolean = false): String {
     var h = (seconds / 3600).toString()
@@ -21,25 +24,14 @@ fun formatSecondToHoursMinutes(seconds: Int, addSeconds: Boolean = false): Strin
 }
 
 fun MatchEvent.formatToString (match: Match, context: Context) : String {
-    if (isContestation()) {
-        return context.getString(R.string.contestation_by, contestation?.let {
-            if (it.isPlayer1) match.Player1.getFullName()
-            else match.Player2.getFullName()
-        }, contestation?.let {
-            if (it.hasContestationPassed) context.getString(R.string.contestation_accepted)
-            else context.getString(R.string.contestation_refused)
-        })
+    return when (this) {
+        is ContestationMatchEvent ->
+            context.getString(R.string.contestation_by,
+                if (isPlayer1) match.Player1.getFullName() else match.Player2.getFullName(),
+                if (hasContestationPassed) context.getString(R.string.contestation_accepted) else context.getString(R.string.contestation_refused)
+            )
+        is PointMatchEvent -> context.getString(R.string.point_scored_by, if (isPlayer1) match.Player1.getFullName() else match.Player2.getFullName())
+        is SetMatchEvent -> context.getString(R.string.setChanged)
+        else -> "Unknown event."
     }
-    if (isPointScored()) {
-        return context.getString(R.string.point_scored_by, point?.let {
-            if (it.isPlayer1)
-                match.Player1.getFullName()
-            else
-                match.Player2.getFullName()
-        })
-    }
-    if (isSetChanged()) {
-        return context.getString(R.string.setChanged)
-    }
-    throw Exception()
 }

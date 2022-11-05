@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.BetResult
 import ca.usherbrooke.bonpari.api.Match
-import ca.usherbrooke.bonpari.api.MatchEvent
+import ca.usherbrooke.bonpari.api.events.MatchEvent
 import ca.usherbrooke.bonpari.controller.adapters.EventListAdapter
 import ca.usherbrooke.bonpari.databinding.FragmentMatchSummaryBinding
 import ca.usherbrooke.bonpari.model.LocalStorage
