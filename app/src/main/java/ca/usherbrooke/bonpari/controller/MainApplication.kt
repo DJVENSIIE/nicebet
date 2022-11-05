@@ -7,32 +7,31 @@ import android.os.Build
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import ca.usherbrooke.bonpari.R
-import ca.usherbrooke.bonpari.controller.workers.PeriodicFetchEventsForFollowedMatch
+import ca.usherbrooke.bonpari.controller.workers.WebSocketHandler
 
 class MainApplication : Application(), DefaultLifecycleObserver {
-    private lateinit var workManager : WorkManager
 
     override fun onCreate() {
         super<Application>.onCreate()
         createNotificationChannel()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-        workManager = WorkManager.getInstance(applicationContext)
+        WebSocketHandler.init()
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        WebSocketHandler.closeConnection()
     }
 
     override fun onStart(owner: LifecycleOwner) {
-        workManager.cancelUniqueWork(UNIQUE_WORK_NAME)
+        // stop
+        WebSocketHandler.stopListeningToMatchEvents()
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        workManager.enqueueUniqueWork(
-            UNIQUE_WORK_NAME,
-            ExistingWorkPolicy.REPLACE,
-            OneTimeWorkRequest.from(PeriodicFetchEventsForFollowedMatch::class.java)
-        )
+        // start
+        WebSocketHandler.startListeningToMatchEvents()
     }
 
     private fun createNotificationChannel() {
