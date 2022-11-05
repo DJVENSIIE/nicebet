@@ -32,8 +32,8 @@
     <string name="contestation_refused">refusée</string>
     <string name="events">Evénements</string>
     <string name="your_bets">Vos paris: %s - %s</string>
-    <string name="you_won">Vos gains: %s</string>
-    <string name="you_lost">Vos pertes: %s</string>
+    <string name="you_won">Vos avez gagné %s</string>
+    <string name="you_lost">Vous avez perdu %s</string>
     <string name="betting_closed">Le match est en cours, les paris sont fermés.</string>
     <string name="match_ended">Le match est terminé.</string>
     <string name="contestation">%s contestations restantes</string>
