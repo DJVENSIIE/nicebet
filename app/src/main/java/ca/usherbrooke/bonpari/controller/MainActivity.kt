@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 while (true) {
                     viewModel.refreshMatches()
+                    viewModel.refreshSelected()
                     delay(60000)
                 }
             }

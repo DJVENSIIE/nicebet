@@ -44,6 +44,7 @@ class MatchListViewModel : ViewModel() {
     }
 
     fun refreshSelected() {
+        if (!LocalStorage.isFollowingAMatch()) return
         executeRequest("refreshSelected") {
             _selectedMatch.value = BonPariApi.retrofitService.getGame(_selectedMatch.value!!.id)
             _selectedMatch.value?.let {

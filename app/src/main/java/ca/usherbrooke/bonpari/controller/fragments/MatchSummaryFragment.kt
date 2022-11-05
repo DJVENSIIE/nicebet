@@ -25,7 +25,7 @@ class MatchSummaryFragment : BaseFragment() {
         viewModel.refreshMatches()
         // we could this for more optimization
         // but, it would mean more requets
-        // viewModel.refreshSelected()
+        viewModel.refreshSelected()
     }
 
     override fun onCreateView(

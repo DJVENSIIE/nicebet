@@ -35,7 +35,7 @@ fun MatchEvent.formatToString (match: Match, context: Context) : String {
 
 fun ContestationMatchEvent.toString(player: Player, context: Context) : String {
     return context.getString(R.string.contestation_by,
-        player,
+        player.getFullName(),
         if (hasContestationPassed) context.getString(R.string.contestation_accepted)
         else context.getString(R.string.contestation_refused)
     )
