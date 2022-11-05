@@ -11,9 +11,11 @@ data class MatchEvent(@Json(name = "type") val type : Int,
 
     fun isContestation() = type == 1
     fun isPointScored() = type == 2
+    fun isSetChanged() = type == 3
 
     data class ContestationData(val isPlayer1: Boolean, val hasContestationPassed: Boolean)
     data class PointData(val isPlayer1: Boolean)
+    class SetChangedData
 
     val contestation : ContestationData?
         get() {
@@ -30,6 +32,14 @@ data class MatchEvent(@Json(name = "type") val type : Int,
         get() {
             return if (isPointScored())
                 PointData(result.toInt() == Match.PlayerIndex.Player1.index)
+            else
+                null
+        }
+
+    val setChanged: SetChangedData?
+        get() {
+            return if (isSetChanged())
+                return SetChangedData()
             else
                 null
         }

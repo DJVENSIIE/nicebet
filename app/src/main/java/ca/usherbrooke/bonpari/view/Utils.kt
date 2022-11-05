@@ -38,5 +38,8 @@ fun MatchEvent.formatToString (match: Match, context: Context) : String {
                 match.Player2.getFullName()
         })
     }
+    if (isSetChanged()) {
+        return context.getString(R.string.setChanged)
+    }
     throw Exception()
 }
