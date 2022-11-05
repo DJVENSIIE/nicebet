@@ -30,7 +30,7 @@ router.post('/parier', function (req, res, next) {
     }
   }
 
-  else if (isNaN(montant)) {
+  else if (isNaN(montant) || montant < 0) {
     result = {
       tag: "INVALID_AMOUNT"
     }
