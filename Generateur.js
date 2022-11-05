@@ -19,8 +19,8 @@ const t = (v) => v
 const s = (v) => v * v
 
 let websocket = null
-const onMatchEvent = function (match_id, event) {
-  websocket.emit("matchEvent"+match_id, event);
+const onMatchEvent = function (event) {
+  websocket.emit("matchEvent"+event.match_id, event.standaloneDataJson());
 }
 
 listePartie.push(new Partie(new Joueur('Albert', 'Ramos', 28, 56, 'Espagne'), new Joueur('Milos', 'Raonic', 28, 16, 'Canada'), '1', 'Hale', '12h30', 0, onMatchEvent));

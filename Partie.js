@@ -96,7 +96,7 @@ class Partie {
 
   addEvent (matchEvent) {
     this.events.splice(0, 0, matchEvent)
-    this.onMatchEvent(this.id, matchEvent)
+    this.onMatchEvent(matchEvent)
   }
 
   jouerTour () {
@@ -110,18 +110,18 @@ class Partie {
       if (!Partie.contester()) {
         this.constestation[contestant] = Math.max(0, this.constestation[contestant] - 1);
         console.log('contestation echouee');
-        this.addEvent(MatchEvent.contestation(false, contestant, this.temps_partie))
+        this.addEvent(MatchEvent.contestation(false, contestant, this))
       } else {
         contestationReussi = true;
         console.log('contestation reussie');
-        this.addEvent(MatchEvent.contestation(true, contestant, this.temps_partie))
+        this.addEvent(MatchEvent.contestation(true, contestant, this))
       }
     }
 
     if (!contestationReussi) {
       const j = Math.floor(Math.random() * 2)
       this.pointage.ajouterPoint(j);
-      this.addEvent(MatchEvent.score(j, this.temps_partie))
+      this.addEvent(MatchEvent.score(j, this))
     }
     this.vitesse_dernier_service = Math.floor(Math.random() * (250 - 60 + 1)) + 60; // entre 60 et 250 km/h
     this.nombre_coup_dernier_echange = Math.floor(Math.random() * (30 - 1 + 1)) + 1; // entre 1 et 30 coups par échange
@@ -138,7 +138,7 @@ class Partie {
   nouvelleManche () {
     this.constestation = [3, 3];
     console.log('changement de manche');
-    this.addEvent(MatchEvent.setChanged(this.temps_partie))
+    this.addEvent(MatchEvent.setChanged(this))
   }
 
   estTerminee () {

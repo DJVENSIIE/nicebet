@@ -1,21 +1,22 @@
 class MatchEvent {
-  constructor (type, r, time) {
+  constructor (type, r, parent) {
     this.type = type
     this.result = r
-    this.time = time
-    // this.time = Date.now()
+    this.time = parent.temps_partie
+    this.match_id = parent.id
+    this.parent = parent
   }
 
-  static score (by, time) {
-    return new MatchEvent(2, by+"", time);
+  static score (by, parent) {
+    return new MatchEvent(2, by+"", parent);
   }
 
-  static setChanged(time) {
-    return new MatchEvent(3, "", time);
+  static setChanged(parent) {
+    return new MatchEvent(3, "", parent);
   }
 
-  static contestation (accepted, by, time) {
-    return new MatchEvent(1, accepted? by+"" :  "-"+by, time);
+  static contestation (accepted, by, parent) {
+    return new MatchEvent(1, accepted? by+"" :  "-"+by, parent);
   }
 
   toJSON () {
@@ -24,6 +25,27 @@ class MatchEvent {
       'result': this.result,
       'time': this.time
     };
+  }
+
+  /**
+   * By default, results are inside a fetch,
+   * which reduces the quantity of information,
+   * as the requester will have them in the parent.
+   * But, if an event is requested without a match,
+   * we need to provide a bit more information.
+   */
+  standaloneDataJson() {
+    let res = {
+      'match_id': this.match_id,
+      'type': this.type,
+      'result': this.result,
+      'time': this.time
+    }
+    switch (this.type) {
+      case 1: res['data'] =  this.result === "1" ? this.parent.joueur1 : this.parent.joueur2; break;
+      case 2: res['data'] =  this.result.includes("1") ? this.parent.joueur1 : this.parent.joueur2; break;
+    }
+    return res
   }
 }
 
