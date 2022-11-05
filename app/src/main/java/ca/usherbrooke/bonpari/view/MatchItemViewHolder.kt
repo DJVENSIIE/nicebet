@@ -5,12 +5,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ca.usherbrooke.bonpari.R
-import ca.usherbrooke.bonpari.api.Match
+import ca.usherbrooke.bonpari.api.MatchSummary
 
 class MatchItemViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
-    // todo: terrain? and nested views / clean this mess
-    fun bind(match: Match, onMatchSelected: (Match)->Unit) {
+    fun bind(match: MatchSummary, onMatchSelected: (MatchSummary)->Unit) {
         itemView.context.apply {
             match.Player1.apply {
                 playerName1.text = getString(R.string.player_name, "$firstName $lastName")

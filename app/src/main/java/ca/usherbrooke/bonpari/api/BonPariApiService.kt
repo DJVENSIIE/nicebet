@@ -24,7 +24,7 @@ private val retrofit = Retrofit.Builder()
 
 interface BonPariApiService {
     @GET("parties")
-    suspend fun getAllGames() : List<Match>
+    suspend fun getAllGames() : List<MatchSummary>
     @GET("parties/{id}")
     suspend fun getGame(@Path("id") id: Int) : Match?
     @POST("parties/parier")

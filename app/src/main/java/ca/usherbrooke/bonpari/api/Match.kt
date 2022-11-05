@@ -1,28 +1,24 @@
 package ca.usherbrooke.bonpari.api
 
-import androidx.recyclerview.widget.DiffUtil
 import ca.usherbrooke.bonpari.api.events.MatchEvent
 import com.squareup.moshi.Json
-import java.io.Serializable
 
-data class Match(
-    @Json(name = "id") val id: Int,
-    @Json(name = "joueur1") val Player1: Player,
-    @Json(name = "joueur2") val Player2: Player,
-    @Json(name = "terrain") val terrain: Char,
-    @Json(name = "tournoi") val tournament: String,
-    @Json(name = "heure_debut") val startingAt: String,
+class Match(
+    @Json(name = "id") id: Int,
+    @Json(name = "joueur1") Player1: Player,
+    @Json(name = "joueur2") Player2: Player,
+    @Json(name = "terrain") terrain: Char,
+    @Json(name = "tournoi") tournament: String,
+    @Json(name = "heure_debut") startingAt: String,
     @Json(name = "pointage") val score: Pointage,
     @Json(name = "temps_partie") val temps_partie: Int,
     @Json(name = "serveur") val serveur: Int,
-    @Json(name = "vitesse_dernier_service") val vitesse_dernier_service: Double,
-    @Json(name = "nombre_coup_dernier_echange") val nombre_coup_dernier_echange: Int,
     @Json(name = "constestation") val contestation: List<Int>,
     @Json(name = "pariPossible") val bettingAvailable: Boolean,
     @Json(name = "events") val events: List<MatchEvent>,
     @Json(name = "paris") val bets: Map<String, Bet>,
     @Json(name = "gains") val earnings: Map<String, Earning>
-) : Serializable {
+) : MatchSummary(id, Player1, Player2, terrain, tournament, startingAt) {
 
     fun getPlayerNormalizedName(player: PlayerIndex): String {
         return if (player.index == PlayerIndex.Player1.index) Player1.getFullName()
@@ -61,20 +57,6 @@ data class Match(
 
     fun getPlayer(playerId: PlayerIndex) =
         if (playerId.index == 0) Player1 else Player2
-
-    companion object MatchDiffCallback : DiffUtil.ItemCallback<Match>() {
-        // ex: id changed
-        override fun areItemsTheSame(oldItem: Match, newItem: Match): Boolean {
-            return oldItem == newItem || oldItem.id == newItem.id
-        }
-
-        // ex: attributes/values changed
-        // FOR NOW, there is no information displayed on the list, that may change
-        // so, we don't need that
-        override fun areContentsTheSame(oldItem: Match, newItem: Match): Boolean {
-            return oldItem == newItem || oldItem.id == newItem.id
-        }
-    }
 
     enum class PlayerIndex(val index: Int) {
         Player1(0),

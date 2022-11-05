@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ListAdapter
 import ca.usherbrooke.bonpari.R
-import ca.usherbrooke.bonpari.api.Match
+import ca.usherbrooke.bonpari.api.MatchSummary
 import ca.usherbrooke.bonpari.view.MatchItemViewHolder
 
-class MatchItemAdapter(private val items: LiveData<List<Match>>, private val onMatchSelected: (Match)->Unit)
-    : ListAdapter<Match, MatchItemViewHolder>(Match) {
+class MatchItemAdapter(private val items: LiveData<List<MatchSummary>>, private val onMatchSelected: (MatchSummary)->Unit)
+    : ListAdapter<MatchSummary, MatchItemViewHolder>(MatchSummary) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchItemViewHolder {
         return MatchItemViewHolder(LayoutInflater.from(parent.context)
