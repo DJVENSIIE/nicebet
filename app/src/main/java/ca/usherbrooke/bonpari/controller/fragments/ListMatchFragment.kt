@@ -36,6 +36,7 @@ class ListMatchFragment : BaseFragment() {
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
+        binding.recyclerView.itemAnimator = null
 
         // when the list of matches changes
         // update recycleView reference

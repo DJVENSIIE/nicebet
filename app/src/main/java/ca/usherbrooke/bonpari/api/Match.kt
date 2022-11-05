@@ -68,4 +68,21 @@ class Match(
         Set2(1),
         Set3(2),
     }
+
+    companion object {
+        fun fromSummary(matchSummary: MatchSummary): Match {
+            return Match(
+                matchSummary.id, matchSummary.Player1, matchSummary.Player2,
+                matchSummary.terrain, matchSummary.tournament, matchSummary.startingAt,
+                Pointage(listOf(), listOf(), listOf(0,0), false),
+                0,
+                -1,
+                listOf(0,0),
+                false,
+                listOf(),
+                mapOf(),
+                mapOf()
+            )
+        }
+    }
 }

@@ -46,6 +46,7 @@ class MatchSummaryFragment : BaseFragment() {
         // recyclerView
         val recyclerView: RecyclerView = requireActivity().findViewById(R.id.events_recycler_view)
         recyclerView.adapter = EventListAdapter(viewModel.selectedMatch, requireContext())
+        recyclerView.itemAnimator = null
 
         // set variables
         binding.let {
@@ -100,7 +101,6 @@ class MatchSummaryFragment : BaseFragment() {
         fun bindRecyclerView(recyclerView: RecyclerView, data: List<MatchEvent>) {
             val adapter = recyclerView.adapter as EventListAdapter
             adapter.submitList(data)
-            recyclerView.recycledViewPool.clear()
             // https://stackoverflow.com/questions/53248736/listadapter-submitlist-how-to-scroll-to-beginning
             // shitty code be like:
             // java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter
