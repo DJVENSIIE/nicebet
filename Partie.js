@@ -88,7 +88,7 @@ class Partie {
     // try of if it's work
     for (let x in this.paris) {
       const bet = this.paris[x]
-      const amount = (vainqueur === 0 ? bet.amountOnJ1 : bet.amountOnJ2) * coeff
+      const amount = (this.vainqueur === 0 ? bet.amountOnJ1 : bet.amountOnJ2) * coeff - (bet.amountOnJ1 + bet.amountOnJ2)
 
       this.gains[bet.client] = new Gain(bet.client, amount)
     }
