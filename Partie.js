@@ -96,10 +96,14 @@ class Partie {
 
   addEvent (matchEvent) {
     this.events.splice(0, 0, matchEvent)
-    this.onMatchEvent(matchEvent)
+    this.onMatchEvent(this.id, matchEvent)
   }
 
   jouerTour () {
+    // entre 0 et 60 secondes entre chaque event
+    this.temps_partie += Math.floor(Math.random() * 60)
+
+    // contestations
     let contestationReussi = false;
     if ((Math.random() * 100) < 3) { // 3% de contestation
       const contestant = Math.floor(Math.random() * 2);
@@ -119,7 +123,6 @@ class Partie {
       this.pointage.ajouterPoint(j);
       this.addEvent(MatchEvent.score(j, this.temps_partie))
     }
-    this.temps_partie += Math.floor(Math.random() * 60); // entre 0 et 60 secondes entre chaque point
     this.vitesse_dernier_service = Math.floor(Math.random() * (250 - 60 + 1)) + 60; // entre 60 et 250 km/h
     this.nombre_coup_dernier_echange = Math.floor(Math.random() * (30 - 1 + 1)) + 1; // entre 1 et 30 coups par échange
   }
