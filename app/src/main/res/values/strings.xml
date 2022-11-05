@@ -23,7 +23,8 @@
     <string name="cancel_bet_popup">Annuler</string>
     <string name="parier">Parier</string>
     <string name="contestation_notification_title">Contestation</string>
-    <string name="point_score_notification_title">Point marqué</string>
+    <string name="point_scored_notification_title">Point marqué</string>
+    <string name="set_changed_notification_title">Changement de set</string>
     <string name="point_scored_by">Un point a été marqué par %s</string>
     <string name="contestation_by">Contestation de %s %s</string>
     <string name="setChanged">Changement de manche</string>

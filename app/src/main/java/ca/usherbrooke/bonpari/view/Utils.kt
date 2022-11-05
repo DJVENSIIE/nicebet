@@ -3,6 +3,7 @@ package ca.usherbrooke.bonpari.view
 import android.content.Context
 import ca.usherbrooke.bonpari.R
 import ca.usherbrooke.bonpari.api.Match
+import ca.usherbrooke.bonpari.api.Player
 import ca.usherbrooke.bonpari.api.events.ContestationMatchEvent
 import ca.usherbrooke.bonpari.api.events.MatchEvent
 import ca.usherbrooke.bonpari.api.events.PointMatchEvent
@@ -25,13 +26,25 @@ fun formatSecondToHoursMinutes(seconds: Int, addSeconds: Boolean = false): Strin
 
 fun MatchEvent.formatToString (match: Match, context: Context) : String {
     return when (this) {
-        is ContestationMatchEvent ->
-            context.getString(R.string.contestation_by,
-                if (isPlayer1) match.Player1.getFullName() else match.Player2.getFullName(),
-                if (hasContestationPassed) context.getString(R.string.contestation_accepted) else context.getString(R.string.contestation_refused)
-            )
-        is PointMatchEvent -> context.getString(R.string.point_scored_by, if (isPlayer1) match.Player1.getFullName() else match.Player2.getFullName())
-        is SetMatchEvent -> context.getString(R.string.setChanged)
+        is ContestationMatchEvent -> toString(if (isPlayer1) match.Player1 else match.Player2, context)
+        is PointMatchEvent -> toString(if (isPlayer1) match.Player1 else match.Player2, context)
+        is SetMatchEvent -> toString(context)
         else -> "Unknown event."
     }
+}
+
+fun ContestationMatchEvent.toString(player: Player, context: Context) : String {
+    return context.getString(R.string.contestation_by,
+        player,
+        if (hasContestationPassed) context.getString(R.string.contestation_accepted)
+        else context.getString(R.string.contestation_refused)
+    )
+}
+
+fun PointMatchEvent.toString(player: Player, context: Context) : String {
+    return context.getString(R.string.point_scored_by, player.getFullName())
+}
+
+fun SetMatchEvent.toString(context: Context) : String {
+    return context.getString(R.string.setChanged)
 }

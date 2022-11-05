@@ -26,12 +26,12 @@ class MainApplication : Application(), DefaultLifecycleObserver {
 
     override fun onStart(owner: LifecycleOwner) {
         // stop
-        WebSocketHandler.stopListeningToMatchEvents()
+        WebSocketHandler.stopListening()
     }
 
     override fun onStop(owner: LifecycleOwner) {
         // start
-        WebSocketHandler.startListeningToMatchEvents()
+        WebSocketHandler.startListening(applicationContext)
     }
 
     private fun createNotificationChannel() {
