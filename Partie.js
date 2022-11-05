@@ -65,9 +65,8 @@ class Partie {
     console.log('distribution des gains');
 
     let coeff;
-    let vainqueur;
     if (this.pointage.manches[0] == 2) {
-      vainqueur = 0;
+      this.vainqueur = 0;
       if(this.montantJoueur1 > 0){
         coeff = this.montantTotal * (75 / 100) / this.montantJoueur1;
       }
@@ -76,7 +75,7 @@ class Partie {
       }
     }
     else if (this.pointage.manches[1] == 2) {
-      vainqueur = 1;
+      this.vainqueur = 1;
       if(this.montantJoueur2 > 0){
         coeff = this.montantTotal * (75 / 100) / this.montantJoueur2;
       }
