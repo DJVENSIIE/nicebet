@@ -7,14 +7,20 @@ const modificateurVitesse = 0.2; // every 5 second, there is an event
 
 const listePartie = [];
 
+/**
+ * Used to generate data. These functions
+ * are simply used to make the generated data d bit
+ * different everytime, or to control the speed at which
+ * matches are created.
+ */
 const r100 = () => Math.round(Math.random()*100)
 const r1000 = () => Math.round(Math.random()*1000)
 const t = (v) => v
 const s = (v) => v * v
 
-const onMatchEvent = function () {
-  // console.log("Emit event")
-  // io.emit("eventName", "world");
+let websocket = null
+const onMatchEvent = function (match_id, event) {
+  websocket.emit("matchEvent"+match_id, event);
 }
 
 listePartie.push(new Partie(new Joueur('Albert', 'Ramos', 28, 56, 'Espagne'), new Joueur('Milos', 'Raonic', 28, 16, 'Canada'), '1', 'Hale', '12h30', 0, onMatchEvent));
@@ -74,5 +80,7 @@ function effectuerPari(partie,client,joueur,montant){
 module.exports = {};
 module.exports.demarrer = demarrer;
 module.exports.effectuerPari = effectuerPari;
-
 module.exports.liste_partie = listePartie;
+module.exports.setWebSocketHandler = (_websocket) => {
+  websocket = _websocket
+}

@@ -18,4 +18,7 @@ app.use('/parties', partiesRouter);
 const generateur = require('./Generateur');
 generateur.demarrer();
 
-module.exports = app;
+module.exports = {
+  app: app,
+  gen: generateur
+};
