@@ -135,7 +135,7 @@ class Partie {
   nouvelleManche () {
     this.constestation = [3, 3];
     console.log('changement de manche');
-    // this.addEvent(MatchEvent.setChanged(this.temps_partie))
+    this.addEvent(MatchEvent.setChanged(this.temps_partie))
   }
 
   estTerminee () {

@@ -10,6 +10,10 @@ class MatchEvent {
     return new MatchEvent(2, by+"", time);
   }
 
+  static setChanged(time) {
+    return new MatchEvent(3, "", time);
+  }
+
   static contestation (accepted, by, time) {
     return new MatchEvent(1, accepted? by+"" :  "-"+by, time);
   }
