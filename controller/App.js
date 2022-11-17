@@ -64,9 +64,33 @@ class App {
             this.list.setAttribute("hidden", "");
             this.match.removeAttribute("hidden");
             this.title.textContent = "Résumé";
-            this.socket.on("matchEvent0", (p) => {
-                // ...
-                console.log(p);
+            this.socket.on("matchEvent0", (result) => {
+                Notification.requestPermission().then((granted) => {
+                    if (granted !== "granted")
+                        return;
+                    let body;
+                    let title;
+                    const e = MatchEventParser.parse(result);
+                    if (e instanceof ContestationMatchEvent) {
+                        const player = Player.parse(result.data).getFullName();
+                        title = "Contestation";
+                        body = "Contestation de " + player + " " + (e.hasContestationPassed ? "acceptée" : "refusée");
+                    }
+                    else if (e instanceof PointMatchEvent) {
+                        const player = Player.parse(result.data).getFullName();
+                        title = "Point marqué";
+                        body = "Un point a été marqué par " + player;
+                    }
+                    else if (e instanceof SetMatchEvent) {
+                        title = "Changement de manche";
+                        body = "Changement de manche";
+                    }
+                    else {
+                        throw new Error("Unknown event.");
+                    }
+                    const img = '_assets/tennis.png';
+                    const notification = new Notification(title, { body: body, icon: img });
+                });
             });
         }
     }
