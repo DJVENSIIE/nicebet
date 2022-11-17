@@ -66,7 +66,8 @@ class MatchViewHolder {
                        </tr>
                    </table>`;
         // show bet
-        const clientID = "client1";
+        // @ts-ignore
+        const clientID = App.getClientId();
         if (!match.score.final) {
             // if no bet
             if (!match.bettingAvailable) {
