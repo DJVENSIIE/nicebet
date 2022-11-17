@@ -40,6 +40,33 @@ class App {
         this.refresh();
         // update every 60 seconds
         setInterval(() => this.refresh(), 60000);
+        // add key support
+        document.onkeydown = e => {
+            switch (e.code) {
+                case 'Backspace':
+                    e.preventDefault();
+                    this.onReturnPressed();
+                    break;
+                case 'KeyR':
+                    e.preventDefault();
+                    this.refresh();
+                    break;
+                case 'KeyJ':
+                    e.preventDefault();
+                    if (this.lastID == null) {
+                        const btn = document.querySelector(".selectMatchButton");
+                        if (btn != null) {
+                            // focus
+                            // @ts-ignore
+                            btn.focus();
+                        }
+                    }
+                    else {
+                        // todo: ...
+                    }
+                    break;
+            }
+        };
     }
     configureOnePage(newId) {
         // disable
