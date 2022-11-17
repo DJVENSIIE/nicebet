@@ -84,7 +84,6 @@ export class MatchViewHolder {
         right.innerHTML = `
         `
 
-        x.appendChild(left)
-        x.appendChild(right)
+        x.replaceChildren(left, right)
     }
 }

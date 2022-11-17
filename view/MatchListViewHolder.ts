@@ -37,7 +37,7 @@ class MatchListViewHolder {
                 </div>
                 <p class="text-center">
                     <button class="btn btn-info btn-blue text-white"
-                    onclick="location.href+='?id=${matchSummary.id}'">Regarder le match</button>
+                    onclick="app.onMatchPressed(${matchSummary.id})">Regarder le match</button>
                 </p>
             </div>`
         return div

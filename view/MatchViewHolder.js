@@ -76,8 +76,7 @@ class MatchViewHolder {
         right.setAttribute("class", "col-md-6");
         right.innerHTML = `
         `;
-        x.appendChild(left);
-        x.appendChild(right);
+        x.replaceChildren(left, right);
     }
 }
 exports.MatchViewHolder = MatchViewHolder;
