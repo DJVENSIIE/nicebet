@@ -1,7 +1,5 @@
-import {Match} from "../api/Match";
-
-// @ts-ignore
-export class MatchViewHolder {
+class MatchViewHolder {
+    // @ts-ignore
     private static match : Match | null = null
 
     // todo: load from the cache

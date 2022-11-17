@@ -6,6 +6,7 @@ class App {
     private title: Element;
     private list: Element;
     private match: Element;
+    private lastID: string | null = null;
 
     constructor() {
         this.backArrow = document.querySelector("#back")!!
@@ -21,8 +22,6 @@ class App {
     showList() {
         // todo: handle errors
         BonPariAPI.getAllGames().then((r : Array<MatchSummary>) => {
-            // const node = document.querySelector("#xxx").parentNode!!
-            // node.appendChild(document.createTextNode(JSON.stringify(r)))
             MatchListViewHolder.updateList(r)
         }).catch(console.error)
     }
@@ -31,7 +30,6 @@ class App {
         // todo: handle errors
         // show content
         BonPariAPI.getGame(id).then((r: Match) => {
-            // @ts-ignore
             MatchViewHolder.updateMatch(r)
         });
     }
@@ -46,11 +44,16 @@ class App {
         this.render(String(id))
     }
 
+    public refresh() {
+        this.render(this.lastID)
+    }
+
     start() {
         this.render(localStorage.getItem(App.SELECT_KEY))
     }
 
     private render(id: string|null) {
+        this.lastID = id
         if (id == null) {
             this.backArrow.setAttribute("hidden", "")
             this.match.setAttribute("hidden", "")

@@ -1,7 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MatchViewHolder = void 0;
-// @ts-ignore
 class MatchViewHolder {
     // todo: load from the cache
     static initFromHistory() {
@@ -79,5 +76,5 @@ class MatchViewHolder {
         x.replaceChildren(left, right);
     }
 }
-exports.MatchViewHolder = MatchViewHolder;
+// @ts-ignore
 MatchViewHolder.match = null;

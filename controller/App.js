@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
     constructor() {
+        this.lastID = null;
         this.backArrow = document.querySelector("#back");
         this.title = document.querySelector("#title");
         this.list = document.querySelector("#list");
@@ -13,8 +14,6 @@ class App {
     showList() {
         // todo: handle errors
         BonPariAPI.getAllGames().then((r) => {
-            // const node = document.querySelector("#xxx").parentNode!!
-            // node.appendChild(document.createTextNode(JSON.stringify(r)))
             MatchListViewHolder.updateList(r);
         }).catch(console.error);
     }
@@ -22,7 +21,6 @@ class App {
         // todo: handle errors
         // show content
         BonPariAPI.getGame(id).then((r) => {
-            // @ts-ignore
             MatchViewHolder.updateMatch(r);
         });
     }
@@ -34,10 +32,14 @@ class App {
         localStorage.setItem(App.SELECT_KEY, String(id));
         this.render(String(id));
     }
+    refresh() {
+        this.render(this.lastID);
+    }
     start() {
         this.render(localStorage.getItem(App.SELECT_KEY));
     }
     render(id) {
+        this.lastID = id;
         if (id == null) {
             this.backArrow.setAttribute("hidden", "");
             this.match.setAttribute("hidden", "");
