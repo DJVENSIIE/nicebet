@@ -32,6 +32,10 @@ class App {
         this.match = document.querySelector("#match");
     }
     start() {
+        if (Notification?.permission !== "granted") {
+            // request permission
+            Notification.requestPermission().then();
+        }
         this.configureOnePage(localStorage.getItem(App.SELECT_KEY));
         this.refresh();
         // update every 60 seconds
@@ -86,9 +90,7 @@ class App {
             this.match.removeAttribute("hidden");
             this.title.textContent = "Résumé";
             this.socket.on("matchEvent0", (result) => {
-                Notification.requestPermission().then((granted) => {
-                    if (granted !== "granted")
-                        return;
+                if (Notification?.permission === "granted") {
                     let body;
                     let title;
                     const e = MatchEventParser.parse(result);
@@ -111,7 +113,7 @@ class App {
                     }
                     const img = '_assets/tennis.png';
                     const notification = new Notification(title, { body: body, icon: img });
-                });
+                }
             });
         }
     }

@@ -43,6 +43,11 @@ class App {
     }
 
     start() {
+        if (Notification?.permission !== "granted") {
+            // request permission
+            Notification.requestPermission().then();
+        }
+
         this.configureOnePage(localStorage.getItem(App.SELECT_KEY));
         this.refresh();
 
@@ -97,8 +102,7 @@ class App {
             this.match.removeAttribute("hidden")
             this.title.textContent = "Résumé"
             this.socket.on("matchEvent0", (result: any) => {
-                Notification.requestPermission().then((granted) => {
-                    if (granted !== "granted") return
+                if (Notification?.permission === "granted") {
                     let body : string
                     let title : string
                     const e = MatchEventParser.parse(result)
@@ -119,7 +123,7 @@ class App {
                     }
                     const img = '_assets/tennis.png';
                     const notification = new Notification(title, { body: body, icon: img });
-                });
+                }
             });
         }
     }
