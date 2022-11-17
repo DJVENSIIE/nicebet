@@ -14,6 +14,10 @@
   background: #03DAC5 !important;
 }
 
+.bg-blueish {
+  background: rgba(72, 166, 195, 0.7568627451) !important;
+}
+
 table.special-cols tr > :not(td[colspan="7"], :first-child) {
   width: 44px;
 }

@@ -73,12 +73,10 @@ class MatchViewHolder {
                    const client = "client1"
 
                    if (match.score.manches[0] < 2 && match.score.manches[1] < 2){
-           
                        if (match.score.manches[0] == 0 && match.score.manches[1] == 0){
                            //affichage des bouttons
                            left.innerHTML += `<button onclick="app.onBetPressed(${match.id},0)">Parier Joueur 1</button><button onclick="app.onBetPressed(${match.id},1)">Parier Joueur 2</button><br/>`
                        }
-               
                        //Montant des paris
                        if (match.bets.hasOwnProperty(client)){
                            console.log("vos paris",match.bets[client] )
@@ -103,19 +101,36 @@ class MatchViewHolder {
                            
                        }
                    }
-               
-           
+
                    const right = document.createElement("div")
                    right.setAttribute("class", "col-md-6")
-                   right.innerHTML =  `<table class="table table-borderless mt-4 fs-5 special-cols">
-                                           <tr class="bg-green">
-                                               <td><span class="align-middle">Evénement</span></td>
-                                           </tr>`;
-                   for (let e of match.events) {
-                       right.innerHTML += `<tr><td> ${e.time} ${e.type} ${e.result}</td></tr>`;
+                   let content =  `
+                    <p class="h3 bg-blueish text-center p-3">Evénements</p>
+
+                    <div class="overflow-scroll" style="max-height: 450px !important;">
+                        <table class="table table-borderless">`;
+
+                   function formatEvent(e: MatchEvent) {
+                       if (e instanceof ContestationMatchEvent) {
+                           const player = e.isPlayer1 ? match.Player1.getFullName() : match.Player2.getFullName()
+                           return "Contestation de "+player+" "+(e.hasContestationPassed ? "acceptée" : "refusée")
+                       } else if (e instanceof PointMatchEvent) {
+                           const player = e.isPlayer1 ? match.Player1.getFullName() : match.Player2.getFullName()
+                           return "Un point a été marqué par "+player
+                       } else if (e instanceof SetMatchEvent) {
+                           return "Changement de manche"
+                       }
+                       return "Unknown event."
                    }
-           
-                   right.innerHTML += '</table>';
+
+                   for (let e of match.events) {
+                       content += `<tr><td>${this.formatSecondToHoursMinutes(e.time)}</td><td> ${formatEvent(e)}</td></tr>`;
+                   }
+                   content += `
+                        </table>
+                   </div>
+                   `;
+                   right.innerHTML = content
 
         x.replaceChildren(left, right)
     }

@@ -67,12 +67,11 @@ export class Match extends MatchSummary {
             r.serveur,
             r.constestation,
             r.pariPossible,
-            r.events,
+            r.events.map((e : any) => MatchEventParser.parse(e)),
             r.paris,
             r.gains,
             r.montantJoueur1,
-            r.montantJoueur2,
-            
+            r.montantJoueur2
         )
     }
 }

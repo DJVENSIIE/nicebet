@@ -51,7 +51,7 @@ class Match extends MatchSummary {
         return this.score.game.length >= setIndex + 1 ? this.score.game[setIndex][playerIndex].toString() : "";
     }
     static parse(r) {
-        return new Match(r.id, Player.parse(r.joueur1), Player.parse(r.joueur2), r.terrain, r.tournoi, r.heure_debut, Pointage.parse(r.pointage), r.temps_partie, r.serveur, r.constestation, r.pariPossible, r.events, r.paris, r.gains, r.montantJoueur1, r.montantJoueur2);
+        return new Match(r.id, Player.parse(r.joueur1), Player.parse(r.joueur2), r.terrain, r.tournoi, r.heure_debut, Pointage.parse(r.pointage), r.temps_partie, r.serveur, r.constestation, r.pariPossible, r.events.map((e) => MatchEventParser.parse(e)), r.paris, r.gains, r.montantJoueur1, r.montantJoueur2);
     }
 }
 exports.Match = Match;
