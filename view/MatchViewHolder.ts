@@ -70,10 +70,52 @@ class MatchViewHolder {
                        </tr>
                    </table>`
 
-        const right = document.createElement("div")
-        right.setAttribute("class", "col-md-6")
-        right.innerHTML = `
-        `
+                   const client = "client1"
+
+                   if (match.score.manches[0] < 2 && match.score.manches[1] < 2){
+           
+                       if (match.score.manches[0] == 0 && match.score.manches[1] == 0){
+                           //affichage des bouttons
+                           left.innerHTML += `<button onclick="app.onBetPressed(${match.id},0)">Parier Joueur 1</button><button onclick="app.onBetPressed(${match.id},1)">Parier Joueur 2</button><br/>`
+                       }
+               
+                       //Montant des paris
+                       if (match.bets.hasOwnProperty(client)){
+                           console.log("vos paris",match.bets[client] )
+                           left.innerHTML +=`Vos paris : ${match.bets[client].bet_on_J1} - ${match.bets[client].bet_on_J2}`;
+                       }
+                   }
+                   else{
+                       console.log('test',match.earnings[client]);
+                       if (!match.earnings.hasOwnProperty(client)){
+                           left.innerHTML += "Le match est terminé";
+                       }
+                       else{
+                           
+                           if (match.earnings[client]!!.amount >= 0){
+                               
+                               left.innerHTML += `Vous avez gagné : $${match.earnings[client].amount}`;
+                           }
+               
+                           else{
+                               left.innerHTML += `Vous avez perdu : $${match.earnings[client]?.amount}`;
+                           }
+                           
+                       }
+                   }
+               
+           
+                   const right = document.createElement("div")
+                   right.setAttribute("class", "col-md-6")
+                   right.innerHTML =  `<table class="table table-borderless mt-4 fs-5 special-cols">
+                                           <tr class="bg-green">
+                                               <td><span class="align-middle">Evénement</span></td>
+                                           </tr>`;
+                   for (let e of match.events) {
+                       right.innerHTML += `<tr><td> ${e.time} ${e.type} ${e.result}</td></tr>`;
+                   }
+           
+                   right.innerHTML += '</table>';
 
         x.replaceChildren(left, right)
     }

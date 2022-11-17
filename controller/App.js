@@ -10,6 +10,31 @@ class App {
         this.list = document.querySelector("#list");
         this.match = document.querySelector("#match");
     }
+    onBetPressed(partie, joueur) {
+        //localStorage.setItem(App.SELECT_KEY, String(id))
+        //this.render(String(id))
+        console.log('parier');
+        let montant = prompt(`Parier sur joueur ${joueur + 1}`, "0");
+        let client = "client1";
+        this.fetchParier(partie, client, joueur, montant);
+        //todo refresh
+    }
+    fetchParier(partie, client, joueur, montant) {
+        const postData = {
+            partie: partie,
+            client: client,
+            joueur: joueur,
+            montant: montant
+        };
+        fetch("http://localhost:3000/parties/parier", {
+            method: "POST",
+            body: JSON.stringify(postData),
+            headers: { "Content-type": "application/json;charset=UTF-8" }
+        })
+            .then(response => response.json())
+            .then(post => console.log(post)) //le post créé
+            .catch(err => console.log(err));
+    }
     start() {
         this.configureOnePage(localStorage.getItem(App.SELECT_KEY));
         this.refresh();
