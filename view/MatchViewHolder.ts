@@ -2,18 +2,12 @@ class MatchViewHolder {
     // @ts-ignore
     private static match : Match | null = null
 
-    // todo: load from the cache
-    static initFromHistory() {
-
-    }
-
     // update the list
     // @ts-ignore
     static updateMatch(r: Match) {
         MatchViewHolder.match = r
         this.render()
     }
-
 
     static formatSecondToHoursMinutes(seconds: number, addSeconds: Boolean = false): String {
         let h = Math.floor(seconds / 3600).toString()

@@ -1,11 +1,10 @@
 "use strict";
 class MatchListViewHolder {
-    // todo: load from the cache
-    static initFromHistory() {
-    }
     // update the list
     static updateList(r) {
-        MatchListViewHolder.list = r;
+        if (r == null)
+            return;
+        this.list = r;
         this.render();
     }
     // update the view

@@ -13,10 +13,6 @@ class App {
         this.title = document.querySelector("#title")!!
         this.list = document.querySelector("#list")!!
         this.match = document.querySelector("#match")!!
-
-        // @ts-ignore
-        MatchViewHolder.initFromHistory()
-        MatchListViewHolder.initFromHistory()
     }
 
     showList() {
@@ -30,8 +26,8 @@ class App {
         // todo: handle errors
         // show content
         BonPariAPI.getGame(id).then((r: Match) => {
-            MatchViewHolder.updateMatch(r)
-        });
+           MatchViewHolder.updateMatch(r)
+        }).catch(console.error)
     }
 
     public onReturnPressed() {
@@ -50,6 +46,8 @@ class App {
 
     start() {
         this.render(localStorage.getItem(App.SELECT_KEY))
+        // update every 60 seconds
+        setInterval(() => this.refresh(), 60000)
     }
 
     private render(id: string|null) {

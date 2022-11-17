@@ -1,14 +1,10 @@
 class MatchListViewHolder {
     private static list : Array<MatchSummary> = []
 
-    // todo: load from the cache
-    static initFromHistory() {
-
-    }
-
     // update the list
     static updateList(r: Array<MatchSummary>) {
-        MatchListViewHolder.list = r
+        if (r == null) return
+        this.list = r
         this.render()
     }
 
