@@ -10,15 +10,14 @@ class MatchViewHolder {
         this.render();
     }
     static formatSecondToHoursMinutes(seconds, addSeconds = false) {
-        console.log(seconds);
-        let h = Math.round(seconds / 3600).toString();
-        let m = (Math.round(seconds / 60) % 60).toString();
+        let h = Math.floor(seconds / 3600).toString();
+        let m = (Math.floor(seconds / 60) % 60).toString();
         if (h.length == 1)
             h = "0" + h;
         if (m.length == 1)
             m = "0" + m;
         if (addSeconds) {
-            let s = Math.round(seconds % 60).toString();
+            let s = Math.floor(seconds % 60).toString();
             if (s.length == 1)
                 s = "0" + s;
             return h + ":" + m + ":" + s;
@@ -48,9 +47,9 @@ class MatchViewHolder {
                        <tr class="bg-green">
                            <td>
                                <span class="align-middle">${match.Player1.getFullName()}</span>
-                               <img src="_assets/win.png" alt="" class="ps-1" width="32">
+                               <img src="_assets/win.png" alt="" class="ps-1" width="32" ${match.hasWon(p1) ? "" : "hidden"}>
                            </td><td>
-                           <img src="_assets/tennis.png" alt="" class="ps-1" width="24">
+                           <img src="_assets/tennis.png" alt="" class="ps-1" width="24" ${match.isAtServiceAndFinished(p1) ? "" : "hidden"}>
                        </td><td>${match.getPlayerScore(p1, s1)}</td><td>${match.getPlayerScore(p1, s2)}</td><td>${match.getPlayerScore(p1, s3)}</td>
                        <td>|</td><td>${match.getPlayerGame(p1)}</td>
                        </tr>
@@ -62,9 +61,9 @@ class MatchViewHolder {
                        <tr class="bg-green">
                            <td>
                                <span class="align-middle">${match.Player2.getFullName()}</span>
-                               <img src="_assets/win.png" alt="" class="ps-1" width="32" hidden>
+                               <img src="_assets/win.png" alt="" class="ps-1" width="32" ${match.hasWon(p2) ? "" : "hidden"}>
                            </td><td>
-                           <img src="_assets/tennis.png" alt="" class="ps-1" width="24">
+                           <img src="_assets/tennis.png" alt="" class="ps-1" width="24" ${match.isAtServiceAndFinished(p2) ? "" : "hidden"}>
                        </td><td>${match.getPlayerScore(p2, s1)}</td><td>${match.getPlayerScore(p2, s2)}</td><td>${match.getPlayerScore(p2, s3)}</td>
                        <td>|</td><td>${match.getPlayerGame(p2)}</td>
                        </tr>

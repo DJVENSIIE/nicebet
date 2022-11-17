@@ -14,8 +14,8 @@
 
 <main>
     <div class="container py-5 ">
-        <div class="row p-4 h2 border-bottom border-dark bg-blue">
-            <div class="col-11 align-self-center justify-content-center">
+        <div class="row mx-0 p-4 h2 border-bottom border-dark bg-blue">
+            <div class="col-md-11 col-10 align-self-center justify-content-center">
                 <div class="d-inline-block">
                     <button class="btn border text-white me-3 fs-4" id="back" onclick="app.onReturnPressed()" hidden>
                         <i class="bi bi-arrow-left"></i>
@@ -25,17 +25,17 @@
                 </div>
             </div>
             <div class="col-1">
-                <button class="btn border text-white me-3 fs-4" onclick="app.refresh()">
+                <button class="btn border text-white fs-4" onclick="app.refresh()">
                     <i class="bi bi-arrow-repeat"></i>
                 </button>
             </div>
         </div>
 
         <div class="mt-4">
-            <div class="row g-4 row-cols-1 row-cols-lg-3" id="list">
+            <div class="row mx-0 g-4 row-cols-1 row-cols-lg-3" id="list">
             </div>
 
-            <div class="row" id="match">
+            <div class="row mx-0" id="match">
 
             </div>
         </div>
