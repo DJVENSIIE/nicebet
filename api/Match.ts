@@ -22,9 +22,9 @@ export class Match extends MatchSummary {
                 public serveur: number,
                 public contestation: Array<number>,
                 public bettingAvailable: Boolean,
-                public events: Array<MatchEvent>,
-                public bets: Map<String, Bet>,
-                public earnings: Map<String, Earning>,
+                public events: any,
+                public bets: any,
+                public earnings: any,
                 public amountPlayer1: number,
                 public amountPlayer2: number) {
         super(id, Player1, Player2, terrain, tournament, startingAt)
@@ -67,11 +67,12 @@ export class Match extends MatchSummary {
             r.serveur,
             r.constestation,
             r.pariPossible,
+            r.events,
             r.paris,
             r.gains,
             r.montantJoueur1,
             r.montantJoueur2,
-            r.events
+            
         )
     }
 }
