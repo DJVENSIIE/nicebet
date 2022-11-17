@@ -4,6 +4,15 @@ class BetPostBody {
                 public player: number,
                 public matchId: number) {
     }
+
+    public toAPIJson() {
+        return {
+            client: this.client,
+            montant: this.amount,
+            joueur: this.player,
+            partie: this.matchId,
+        }
+    }
 }
 
 class Bet {
@@ -19,8 +28,13 @@ class Earning {
 class BetResult {
     static CLOSED = "PARIS_CLOSED"
     static ACCEPTED = "PARI_ACCEPTED"
+    static INVALID = "INVALID_AMOUNT"
     static REFRESH = "REFRESH"
 
     constructor(public tag: string, public betOnJ1: number, public betOnJ2: number, public totalJ1: number, public totalJ2: number) {
+    }
+
+    static parse(r: any) {
+        return new BetResult(r.tag, r.bet_on_j1, r.bet_on_j2, r.total_j1, r.total_j2)
     }
 }

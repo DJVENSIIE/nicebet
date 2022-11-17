@@ -1,4 +1,4 @@
-import {Match} from "../api/Match";
+import {Match, PlayerIndex} from "../api/Match";
 
 class App {
     private static SELECT_KEY = 'match_id';
@@ -9,39 +9,13 @@ class App {
     // @ts-ignore
     private socket = io("ws://localhost:3000");
     private lastID: string | null = null;
+    private keyFocusIndex = 0
 
     constructor() {
         this.backArrow = document.querySelector("#back")!!
         this.title = document.querySelector("#title")!!
         this.list = document.querySelector("#list")!!
         this.match = document.querySelector("#match")!!
-    }
-
-    public onBetPressed(partie:any,joueur:any) {
-        //localStorage.setItem(App.SELECT_KEY, String(id))
-        //this.render(String(id))
-        console.log('parier')
-        let montant = prompt(`Parier sur joueur ${joueur+1}`, "0");
-        let client = "client1"
-        this.fetchParier(partie,client,joueur,montant);
-        //todo refresh
-    }
-
-    fetchParier(partie:any,client:String,joueur:any,montant:any){
-        const postData = {
-            partie: partie,
-            client: client,
-            joueur: joueur,
-            montant: montant
-        }
-        fetch("http://localhost:3000/parties/parier" , {
-          method: "POST", 
-          body: JSON.stringify(postData),
-          headers: {"Content-type":"application/json;charset=UTF-8"}
-        })
-          .then(response => response.json())
-          .then(post => console.log(post)) //le post créé
-          .catch(err => console.log(err))
     }
 
     start() {
@@ -57,17 +31,15 @@ class App {
                 case 'Backspace': e.preventDefault(); this.onReturnPressed(); break;
                 case 'KeyR': e.preventDefault(); this.refresh(); break;
                 case 'KeyJ':
-                    e.preventDefault();
-                    if (this.lastID == null) {
-                        const btn = document.querySelector(".selectMatchButton")
-                        if (btn != null) {
-                            // focus
-                            // @ts-ignore
-                            btn.focus();
-                        }
-                    } else {
-                        // todo: ...
+                    const buttons = document.querySelectorAll(".onResetFocusPressed")
+                    if (buttons.length > this.keyFocusIndex) {
+                        e.preventDefault();
+                        // focus
+                        // @ts-ignore
+                        buttons[this.keyFocusIndex].focus();
                     }
+                    // next
+                    this.keyFocusIndex = (this.keyFocusIndex + 1) % buttons.length
                     break;
             }
         }
@@ -79,6 +51,7 @@ class App {
             this.socket.off("matchEvent"+this.lastID);
 
         this.lastID = newId;
+        this.keyFocusIndex = 0; // reset
 
         if (newId == null) {
             // clear
@@ -150,6 +123,20 @@ class App {
     public onMatchPressed(id: number) {
         this.configureOnePage(String(id))
         this.refresh()
+    }
+
+    public onBetPressed(matchID: number, player: PlayerIndex) {
+        let client = "client1"; // todo: hardcoded
+        let amount = prompt(`Parier sur joueur ${player+1}`, "0");
+        BonPariAPI.bet(new BetPostBody(client, Number(amount), player, matchID))
+            .then(r => {
+                if (r.tag != BetResult.ACCEPTED) {
+                    alert(r.tag)
+                } else {
+                    this.refresh()
+                }
+            })
+            .catch(console.error)
     }
 }
 

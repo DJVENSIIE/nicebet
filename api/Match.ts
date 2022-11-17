@@ -68,8 +68,8 @@ export class Match extends MatchSummary {
             r.constestation,
             r.pariPossible,
             r.events.map((e : any) => MatchEventParser.parse(e)),
-            r.paris,
-            r.gains,
+            new Map(Object.entries(r.paris)),
+            new Map(Object.entries(r.gains)),
             r.montantJoueur1,
             r.montantJoueur2
         )

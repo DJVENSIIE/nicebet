@@ -35,6 +35,14 @@ class BonPariAPI {
    }
 
     static bet(body: BetPostBody) : Promise<BetResult> {
-        throw new Error("Not implemented yet")
+        return fetch("http://localhost:3000/parties/parier" , {
+            method: "POST",
+            body: JSON.stringify(body.toAPIJson()),
+            headers: {"Content-type":"application/json;charset=UTF-8"}
+        })
+            .then(r => r.json())
+            .then(r => {
+                return BetResult.parse(r)
+            })
    }
 }

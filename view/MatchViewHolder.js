@@ -37,7 +37,7 @@ class MatchViewHolder {
         const s3 = SetIndex.Set3;
         const left = document.createElement("div");
         left.setAttribute("class", "col-md-6");
-        left.innerHTML = `<h3 class="fs-5 text-center">Tournoi ${match.tournament} - ${match.startingAt} - Terrain ${match.terrain}</h3>
+        let content = `<h3 class="fs-5 text-center">Tournoi ${match.tournament} - ${match.startingAt} - Terrain ${match.terrain}</h3>
                    <h3 class="fs-5 text-center mt-3">Durée du match : ${this.formatSecondToHoursMinutes(match.temps_partie, true)}</h3>
 
                    <table class="table table-borderless mt-4 fs-5 special-cols">
@@ -65,39 +65,51 @@ class MatchViewHolder {
                        <td>|</td><td>${match.getPlayerGame(p2)}</td>
                        </tr>
                    </table>`;
-        const client = "client1";
-        if (match.score.manches[0] < 2 && match.score.manches[1] < 2) {
-            if (match.score.manches[0] == 0 && match.score.manches[1] == 0) {
-                //affichage des bouttons
-                left.innerHTML += `<button onclick="app.onBetPressed(${match.id},0)">Parier Joueur 1</button><button onclick="app.onBetPressed(${match.id},1)">Parier Joueur 2</button><br/>`;
+        // show bet
+        const clientID = "client1";
+        if (!match.score.final) {
+            // if no bet
+            if (!match.bettingAvailable) {
+                // can't be
+                content += "<p class='text-center fs-5'>Le match est en cours, les paris sont fermés.</p>";
             }
-            //Montant des paris
-            if (match.bets.hasOwnProperty(client)) {
-                console.log("vos paris", match.bets[client]);
-                left.innerHTML += `Vos paris : ${match.bets[client].bet_on_J1} - ${match.bets[client].bet_on_J2}`;
+            else {
+                // can bet
+                content += `
+                    <div class="text-center my-4">
+                        <button class="btn btn-info btn-blue text-white me-5 onResetFocusPressed" onclick="app.onBetPressed(${match.id}, ${p1})">Parier Joueur 1</button>
+                        <button class="btn btn-info btn-blue text-white onResetFocusPressed" onclick="app.onBetPressed(${match.id}, ${p2})">Parier Joueur 2</button>
+                        <br>
+                    </div>`;
+            }
+            // show bet
+            if (match.bets.has(clientID)) {
+                const bet = match.bets.get(clientID);
+                content += `<p class="text-center fs-5">Vos paris : $${bet.bet_on_j1} - $${bet.bet_on_j2}</p>`;
+            }
+        }
+        // show outcome
+        else if (match.earnings.has(clientID)) {
+            const bet = match.earnings.get(clientID);
+            if (bet.amount > 0) {
+                content += `<p class="text-center fs-5">Vous avez gagné $${bet.amount}</p>`;
+            }
+            else {
+                bet.amount = bet.amount * -1;
+                content += `<p class="text-center fs-5">Vous avez perdu $${bet.amount}</p>`;
             }
         }
         else {
-            console.log('test', match.earnings[client]);
-            if (!match.earnings.hasOwnProperty(client)) {
-                left.innerHTML += "Le match est terminé";
-            }
-            else {
-                if (match.earnings[client].amount >= 0) {
-                    left.innerHTML += `Vous avez gagné : $${match.earnings[client].amount}`;
-                }
-                else {
-                    left.innerHTML += `Vous avez perdu : $${match.earnings[client]?.amount}`;
-                }
-            }
+            // well, no bet, no earning
+            content += "<p class='text-center fs-5'>Le match est terminé.</p>";
         }
+        left.innerHTML = content;
         const right = document.createElement("div");
         right.setAttribute("class", "col-md-6");
-        let content = `
-                    <p class="h3 bg-blueish text-center p-3">Evénements</p>
-
-                    <div class="overflow-scroll" style="max-height: 450px !important;">
-                        <table class="table table-borderless">`;
+        content = `
+             <p class="h3 bg-blueish text-center p-3">Evénements</p>
+            <div class="overflow-scroll" style="max-height: 450px !important;">
+                <table class="table table-borderless onResetFocusPressed" tabindex="0">`;
         function formatEvent(e) {
             if (e instanceof ContestationMatchEvent) {
                 const player = e.isPlayer1 ? match.Player1.getFullName() : match.Player2.getFullName();
@@ -115,10 +127,7 @@ class MatchViewHolder {
         for (let e of match.events) {
             content += `<tr><td>${this.formatSecondToHoursMinutes(e.time)}</td><td> ${formatEvent(e)}</td></tr>`;
         }
-        content += `
-                        </table>
-                   </div>
-                   `;
+        content += `</table></div>`;
         right.innerHTML = content;
         x.replaceChildren(left, right);
     }
