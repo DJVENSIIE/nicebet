@@ -1,8 +1,5 @@
 "use strict";
 class MatchViewHolder {
-    // todo: load from the cache
-    static initFromHistory() {
-    }
     // update the list
     // @ts-ignore
     static updateMatch(r) {

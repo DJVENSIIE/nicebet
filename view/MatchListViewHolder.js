@@ -10,6 +10,7 @@ class MatchListViewHolder {
     // update the view
     static render() {
         const x = document.querySelector("#list");
+        x.replaceChildren(); // remove children
         this.list.forEach(m => x.appendChild(MatchListViewHolder.generateHTML(m)));
     }
     // generate a card
