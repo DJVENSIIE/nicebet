@@ -58,7 +58,7 @@ class App {
         document.onkeydown = e => {
             switch (e.code) {
                 case 'Backspace': e.preventDefault(); this.onReturnPressed(); break;
-                case 'KeyR': e.preventDefault(); this.refresh(true); break;
+                case 'KeyR': e.preventDefault(); this.refresh(); break;
                 case 'KeyJ':
                     const buttons = document.querySelectorAll(".onResetFocusPressed")
                     if (buttons.length > this.keyFocusIndex) {
@@ -164,12 +164,12 @@ class App {
 
     public onReturnPressed() {
         this.configureOnePage(null)
-        this.refresh(true)
+        this.refresh()
     }
 
     public onMatchPressed(id: number) {
         this.configureOnePage(String(id))
-        this.refresh(true)
+        this.refresh()
     }
 
     public onBetPressed(matchID: number, player: PlayerIndex) {

@@ -49,7 +49,7 @@ class App {
                     break;
                 case 'KeyR':
                     e.preventDefault();
-                    this.refresh(true);
+                    this.refresh();
                     break;
                 case 'KeyJ':
                     const buttons = document.querySelectorAll(".onResetFocusPressed");
@@ -155,11 +155,11 @@ class App {
     }
     onReturnPressed() {
         this.configureOnePage(null);
-        this.refresh(true);
+        this.refresh();
     }
     onMatchPressed(id) {
         this.configureOnePage(String(id));
-        this.refresh(true);
+        this.refresh();
     }
     onBetPressed(matchID, player) {
         let amount = prompt(`Parier sur joueur ${player + 1}`, "0");
