@@ -1,6 +1,8 @@
 # BonPari
 
-Ouvrir le fichier `index.html` dans un navigateur.
+* Ouvrir le fichier `index.html` dans un navigateur.
+* Activer les notifications dans le navigateur
+* Navigation avec le clavier (`j`: jump, `r`: refresh, `back`: back)
 
 <hr>
 

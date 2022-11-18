@@ -75,10 +75,6 @@ class App {
     }
 
     configureOnePage(newId: string|null) {
-        // disable
-        if (this.lastID != null)
-            this.socket.off("matchEvent"+this.lastID);
-
         this.lastID = newId;
         this.keyFocusIndex = 0; // reset
 
@@ -101,28 +97,36 @@ class App {
             this.list.setAttribute("hidden", "")
             this.match.removeAttribute("hidden")
             this.title.textContent = "Résumé"
-            this.socket.on("matchEvent0", (result: any) => {
-                if (Notification?.permission === "granted") {
-                    let body : string
-                    let title : string
-                    const e = MatchEventParser.parse(result)
 
-                    if (e instanceof ContestationMatchEvent) {
-                        const player = Player.parse(result.data).getFullName()
-                        title = "Contestation"
-                        body = "Contestation de "+player+" "+(e.hasContestationPassed ? "acceptée" : "refusée")
-                    } else if (e instanceof PointMatchEvent) {
-                        const player = Player.parse(result.data).getFullName()
-                        title = "Point marqué"
-                        body = "Un point a été marqué par "+player
-                    } else if (e instanceof SetMatchEvent) {
-                        title = "Changement de manche"
-                        body = "Changement de manche"
-                    } else {
-                        throw new Error("Unknown event.")
-                    }
-                    const img = '_assets/tennis.png';
-                    const notification = new Notification(title, { body: body, icon: img });
+            // https://www.designcise.com/web/tutorial/how-to-detect-if-the-browser-tab-is-active-or-not-using-javascript
+            document.addEventListener('visibilitychange', (event) => {
+                if (document.hidden) {
+                    this.socket.on("matchEvent0", (result: any) => {
+                        if (Notification?.permission === "granted") {
+                            let body : string
+                            let title : string
+                            const e = MatchEventParser.parse(result)
+
+                            if (e instanceof ContestationMatchEvent) {
+                                const player = Player.parse(result.data).getFullName()
+                                title = "Contestation"
+                                body = "Contestation de "+player+" "+(e.hasContestationPassed ? "acceptée" : "refusée")
+                            } else if (e instanceof PointMatchEvent) {
+                                const player = Player.parse(result.data).getFullName()
+                                title = "Point marqué"
+                                body = "Un point a été marqué par "+player
+                            } else if (e instanceof SetMatchEvent) {
+                                title = "Changement de manche"
+                                body = "Changement de manche"
+                            } else {
+                                throw new Error("Unknown event.")
+                            }
+                            const img = '_assets/tennis.png';
+                            const notification = new Notification(title, { body: body, icon: img });
+                        }
+                    });
+                } else {
+                    this.socket.off("matchEvent"+this.lastID);
                 }
             });
         }
