@@ -163,27 +163,30 @@ class App {
      * or if we are updating (Actualisation...)
      */
     private refresh(isLoading = false) {
-        const onerror = (error: any) => {
-            if (isLoading) this.loading.innerHTML = `
-                <p>Erreur: Impossible de se connecter au serveur.</p>
-                <p>${error}</p>
-            .`
+        const onerror = (error: any, callback: any) => {
+            this.loading.innerHTML = `<p>Impossible de se connecter au serveur.</p>`
+            if (error instanceof ApiConnectionLostError) {
+                console.log(error.cachedData)
+                console.log(callback)
+                callback(error.cachedData)
+            }
         }
-        this.loading.removeAttribute("hidden")
+        // this.loading.removeAttribute("hidden")
         this.loading.textContent = isLoading ? "Chargement..." : "Actualisation..."
 
         if (this.lastID == null) {
             // show list
             BonPariAPI.getAllGames().then((r : Array<MatchSummary>) => {
-                this.loading.setAttribute("hidden", "")
+                this.loading.textContent = "Dernière mise-à-jour: "+new Date().getHours()+"h"+new Date().getMinutes()
                 MatchListViewHolder.updateList(r)
-            }).catch(onerror)
+            }).catch(r => onerror(r, (r: any) => MatchListViewHolder.updateList(r)))
         } else {
             // show content
             BonPariAPI.getGame(Number(this.lastID)).then((r: Match) => {
-                this.loading.setAttribute("hidden", "")
+                this.loading.textContent = "Dernière mise-à-jour: "+new Date().getHours()+"h"+new Date().getMinutes()
                 MatchViewHolder.updateMatch(r)
-            }).catch(onerror)
+            }).catch(r =>
+                onerror(r, (r: any) => MatchViewHolder.updateMatch(r)))
         }
     }
 

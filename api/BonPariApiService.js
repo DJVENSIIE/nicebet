@@ -1,5 +1,10 @@
 "use strict";
 const BASE_URL = "http://localhost:3000";
+class ApiConnectionLostError {
+    constructor(cachedData) {
+        this.cachedData = cachedData;
+    }
+}
 class BonPariAPI {
     static async fetchJson(r) {
         const json = await r.json();
@@ -17,7 +22,7 @@ class BonPariAPI {
             const matchs = localStorage.getItem(BonPariAPI.LIST_KEY);
             if (matchs == null)
                 throw new Error(e);
-            return JSON.parse(matchs).map(MatchSummary.parse);
+            throw new ApiConnectionLostError(JSON.parse(matchs).map(MatchSummary.parse));
         });
     }
     // @ts-ignore
@@ -33,7 +38,7 @@ class BonPariAPI {
             if (match == null)
                 throw new Error(e);
             // @ts-ignore
-            return Match.parse(JSON.parse(match));
+            throw new ApiConnectionLostError(Match.parse(JSON.parse(match)));
         });
     }
     static bet(body) {

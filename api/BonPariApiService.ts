@@ -1,5 +1,9 @@
 const BASE_URL = "http://localhost:3000";
 
+class ApiConnectionLostError {
+    constructor(public cachedData: any) {}
+}
+
 class BonPariAPI {
     private static LIST_KEY = 'l_matchs';
     private static MATCH_KEY = 'l_match';
@@ -20,7 +24,7 @@ class BonPariAPI {
            }).catch(e => {
                const matchs = localStorage.getItem(BonPariAPI.LIST_KEY)
                if (matchs == null) throw new Error(e)
-               return JSON.parse(matchs).map(MatchSummary.parse);
+               throw new ApiConnectionLostError(JSON.parse(matchs).map(MatchSummary.parse));
            })
    }
 
@@ -36,7 +40,7 @@ class BonPariAPI {
                const match = localStorage.getItem(BonPariAPI.MATCH_KEY+id)
                if (match == null) throw new Error(e)
                // @ts-ignore
-               return Match.parse(JSON.parse(match));
+               throw new ApiConnectionLostError(Match.parse(JSON.parse(match)));
            })
    }
 
