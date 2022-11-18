@@ -49,7 +49,7 @@ class App {
         }
 
         this.configureOnePage(localStorage.getItem(App.SELECT_KEY));
-        this.refresh();
+        this.refresh(true);
 
         // update every 60 seconds
         setInterval(() => this.refresh(), 60000)
@@ -58,7 +58,7 @@ class App {
         document.onkeydown = e => {
             switch (e.code) {
                 case 'Backspace': e.preventDefault(); this.onReturnPressed(); break;
-                case 'KeyR': e.preventDefault(); this.refresh(); break;
+                case 'KeyR': e.preventDefault(); this.refresh(true); break;
                 case 'KeyJ':
                     const buttons = document.querySelectorAll(".onResetFocusPressed")
                     if (buttons.length > this.keyFocusIndex) {
@@ -133,28 +133,42 @@ class App {
     }
 
     // todo: handle errors
-    refresh() {
+    refresh(withLoad = false) {
+        const loading = document.querySelector("#loading")!!
+        const onerror = (error: any) => {
+            if (withLoad) loading.innerHTML = `
+                <p>Erreur: Impossible de se connecter au serveur.</p>
+                <p>${error}</p>
+            .`
+        }
+        if (withLoad) {
+            loading.removeAttribute("hidden")
+            loading.textContent = "Chargement..."
+        }
+
         if (this.lastID == null) {
             // show list
             BonPariAPI.getAllGames().then((r : Array<MatchSummary>) => {
+                if (withLoad) loading.setAttribute("hidden", "")
                 MatchListViewHolder.updateList(r)
-            }).catch(console.error)
+            }).catch(onerror)
         } else {
             // show content
             BonPariAPI.getGame(Number(this.lastID)).then((r: Match) => {
+                if (withLoad) loading.setAttribute("hidden", "")
                 MatchViewHolder.updateMatch(r)
-            }).catch(console.error)
+            }).catch(onerror)
         }
     }
 
     public onReturnPressed() {
         this.configureOnePage(null)
-        this.refresh()
+        this.refresh(true)
     }
 
     public onMatchPressed(id: number) {
         this.configureOnePage(String(id))
-        this.refresh()
+        this.refresh(true)
     }
 
     public onBetPressed(matchID: number, player: PlayerIndex) {

@@ -37,7 +37,7 @@ class App {
             Notification.requestPermission().then();
         }
         this.configureOnePage(localStorage.getItem(App.SELECT_KEY));
-        this.refresh();
+        this.refresh(true);
         // update every 60 seconds
         setInterval(() => this.refresh(), 60000);
         // add key support
@@ -49,7 +49,7 @@ class App {
                     break;
                 case 'KeyR':
                     e.preventDefault();
-                    this.refresh();
+                    this.refresh(true);
                     break;
                 case 'KeyJ':
                     const buttons = document.querySelectorAll(".onResetFocusPressed");
@@ -123,27 +123,43 @@ class App {
         }
     }
     // todo: handle errors
-    refresh() {
+    refresh(withLoad = false) {
+        const loading = document.querySelector("#loading");
+        const onerror = (error) => {
+            if (withLoad)
+                loading.innerHTML = `
+                <p>Erreur: Impossible de se connecter au serveur.</p>
+                <p>${error}</p>
+            .`;
+        };
+        if (withLoad) {
+            loading.removeAttribute("hidden");
+            loading.textContent = "Chargement...";
+        }
         if (this.lastID == null) {
             // show list
             BonPariAPI.getAllGames().then((r) => {
+                if (withLoad)
+                    loading.setAttribute("hidden", "");
                 MatchListViewHolder.updateList(r);
-            }).catch(console.error);
+            }).catch(onerror);
         }
         else {
             // show content
             BonPariAPI.getGame(Number(this.lastID)).then((r) => {
+                if (withLoad)
+                    loading.setAttribute("hidden", "");
                 MatchViewHolder.updateMatch(r);
-            }).catch(console.error);
+            }).catch(onerror);
         }
     }
     onReturnPressed() {
         this.configureOnePage(null);
-        this.refresh();
+        this.refresh(true);
     }
     onMatchPressed(id) {
         this.configureOnePage(String(id));
-        this.refresh();
+        this.refresh(true);
     }
     onBetPressed(matchID, player) {
         let amount = prompt(`Parier sur joueur ${player + 1}`, "0");
