@@ -91,14 +91,9 @@ class MatchViewHolder {
         }
         // show outcome
         else if (match.earnings.has(clientID)) {
-            const bet = match.earnings.get(clientID);
-            if (bet.amount > 0) {
-                content += `<p class="text-center fs-5">Vous avez gagné $${bet.amount}</p>`;
-            }
-            else {
-                bet.amount = bet.amount * -1;
-                content += `<p class="text-center fs-5">Vous avez perdu $${bet.amount}</p>`;
-            }
+            // @ts-ignore
+            const message = App.sendMatchResult(match.id, match.earnings.get(clientID));
+            content += `<p class="text-center fs-5">${message}</p>`;
         }
         else {
             // well, no bet, no earning

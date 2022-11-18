@@ -6,7 +6,7 @@ class App {
 
     // source: https://stackoverflow.com/questions/59412625/generate-random-uuid-javascript
     private static generateUniqSerial(): string {
-        return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, (c) => {
+        return 'xxxx-xxxx-xxx-xxxx'.replace(/x/g, () => {
             const r = Math.floor(Math.random() * 16);
             return r.toString(16);
         });
@@ -25,6 +25,28 @@ class App {
         }
         return App.CLIENT_ID
     }
+
+    public static sendMatchResult(matchID: number, bet: Earning) {
+        // generate message
+        let message = "";
+        if (bet.amount > 0) {
+            message = `Vous avez gagné $${bet.amount}`
+        } else {
+            bet.amount = bet.amount * -1;
+            message = `Vous avez perdu $${bet.amount}`
+        }
+
+        // show a message if not already shown
+        const res = localStorage.getItem("MatchResult"+matchID)
+        if (res == null) {
+            BonPariNotification.create("Match terminé", message)
+            localStorage.setItem("MatchResult"+matchID, message)
+        }
+
+        // return message
+        return message
+    }
+
     private static SELECT_KEY = 'match_id';
     private backArrow: Element ;
     private title: Element;
@@ -47,6 +69,57 @@ class App {
             // request permission
             Notification.requestPermission().then();
         }
+
+        this.socket.on("matchEvent", (result: any) => {
+            const clientID = App.getClientId()
+            if (result.data[clientID] != undefined) {
+                App.sendMatchResult(result.match_id, result.data[clientID])
+            }
+        });
+
+        // https://www.designcise.com/web/tutorial/how-to-detect-if-the-browser-tab-is-active-or-not-using-javascript
+        document.addEventListener('visibilitychange', () => {
+            // no listening
+            if (this.lastID == null) {
+                // only printed once
+                if (document.hidden)
+                    console.info("Not match to listen to")
+                return
+            }
+
+            if (document.hidden) {
+                console.info("Document hidden listen")
+                this.socket.on("matchEvent"+this.lastID, (result: any) => {
+                    if (Notification?.permission === "granted") {
+                        let body : string
+                        let title : string
+                        const e = MatchEventParser.parse(result)
+
+                        if (e instanceof ContestationMatchEvent) {
+                            const player = Player.parse(result.data).getFullName()
+                            title = "Contestation"
+                            body = "Contestation de "+player+" "+(e.hasContestationPassed ? "acceptée" : "refusée")
+                        } else if (e instanceof PointMatchEvent) {
+                            const player = Player.parse(result.data).getFullName()
+                            title = "Point marqué"
+                            body = "Un point a été marqué par "+player
+                        } else if (e instanceof SetMatchEvent) {
+                            title = "Changement de manche"
+                            body = "Changement de manche"
+                        } else if (e instanceof MatchDoneEvent) {
+                            title = "Match terminé"
+                            body = "Match terminé"
+                        } else {
+                            throw new Error("Unknown event.")
+                        }
+                        BonPariNotification.create(title, body)
+                    }
+                });
+            } else {
+                console.info("Document hidden stop listen")
+                this.socket.off("matchEvent"+this.lastID);
+            }
+        });
 
         this.configureOnePage(localStorage.getItem(App.SELECT_KEY));
         this.refresh(true);
@@ -97,41 +170,6 @@ class App {
             this.list.setAttribute("hidden", "")
             this.match.removeAttribute("hidden")
             this.title.textContent = "Résumé"
-
-            // https://www.designcise.com/web/tutorial/how-to-detect-if-the-browser-tab-is-active-or-not-using-javascript
-            document.addEventListener('visibilitychange', (event) => {
-                if (document.hidden) {
-                    this.socket.on("matchEvent0", (result: any) => {
-                        if (Notification?.permission === "granted") {
-                            let body : string
-                            let title : string
-                            const e = MatchEventParser.parse(result)
-
-                            if (e instanceof ContestationMatchEvent) {
-                                const player = Player.parse(result.data).getFullName()
-                                title = "Contestation"
-                                body = "Contestation de "+player+" "+(e.hasContestationPassed ? "acceptée" : "refusée")
-                            } else if (e instanceof PointMatchEvent) {
-                                const player = Player.parse(result.data).getFullName()
-                                title = "Point marqué"
-                                body = "Un point a été marqué par "+player
-                            } else if (e instanceof SetMatchEvent) {
-                                title = "Changement de manche"
-                                body = "Changement de manche"
-                            } else if (e instanceof MatchDoneEvent) {
-                                title = "Match terminé"
-                                body = "Match terminé"
-                            } else {
-                                throw new Error("Unknown event.")
-                            }
-                            const img = '_assets/tennis.png';
-                            const notification = new Notification(title, { body: body, icon: img });
-                        }
-                    });
-                } else {
-                    this.socket.off("matchEvent"+this.lastID);
-                }
-            });
         }
     }
 

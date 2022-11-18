@@ -23,8 +23,8 @@ export class Match extends MatchSummary {
                 public contestation: Array<number>,
                 public bettingAvailable: Boolean,
                 public events: any,
-                public bets: any,
-                public earnings: any,
+                public bets: Map<string, Bet>,
+                public earnings: Map<string, Earning>,
                 public amountPlayer1: number,
                 public amountPlayer2: number) {
         super(id, Player1, Player2, terrain, tournament, startingAt)
