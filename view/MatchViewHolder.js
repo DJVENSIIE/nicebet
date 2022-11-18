@@ -66,8 +66,7 @@ class MatchViewHolder {
                        </tr>
                    </table>`;
         // show bet
-        // @ts-ignore
-        const clientID = App.getClientId();
+        const clientID = ApiLocalStorage.getClientId();
         if (!match.score.final) {
             // if no bet
             if (!match.bettingAvailable) {

@@ -1,34 +1,9 @@
 import {Match, PlayerIndex} from "../api/Match";
 
 class App {
-    private static CLIENT_ID : string | null = null
-    private static CLIENT_ID_KEY = "CLIENT_ID"
-
-    // source: https://stackoverflow.com/questions/59412625/generate-random-uuid-javascript
-    private static generateUniqSerial(): string {
-        return 'xxxx-xxxx-xxx-xxxx'.replace(/x/g, () => {
-            const r = Math.floor(Math.random() * 16);
-            return r.toString(16);
-        });
-    }
-
-    // obviously this is not secure
-    public static getClientId () {
-        if (App.CLIENT_ID == null) {
-            let stored_id = localStorage.getItem(App.CLIENT_ID_KEY)
-            if (stored_id == null) {
-                // create
-                stored_id = App.generateUniqSerial()
-            }
-            App.CLIENT_ID = stored_id
-            localStorage.setItem(App.CLIENT_ID_KEY, stored_id)
-        }
-        return App.CLIENT_ID
-    }
-
     public static sendMatchResult(matchID: number, bet: Earning, serverVersion: string) {
         // generate message
-        let message = "";
+        let message: string;
         if (bet.amount > 0) {
             message = `Vous avez gagné $${bet.amount}`
         } else {
@@ -47,7 +22,7 @@ class App {
         return message
     }
 
-    private backArrow: Element ;
+    private backArrow: Element;
     private title: Element;
     private list: Element;
     private match: Element;
@@ -71,7 +46,7 @@ class App {
 
         // listen for bet results
         this.socket.on("matchEvent", (result: any) => {
-            const clientID = App.getClientId()
+            const clientID = ApiLocalStorage.getClientId()
             if (result.data[clientID] != undefined) {
                 App.sendMatchResult(result.match_id, result.data[clientID], result.serverVersion)
             }
@@ -223,7 +198,7 @@ class App {
 
     public onBetPressed(matchID: number, player: PlayerIndex) {
         let amount = prompt(`Parier sur joueur ${player+1}`, "0");
-        BonPariAPI.bet(new BetPostBody(App.getClientId(), Number(amount), player, matchID))
+        BonPariAPI.bet(new BetPostBody(ApiLocalStorage.getClientId(), Number(amount), player, matchID))
             .then(r => {
                 if (r.tag != BetResult.ACCEPTED) {
                     alert(r.tag)

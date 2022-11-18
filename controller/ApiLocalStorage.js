@@ -1,5 +1,25 @@
 "use strict";
 class ApiLocalStorage {
+    // source: https://stackoverflow.com/questions/59412625/generate-random-uuid-javascript
+    static generateUniqSerial() {
+        return 'xxxx-xxxx-xxx-xxxx'.replace(/x/g, () => {
+            const r = Math.floor(Math.random() * 16);
+            return r.toString(16);
+        });
+    }
+    // obviously this is not secure
+    static getClientId() {
+        if (ApiLocalStorage.CLIENT_ID == null) {
+            let stored_id = localStorage.getItem(ApiLocalStorage.CLIENT_ID_KEY);
+            if (stored_id == null) {
+                // create
+                stored_id = ApiLocalStorage.generateUniqSerial();
+            }
+            ApiLocalStorage.CLIENT_ID = stored_id;
+            localStorage.setItem(ApiLocalStorage.CLIENT_ID_KEY, stored_id);
+        }
+        return ApiLocalStorage.CLIENT_ID;
+    }
     /**
      * Did we send a notification to the user?
      */
@@ -22,6 +42,8 @@ class ApiLocalStorage {
         localStorage.removeItem(ApiLocalStorage.SELECT_KEY);
     }
 }
+ApiLocalStorage.CLIENT_ID = null;
+ApiLocalStorage.CLIENT_ID_KEY = "CLIENT_ID";
 /*
  * Save locally the selected match
  */
