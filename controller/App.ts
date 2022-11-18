@@ -26,6 +26,7 @@ class App {
     private title: Element;
     private list: Element;
     private match: Element;
+    private loading: Element;
     // @ts-ignore
     private socket = io("ws://localhost:3000");
     private lastID: string | null = null;
@@ -36,6 +37,7 @@ class App {
         this.title = document.querySelector("#title")!!
         this.list = document.querySelector("#list")!!
         this.match = document.querySelector("#match")!!
+        this.loading = document.querySelector("#loading")!!
     }
 
     public start() {
@@ -161,26 +163,25 @@ class App {
      * or if we are updating (Actualisation...)
      */
     private refresh(isLoading = false) {
-        const loading = document.querySelector("#loading")!!
         const onerror = (error: any) => {
-            if (isLoading) loading.innerHTML = `
+            if (isLoading) this.loading.innerHTML = `
                 <p>Erreur: Impossible de se connecter au serveur.</p>
                 <p>${error}</p>
             .`
         }
-        loading.removeAttribute("hidden")
-        loading.textContent = isLoading ? "Chargement..." : "Actualisation..."
+        this.loading.removeAttribute("hidden")
+        this.loading.textContent = isLoading ? "Chargement..." : "Actualisation..."
 
         if (this.lastID == null) {
             // show list
             BonPariAPI.getAllGames().then((r : Array<MatchSummary>) => {
-                loading.setAttribute("hidden", "")
+                this.loading.setAttribute("hidden", "")
                 MatchListViewHolder.updateList(r)
             }).catch(onerror)
         } else {
             // show content
             BonPariAPI.getGame(Number(this.lastID)).then((r: Match) => {
-                loading.setAttribute("hidden", "")
+                this.loading.setAttribute("hidden", "")
                 MatchViewHolder.updateMatch(r)
             }).catch(onerror)
         }

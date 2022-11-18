@@ -29,6 +29,7 @@ class App {
         this.title = document.querySelector("#title");
         this.list = document.querySelector("#list");
         this.match = document.querySelector("#match");
+        this.loading = document.querySelector("#loading");
     }
     start() {
         // ask for permission to show notifications
@@ -153,27 +154,26 @@ class App {
      * or if we are updating (Actualisation...)
      */
     refresh(isLoading = false) {
-        const loading = document.querySelector("#loading");
         const onerror = (error) => {
             if (isLoading)
-                loading.innerHTML = `
+                this.loading.innerHTML = `
                 <p>Erreur: Impossible de se connecter au serveur.</p>
                 <p>${error}</p>
             .`;
         };
-        loading.removeAttribute("hidden");
-        loading.textContent = isLoading ? "Chargement..." : "Actualisation...";
+        this.loading.removeAttribute("hidden");
+        this.loading.textContent = isLoading ? "Chargement..." : "Actualisation...";
         if (this.lastID == null) {
             // show list
             BonPariAPI.getAllGames().then((r) => {
-                loading.setAttribute("hidden", "");
+                this.loading.setAttribute("hidden", "");
                 MatchListViewHolder.updateList(r);
             }).catch(onerror);
         }
         else {
             // show content
             BonPariAPI.getGame(Number(this.lastID)).then((r) => {
-                loading.setAttribute("hidden", "");
+                this.loading.setAttribute("hidden", "");
                 MatchViewHolder.updateMatch(r);
             }).catch(onerror);
         }
