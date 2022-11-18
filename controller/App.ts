@@ -50,7 +50,7 @@ class App {
         this.socket.on("matchEvent", (result: any) => {
             const clientID = ClientLocalStorage.getClientId()
             if (result.data[clientID] != undefined) {
-                App.sendMatchResult(result.match_id, result.data[clientID], result.serverVersion)
+                App.sendMatchResult(result.match_id, result.data[clientID], result.version)
             }
         });
 

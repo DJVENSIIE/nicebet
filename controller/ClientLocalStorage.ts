@@ -40,7 +40,7 @@ class ClientLocalStorage {
      * Save that we send the notification
      */
     static setMatchResultNotificationStatusSend(matchID: number, serverVersion: string) {
-        localStorage.setItem("MatchResult"+matchID+serverVersion, "send")
+        localStorage.setItem("MatchResult"+matchID+"_"+serverVersion, "send")
     }
 
 

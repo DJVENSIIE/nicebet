@@ -1,8 +1,8 @@
 "use strict";
 const BASE_URL = "http://localhost:3000";
 class BonPariAPI {
-    static fetchJson(r) {
-        const json = r.json();
+    static async fetchJson(r) {
+        const json = await r.json();
         json['version'] = r.headers.get('Server-version');
         return json;
     }

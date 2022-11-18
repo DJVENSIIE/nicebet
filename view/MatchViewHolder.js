@@ -91,7 +91,7 @@ class MatchViewHolder {
         // show outcome
         else if (match.earnings.has(clientID)) {
             // @ts-ignore
-            const message = App.sendMatchResult(match.id, match.earnings.get(clientID));
+            const message = App.sendMatchResult(match.id, match.earnings.get(clientID), match.version);
             content += `<p class="text-center fs-5">${message}</p>`;
         }
         else {

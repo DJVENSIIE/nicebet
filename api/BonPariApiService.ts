@@ -4,8 +4,8 @@ class BonPariAPI {
     private static LIST_KEY = 'l_matchs';
     private static MATCH_KEY = 'l_match';
 
-    static fetchJson(r: any) {
-        const json : any = r.json()
+    static async fetchJson(r: any) {
+        const json : any = await r.json()
         json['version'] = r.headers.get('Server-version')
         return json
     }

@@ -34,7 +34,7 @@ class ClientLocalStorage {
      * Save that we send the notification
      */
     static setMatchResultNotificationStatusSend(matchID, serverVersion) {
-        localStorage.setItem("MatchResult" + matchID + serverVersion, "send");
+        localStorage.setItem("MatchResult" + matchID + "_" + serverVersion, "send");
     }
     static getSelectedMatchIfAny() {
         return localStorage.getItem(ClientLocalStorage.SELECT_KEY);
