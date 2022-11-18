@@ -1,6 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
+    constructor() {
+        // @ts-ignore
+        this.socket = io("ws://localhost:3000");
+        this.lastID = null;
+        this.keyFocusIndex = 0;
+        this.backArrow = document.querySelector("#back");
+        this.title = document.querySelector("#title");
+        this.list = document.querySelector("#list");
+        this.match = document.querySelector("#match");
+    }
     // source: https://stackoverflow.com/questions/59412625/generate-random-uuid-javascript
     static generateUniqSerial() {
         return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, (c) => {
@@ -20,16 +30,6 @@ class App {
             localStorage.setItem(App.CLIENT_ID_KEY, stored_id);
         }
         return App.CLIENT_ID;
-    }
-    constructor() {
-        // @ts-ignore
-        this.socket = io("ws://localhost:3000");
-        this.lastID = null;
-        this.keyFocusIndex = 0;
-        this.backArrow = document.querySelector("#back");
-        this.title = document.querySelector("#title");
-        this.list = document.querySelector("#list");
-        this.match = document.querySelector("#match");
     }
     start() {
         if (Notification?.permission !== "granted") {
@@ -142,6 +142,8 @@ class App {
     }
     onBetPressed(matchID, player) {
         let amount = prompt(`Parier sur joueur ${player + 1}`, "0");
+        if (amount == null)
+            return;
         BonPariAPI.bet(new BetPostBody(App.getClientId(), Number(amount), player, matchID))
             .then(r => {
             if (r.tag != BetResult.ACCEPTED) {
