@@ -118,6 +118,9 @@ class App {
                             } else if (e instanceof SetMatchEvent) {
                                 title = "Changement de manche"
                                 body = "Changement de manche"
+                            } else if (e instanceof MatchDoneEvent) {
+                                title = "Match terminé"
+                                body = "Match terminé"
                             } else {
                                 throw new Error("Unknown event.")
                             }
@@ -141,21 +144,19 @@ class App {
                 <p>${error}</p>
             .`
         }
-        if (withLoad) {
-            loading.removeAttribute("hidden")
-            loading.textContent = "Chargement..."
-        }
+        loading.removeAttribute("hidden")
+        loading.textContent = withLoad ? "Chargement..." : "Actualisation..."
 
         if (this.lastID == null) {
             // show list
             BonPariAPI.getAllGames().then((r : Array<MatchSummary>) => {
-                if (withLoad) loading.setAttribute("hidden", "")
+                loading.setAttribute("hidden", "")
                 MatchListViewHolder.updateList(r)
             }).catch(onerror)
         } else {
             // show content
             BonPariAPI.getGame(Number(this.lastID)).then((r: Match) => {
-                if (withLoad) loading.setAttribute("hidden", "")
+                loading.setAttribute("hidden", "")
                 MatchViewHolder.updateMatch(r)
             }).catch(onerror)
         }

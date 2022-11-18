@@ -125,6 +125,8 @@ class MatchViewHolder {
                 return "Un point a été marqué par "+player
             } else if (e instanceof SetMatchEvent) {
                 return "Changement de manche"
+            } else if (e instanceof MatchDoneEvent) {
+                return  "Match terminé"
             }
             return "Unknown event."
         }

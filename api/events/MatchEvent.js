@@ -9,6 +9,7 @@ class MatchEventParser {
             case 2: // @ts-ignore
                 return new PointMatchEvent(Number(r) == PlayerIndex.Player1, t);
             case 3: return new SetMatchEvent(t);
+            case 4: return new MatchDoneEvent(t);
             default: throw new Error("Event type not supported.");
         }
     }
@@ -34,6 +35,12 @@ class PointMatchEvent extends MatchEvent {
     }
 }
 class SetMatchEvent extends MatchEvent {
+    constructor(time) {
+        super(time);
+        this.time = time;
+    }
+}
+class MatchDoneEvent extends MatchEvent {
     constructor(time) {
         super(time);
         this.time = time;

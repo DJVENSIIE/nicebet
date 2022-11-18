@@ -123,6 +123,9 @@ class MatchViewHolder {
             else if (e instanceof SetMatchEvent) {
                 return "Changement de manche";
             }
+            else if (e instanceof MatchDoneEvent) {
+                return "Match terminé";
+            }
             return "Unknown event.";
         }
         for (let e of match.events) {
