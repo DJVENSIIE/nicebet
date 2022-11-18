@@ -26,7 +26,7 @@ class App {
         return App.CLIENT_ID
     }
 
-    public static sendMatchResult(matchID: number, bet: Earning) {
+    public static sendMatchResult(matchID: number, bet: Earning, serverVersion: string) {
         // generate message
         let message = "";
         if (bet.amount > 0) {
@@ -37,17 +37,16 @@ class App {
         }
 
         // show a message if not already shown
-        const res = localStorage.getItem("MatchResult"+matchID)
+        const res = ApiLocalStorage.getMatchResultNotificationStatus(matchID, serverVersion)
         if (res == null) {
             BonPariNotification.create("Match terminé", message)
-            localStorage.setItem("MatchResult"+matchID, message)
+            ApiLocalStorage.setMatchResultNotificationStatusSend(matchID, serverVersion)
         }
 
         // return message
         return message
     }
 
-    private static SELECT_KEY = 'match_id';
     private backArrow: Element ;
     private title: Element;
     private list: Element;
@@ -65,18 +64,20 @@ class App {
     }
 
     start() {
+        // ask for permission to show notifications
         if (Notification?.permission !== "granted") {
-            // request permission
             Notification.requestPermission().then();
         }
 
+        // listen for bet results
         this.socket.on("matchEvent", (result: any) => {
             const clientID = App.getClientId()
             if (result.data[clientID] != undefined) {
-                App.sendMatchResult(result.match_id, result.data[clientID])
+                App.sendMatchResult(result.match_id, result.data[clientID], result.serverVersion)
             }
         });
 
+        // listen for events
         // https://www.designcise.com/web/tutorial/how-to-detect-if-the-browser-tab-is-active-or-not-using-javascript
         document.addEventListener('visibilitychange', () => {
             // no listening
@@ -121,18 +122,21 @@ class App {
             }
         });
 
-        this.configureOnePage(localStorage.getItem(App.SELECT_KEY));
+        // show the right page
+        this.configureOnePage(ApiLocalStorage.getSelectedMatchIfAny());
+        // and up to date
         this.refresh(true);
 
         // update every 60 seconds
         setInterval(() => this.refresh(), 60000)
 
-        // add key support
+        // add keyboard support
         document.onkeydown = e => {
             switch (e.code) {
                 case 'Backspace': e.preventDefault(); this.onReturnPressed(); break;
                 case 'KeyR': e.preventDefault(); this.refresh(); break;
                 case 'KeyJ':
+                    // move to the next selectable
                     const buttons = document.querySelectorAll(".onResetFocusPressed")
                     if (buttons.length > this.keyFocusIndex) {
                         e.preventDefault();
@@ -147,13 +151,16 @@ class App {
         }
     }
 
+    /**
+     * Router
+     */
     configureOnePage(newId: string|null) {
         this.lastID = newId;
         this.keyFocusIndex = 0; // reset
 
         if (newId == null) {
             // clear
-            localStorage.removeItem(App.SELECT_KEY)
+            ApiLocalStorage.clearSelectedMatch()
 
             this.backArrow.setAttribute("hidden", "")
             this.match.setAttribute("hidden", "")
@@ -164,7 +171,7 @@ class App {
             `
         } else {
             // set
-            localStorage.setItem(App.SELECT_KEY, newId)
+            ApiLocalStorage.setSelectedMatchIfAny(newId)
 
             this.backArrow.removeAttribute("hidden")
             this.list.setAttribute("hidden", "")
@@ -173,17 +180,21 @@ class App {
         }
     }
 
-    // todo: handle errors
-    refresh(withLoad = false) {
+    /**
+     * Refresh what has to be refreshed.
+     * We are changing the message if we are loading (Chargement...)
+     * or if we are updating (Actualisation...)
+     */
+    refresh(isLoading = false) {
         const loading = document.querySelector("#loading")!!
         const onerror = (error: any) => {
-            if (withLoad) loading.innerHTML = `
+            if (isLoading) loading.innerHTML = `
                 <p>Erreur: Impossible de se connecter au serveur.</p>
                 <p>${error}</p>
             .`
         }
         loading.removeAttribute("hidden")
-        loading.textContent = withLoad ? "Chargement..." : "Actualisation..."
+        loading.textContent = isLoading ? "Chargement..." : "Actualisation..."
 
         if (this.lastID == null) {
             // show list

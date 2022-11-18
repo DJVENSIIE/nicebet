@@ -1,9 +1,14 @@
 "use strict";
 const BASE_URL = "http://localhost:3000";
 class BonPariAPI {
+    static fetchJson(r) {
+        const json = r.json();
+        json['version'] = r.headers.get('Server-version');
+        return json;
+    }
     static async getAllGames() {
         return fetch(BASE_URL + "/parties", { method: "GET" })
-            .then(r => r.json())
+            .then(BonPariAPI.fetchJson)
             .then(r => {
             localStorage.setItem(BonPariAPI.LIST_KEY, JSON.stringify(r));
             // @ts-ignore
@@ -18,7 +23,7 @@ class BonPariAPI {
     // @ts-ignore
     static getGame(id) {
         return fetch(BASE_URL + "/parties/" + id, { method: "GET" })
-            .then(r => r.json())
+            .then(BonPariAPI.fetchJson)
             .then(r => {
             localStorage.setItem(BonPariAPI.MATCH_KEY + id, JSON.stringify(r));
             // @ts-ignore
@@ -37,7 +42,7 @@ class BonPariAPI {
             body: JSON.stringify(body.toAPIJson()),
             headers: { "Content-type": "application/json;charset=UTF-8" }
         })
-            .then(r => r.json())
+            .then(BonPariAPI.fetchJson)
             .then(r => {
             return BetResult.parse(r);
         });

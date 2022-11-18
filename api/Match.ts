@@ -26,8 +26,9 @@ export class Match extends MatchSummary {
                 public bets: Map<string, Bet>,
                 public earnings: Map<string, Earning>,
                 public amountPlayer1: number,
-                public amountPlayer2: number) {
-        super(id, Player1, Player2, terrain, tournament, startingAt)
+                public amountPlayer2: number,
+                public version: string) {
+        super(id, Player1, Player2, terrain, tournament, startingAt, version)
     }
 
     getPlayerGame(player: PlayerIndex) {
@@ -71,7 +72,8 @@ export class Match extends MatchSummary {
             new Map(Object.entries(r.paris)),
             new Map(Object.entries(r.gains)),
             r.montantJoueur1,
-            r.montantJoueur2
+            r.montantJoueur2,
+            r.version
         )
     }
 }

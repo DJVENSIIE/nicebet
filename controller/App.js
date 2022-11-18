@@ -21,7 +21,7 @@ class App {
         }
         return App.CLIENT_ID;
     }
-    static sendMatchResult(matchID, bet) {
+    static sendMatchResult(matchID, bet, serverVersion) {
         // generate message
         let message = "";
         if (bet.amount > 0) {
@@ -32,10 +32,10 @@ class App {
             message = `Vous avez perdu $${bet.amount}`;
         }
         // show a message if not already shown
-        const res = localStorage.getItem("MatchResult" + matchID);
+        const res = ApiLocalStorage.getMatchResultNotificationStatus(matchID, serverVersion);
         if (res == null) {
             BonPariNotification.create("Match terminé", message);
-            localStorage.setItem("MatchResult" + matchID, message);
+            ApiLocalStorage.setMatchResultNotificationStatusSend(matchID, serverVersion);
         }
         // return message
         return message;
@@ -51,16 +51,18 @@ class App {
         this.match = document.querySelector("#match");
     }
     start() {
+        // ask for permission to show notifications
         if (Notification?.permission !== "granted") {
-            // request permission
             Notification.requestPermission().then();
         }
+        // listen for bet results
         this.socket.on("matchEvent", (result) => {
             const clientID = App.getClientId();
             if (result.data[clientID] != undefined) {
-                App.sendMatchResult(result.match_id, result.data[clientID]);
+                App.sendMatchResult(result.match_id, result.data[clientID], result.serverVersion);
             }
         });
+        // listen for events
         // https://www.designcise.com/web/tutorial/how-to-detect-if-the-browser-tab-is-active-or-not-using-javascript
         document.addEventListener('visibilitychange', () => {
             // no listening
@@ -107,11 +109,13 @@ class App {
                 this.socket.off("matchEvent" + this.lastID);
             }
         });
-        this.configureOnePage(localStorage.getItem(App.SELECT_KEY));
+        // show the right page
+        this.configureOnePage(ApiLocalStorage.getSelectedMatchIfAny());
+        // and up to date
         this.refresh(true);
         // update every 60 seconds
         setInterval(() => this.refresh(), 60000);
-        // add key support
+        // add keyboard support
         document.onkeydown = e => {
             switch (e.code) {
                 case 'Backspace':
@@ -123,6 +127,7 @@ class App {
                     this.refresh();
                     break;
                 case 'KeyJ':
+                    // move to the next selectable
                     const buttons = document.querySelectorAll(".onResetFocusPressed");
                     if (buttons.length > this.keyFocusIndex) {
                         e.preventDefault();
@@ -136,12 +141,15 @@ class App {
             }
         };
     }
+    /**
+     * Router
+     */
     configureOnePage(newId) {
         this.lastID = newId;
         this.keyFocusIndex = 0; // reset
         if (newId == null) {
             // clear
-            localStorage.removeItem(App.SELECT_KEY);
+            ApiLocalStorage.clearSelectedMatch();
             this.backArrow.setAttribute("hidden", "");
             this.match.setAttribute("hidden", "");
             this.list.removeAttribute("hidden");
@@ -152,25 +160,29 @@ class App {
         }
         else {
             // set
-            localStorage.setItem(App.SELECT_KEY, newId);
+            ApiLocalStorage.setSelectedMatchIfAny(newId);
             this.backArrow.removeAttribute("hidden");
             this.list.setAttribute("hidden", "");
             this.match.removeAttribute("hidden");
             this.title.textContent = "Résumé";
         }
     }
-    // todo: handle errors
-    refresh(withLoad = false) {
+    /**
+     * Refresh what has to be refreshed.
+     * We are changing the message if we are loading (Chargement...)
+     * or if we are updating (Actualisation...)
+     */
+    refresh(isLoading = false) {
         const loading = document.querySelector("#loading");
         const onerror = (error) => {
-            if (withLoad)
+            if (isLoading)
                 loading.innerHTML = `
                 <p>Erreur: Impossible de se connecter au serveur.</p>
                 <p>${error}</p>
             .`;
         };
         loading.removeAttribute("hidden");
-        loading.textContent = withLoad ? "Chargement..." : "Actualisation...";
+        loading.textContent = isLoading ? "Chargement..." : "Actualisation...";
         if (this.lastID == null) {
             // show list
             BonPariAPI.getAllGames().then((r) => {
@@ -210,6 +222,5 @@ class App {
 }
 App.CLIENT_ID = null;
 App.CLIENT_ID_KEY = "CLIENT_ID";
-App.SELECT_KEY = 'match_id';
 const app = new App();
 app.start();

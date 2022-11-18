@@ -26,10 +26,7 @@ class Earning {
 }
 
 class BetResult {
-    static CLOSED = "PARIS_CLOSED"
     static ACCEPTED = "PARI_ACCEPTED"
-    static INVALID = "INVALID_AMOUNT"
-    static REFRESH = "REFRESH"
 
     constructor(public tag: string, public betOnJ1: number, public betOnJ2: number, public totalJ1: number, public totalJ2: number) {
     }

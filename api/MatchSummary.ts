@@ -4,7 +4,8 @@ class MatchSummary {
                 public Player2: Player,
                 public terrain: string,
                 public tournament: string,
-                public startingAt: string) {
+                public startingAt: string,
+                public version: string) {
     }
 
     static parse(r: any) {
@@ -14,7 +15,8 @@ class MatchSummary {
             Player.parse(r.joueur2),
             r.terrain,
             r.tournoi,
-            r.heure_debut
+            r.heure_debut,
+            r.version
         )
     }
 }

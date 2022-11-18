@@ -40,7 +40,4 @@ class BetResult {
         return new BetResult(r.tag, r.bet_on_j1, r.bet_on_j2, r.total_j1, r.total_j2);
     }
 }
-BetResult.CLOSED = "PARIS_CLOSED";
 BetResult.ACCEPTED = "PARI_ACCEPTED";
-BetResult.INVALID = "INVALID_AMOUNT";
-BetResult.REFRESH = "REFRESH";

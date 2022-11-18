@@ -13,8 +13,8 @@ var SetIndex;
     SetIndex[SetIndex["Set3"] = 2] = "Set3";
 })(SetIndex = exports.SetIndex || (exports.SetIndex = {}));
 class Match extends MatchSummary {
-    constructor(id, Player1, Player2, terrain, tournament, startingAt, score, temps_partie, serveur, contestation, bettingAvailable, events, bets, earnings, amountPlayer1, amountPlayer2) {
-        super(id, Player1, Player2, terrain, tournament, startingAt);
+    constructor(id, Player1, Player2, terrain, tournament, startingAt, score, temps_partie, serveur, contestation, bettingAvailable, events, bets, earnings, amountPlayer1, amountPlayer2, version) {
+        super(id, Player1, Player2, terrain, tournament, startingAt, version);
         this.id = id;
         this.Player1 = Player1;
         this.Player2 = Player2;
@@ -31,6 +31,7 @@ class Match extends MatchSummary {
         this.earnings = earnings;
         this.amountPlayer1 = amountPlayer1;
         this.amountPlayer2 = amountPlayer2;
+        this.version = version;
     }
     getPlayerGame(player) {
         return this.score.echange[player].toString();
@@ -51,7 +52,7 @@ class Match extends MatchSummary {
         return this.score.game.length >= setIndex + 1 ? this.score.game[setIndex][playerIndex].toString() : "";
     }
     static parse(r) {
-        return new Match(r.id, Player.parse(r.joueur1), Player.parse(r.joueur2), r.terrain, r.tournoi, r.heure_debut, Pointage.parse(r.pointage), r.temps_partie, r.serveur, r.constestation, r.pariPossible, r.events.map((e) => MatchEventParser.parse(e)), new Map(Object.entries(r.paris)), new Map(Object.entries(r.gains)), r.montantJoueur1, r.montantJoueur2);
+        return new Match(r.id, Player.parse(r.joueur1), Player.parse(r.joueur2), r.terrain, r.tournoi, r.heure_debut, Pointage.parse(r.pointage), r.temps_partie, r.serveur, r.constestation, r.pariPossible, r.events.map((e) => MatchEventParser.parse(e)), new Map(Object.entries(r.paris)), new Map(Object.entries(r.gains)), r.montantJoueur1, r.montantJoueur2, r.version);
     }
 }
 exports.Match = Match;
