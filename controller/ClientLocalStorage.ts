@@ -1,4 +1,8 @@
-class ApiLocalStorage {
+/**
+ * Save/Manage client_id
+ * And local app state (current page...)
+ */
+class ClientLocalStorage {
     private static CLIENT_ID : string | null = null
     private static CLIENT_ID_KEY = "CLIENT_ID"
 
@@ -12,16 +16,16 @@ class ApiLocalStorage {
 
     // obviously this is not secure
     public static getClientId () {
-        if (ApiLocalStorage.CLIENT_ID == null) {
-            let stored_id = localStorage.getItem(ApiLocalStorage.CLIENT_ID_KEY)
+        if (ClientLocalStorage.CLIENT_ID == null) {
+            let stored_id = localStorage.getItem(ClientLocalStorage.CLIENT_ID_KEY)
             if (stored_id == null) {
                 // create
-                stored_id = ApiLocalStorage.generateUniqSerial()
+                stored_id = ClientLocalStorage.generateUniqSerial()
             }
-            ApiLocalStorage.CLIENT_ID = stored_id
-            localStorage.setItem(ApiLocalStorage.CLIENT_ID_KEY, stored_id)
+            ClientLocalStorage.CLIENT_ID = stored_id
+            localStorage.setItem(ClientLocalStorage.CLIENT_ID_KEY, stored_id)
         }
-        return ApiLocalStorage.CLIENT_ID
+        return ClientLocalStorage.CLIENT_ID
     }
 
 
@@ -45,14 +49,14 @@ class ApiLocalStorage {
      */
     private static SELECT_KEY = 'match_id';
     static getSelectedMatchIfAny() {
-        return localStorage.getItem(ApiLocalStorage.SELECT_KEY)
+        return localStorage.getItem(ClientLocalStorage.SELECT_KEY)
     }
 
     static setSelectedMatchIfAny(newId: string) {
-        localStorage.setItem(ApiLocalStorage.SELECT_KEY, newId)
+        localStorage.setItem(ClientLocalStorage.SELECT_KEY, newId)
     }
 
     static clearSelectedMatch() {
-        localStorage.removeItem(ApiLocalStorage.SELECT_KEY)
+        localStorage.removeItem(ClientLocalStorage.SELECT_KEY)
     }
 }

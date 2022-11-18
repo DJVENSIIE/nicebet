@@ -12,10 +12,10 @@ class App {
             message = `Vous avez perdu $${bet.amount}`;
         }
         // show a message if not already shown
-        const res = ApiLocalStorage.getMatchResultNotificationStatus(matchID, serverVersion);
+        const res = ClientLocalStorage.getMatchResultNotificationStatus(matchID, serverVersion);
         if (res == null) {
             BonPariNotification.create("Match terminé", message);
-            ApiLocalStorage.setMatchResultNotificationStatusSend(matchID, serverVersion);
+            ClientLocalStorage.setMatchResultNotificationStatusSend(matchID, serverVersion);
         }
         // return message
         return message;
@@ -37,7 +37,7 @@ class App {
         }
         // listen for bet results
         this.socket.on("matchEvent", (result) => {
-            const clientID = ApiLocalStorage.getClientId();
+            const clientID = ClientLocalStorage.getClientId();
             if (result.data[clientID] != undefined) {
                 App.sendMatchResult(result.match_id, result.data[clientID], result.serverVersion);
             }
@@ -90,7 +90,7 @@ class App {
             }
         });
         // show the right page
-        this.configureOnePage(ApiLocalStorage.getSelectedMatchIfAny());
+        this.configureOnePage(ClientLocalStorage.getSelectedMatchIfAny());
         // and up to date
         this.refresh(true);
         // update every 60 seconds
@@ -129,7 +129,7 @@ class App {
         this.keyFocusIndex = 0; // reset
         if (newId == null) {
             // clear
-            ApiLocalStorage.clearSelectedMatch();
+            ClientLocalStorage.clearSelectedMatch();
             this.backArrow.setAttribute("hidden", "");
             this.match.setAttribute("hidden", "");
             this.list.removeAttribute("hidden");
@@ -140,7 +140,7 @@ class App {
         }
         else {
             // set
-            ApiLocalStorage.setSelectedMatchIfAny(newId);
+            ClientLocalStorage.setSelectedMatchIfAny(newId);
             this.backArrow.removeAttribute("hidden");
             this.list.setAttribute("hidden", "");
             this.match.removeAttribute("hidden");
@@ -178,6 +178,9 @@ class App {
             }).catch(onerror);
         }
     }
+    /*
+    HTML Events
+     */
     onReturnPressed() {
         this.configureOnePage(null);
         this.refresh();
@@ -188,7 +191,7 @@ class App {
     }
     onBetPressed(matchID, player) {
         let amount = prompt(`Parier sur joueur ${player + 1}`, "0");
-        BonPariAPI.bet(new BetPostBody(ApiLocalStorage.getClientId(), Number(amount), player, matchID))
+        BonPariAPI.bet(new BetPostBody(ClientLocalStorage.getClientId(), Number(amount), player, matchID))
             .then(r => {
             if (r.tag != BetResult.ACCEPTED) {
                 alert(r.tag);
@@ -200,5 +203,8 @@ class App {
             .catch(console.error);
     }
 }
+// global variable that will be used
+// in the html
+// see methods such as #onReturnPressed
 const app = new App();
 app.start();

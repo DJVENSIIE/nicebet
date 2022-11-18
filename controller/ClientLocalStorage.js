@@ -1,5 +1,9 @@
 "use strict";
-class ApiLocalStorage {
+/**
+ * Save/Manage client_id
+ * And local app state (current page...)
+ */
+class ClientLocalStorage {
     // source: https://stackoverflow.com/questions/59412625/generate-random-uuid-javascript
     static generateUniqSerial() {
         return 'xxxx-xxxx-xxx-xxxx'.replace(/x/g, () => {
@@ -9,16 +13,16 @@ class ApiLocalStorage {
     }
     // obviously this is not secure
     static getClientId() {
-        if (ApiLocalStorage.CLIENT_ID == null) {
-            let stored_id = localStorage.getItem(ApiLocalStorage.CLIENT_ID_KEY);
+        if (ClientLocalStorage.CLIENT_ID == null) {
+            let stored_id = localStorage.getItem(ClientLocalStorage.CLIENT_ID_KEY);
             if (stored_id == null) {
                 // create
-                stored_id = ApiLocalStorage.generateUniqSerial();
+                stored_id = ClientLocalStorage.generateUniqSerial();
             }
-            ApiLocalStorage.CLIENT_ID = stored_id;
-            localStorage.setItem(ApiLocalStorage.CLIENT_ID_KEY, stored_id);
+            ClientLocalStorage.CLIENT_ID = stored_id;
+            localStorage.setItem(ClientLocalStorage.CLIENT_ID_KEY, stored_id);
         }
-        return ApiLocalStorage.CLIENT_ID;
+        return ClientLocalStorage.CLIENT_ID;
     }
     /**
      * Did we send a notification to the user?
@@ -33,18 +37,18 @@ class ApiLocalStorage {
         localStorage.setItem("MatchResult" + matchID + serverVersion, "send");
     }
     static getSelectedMatchIfAny() {
-        return localStorage.getItem(ApiLocalStorage.SELECT_KEY);
+        return localStorage.getItem(ClientLocalStorage.SELECT_KEY);
     }
     static setSelectedMatchIfAny(newId) {
-        localStorage.setItem(ApiLocalStorage.SELECT_KEY, newId);
+        localStorage.setItem(ClientLocalStorage.SELECT_KEY, newId);
     }
     static clearSelectedMatch() {
-        localStorage.removeItem(ApiLocalStorage.SELECT_KEY);
+        localStorage.removeItem(ClientLocalStorage.SELECT_KEY);
     }
 }
-ApiLocalStorage.CLIENT_ID = null;
-ApiLocalStorage.CLIENT_ID_KEY = "CLIENT_ID";
+ClientLocalStorage.CLIENT_ID = null;
+ClientLocalStorage.CLIENT_ID_KEY = "CLIENT_ID";
 /*
  * Save locally the selected match
  */
-ApiLocalStorage.SELECT_KEY = 'match_id';
+ClientLocalStorage.SELECT_KEY = 'match_id';

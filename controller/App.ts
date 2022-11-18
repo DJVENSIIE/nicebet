@@ -12,10 +12,10 @@ class App {
         }
 
         // show a message if not already shown
-        const res = ApiLocalStorage.getMatchResultNotificationStatus(matchID, serverVersion)
+        const res = ClientLocalStorage.getMatchResultNotificationStatus(matchID, serverVersion)
         if (res == null) {
             BonPariNotification.create("Match terminé", message)
-            ApiLocalStorage.setMatchResultNotificationStatusSend(matchID, serverVersion)
+            ClientLocalStorage.setMatchResultNotificationStatusSend(matchID, serverVersion)
         }
 
         // return message
@@ -38,7 +38,7 @@ class App {
         this.match = document.querySelector("#match")!!
     }
 
-    start() {
+    public start() {
         // ask for permission to show notifications
         if (Notification?.permission !== "granted") {
             Notification.requestPermission().then();
@@ -46,7 +46,7 @@ class App {
 
         // listen for bet results
         this.socket.on("matchEvent", (result: any) => {
-            const clientID = ApiLocalStorage.getClientId()
+            const clientID = ClientLocalStorage.getClientId()
             if (result.data[clientID] != undefined) {
                 App.sendMatchResult(result.match_id, result.data[clientID], result.serverVersion)
             }
@@ -98,7 +98,7 @@ class App {
         });
 
         // show the right page
-        this.configureOnePage(ApiLocalStorage.getSelectedMatchIfAny());
+        this.configureOnePage(ClientLocalStorage.getSelectedMatchIfAny());
         // and up to date
         this.refresh(true);
 
@@ -129,13 +129,13 @@ class App {
     /**
      * Router
      */
-    configureOnePage(newId: string|null) {
+    private configureOnePage(newId: string|null) {
         this.lastID = newId;
         this.keyFocusIndex = 0; // reset
 
         if (newId == null) {
             // clear
-            ApiLocalStorage.clearSelectedMatch()
+            ClientLocalStorage.clearSelectedMatch()
 
             this.backArrow.setAttribute("hidden", "")
             this.match.setAttribute("hidden", "")
@@ -146,7 +146,7 @@ class App {
             `
         } else {
             // set
-            ApiLocalStorage.setSelectedMatchIfAny(newId)
+            ClientLocalStorage.setSelectedMatchIfAny(newId)
 
             this.backArrow.removeAttribute("hidden")
             this.list.setAttribute("hidden", "")
@@ -160,7 +160,7 @@ class App {
      * We are changing the message if we are loading (Chargement...)
      * or if we are updating (Actualisation...)
      */
-    refresh(isLoading = false) {
+    private refresh(isLoading = false) {
         const loading = document.querySelector("#loading")!!
         const onerror = (error: any) => {
             if (isLoading) loading.innerHTML = `
@@ -186,6 +186,10 @@ class App {
         }
     }
 
+    /*
+    HTML Events
+     */
+
     public onReturnPressed() {
         this.configureOnePage(null)
         this.refresh()
@@ -198,7 +202,7 @@ class App {
 
     public onBetPressed(matchID: number, player: PlayerIndex) {
         let amount = prompt(`Parier sur joueur ${player+1}`, "0");
-        BonPariAPI.bet(new BetPostBody(ApiLocalStorage.getClientId(), Number(amount), player, matchID))
+        BonPariAPI.bet(new BetPostBody(ClientLocalStorage.getClientId(), Number(amount), player, matchID))
             .then(r => {
                 if (r.tag != BetResult.ACCEPTED) {
                     alert(r.tag)
@@ -210,5 +214,8 @@ class App {
     }
 }
 
+// global variable that will be used
+// in the html
+// see methods such as #onReturnPressed
 const app = new App()
 app.start();
