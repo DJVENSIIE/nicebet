@@ -1,6 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class App {
+    constructor() {
+        // @ts-ignore
+        this.socket = io("ws://localhost:3000");
+        this.lastID = null;
+        this.keyFocusIndex = 0;
+        this.backArrow = document.querySelector("#back");
+        this.title = document.querySelector("#title");
+        this.list = document.querySelector("#list");
+        this.match = document.querySelector("#match");
+        this.loading = document.querySelector("#loading");
+    }
     static sendMatchResult(matchID, bet, serverVersion) {
         // generate message
         let message;
@@ -19,17 +30,6 @@ class App {
         }
         // return message
         return message;
-    }
-    constructor() {
-        // @ts-ignore
-        this.socket = io("ws://localhost:3000");
-        this.lastID = null;
-        this.keyFocusIndex = 0;
-        this.backArrow = document.querySelector("#back");
-        this.title = document.querySelector("#title");
-        this.list = document.querySelector("#list");
-        this.match = document.querySelector("#match");
-        this.loading = document.querySelector("#loading");
     }
     start() {
         // ask for permission to show notifications
