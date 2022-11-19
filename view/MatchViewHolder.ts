@@ -55,9 +55,9 @@ class MatchViewHolder {
                        <td>|</td><td>${match.getPlayerGame(p1)}</td>
                        </tr>
 
-                       <tr><td colspan="7">${match.getPlayerReclamations(p1)} contestations Restantes</td></tr>
-                       <tr><td colspan="7" class="text-center fs-3 fw-bold">VS</td></tr>
-                       <tr><td colspan="7" class="text-end">${match.getPlayerReclamations(p2)} contestations Restantes</td></tr>
+                       <tr><td colspan="7" class="pb-0">${match.getPlayerReclamations(p1)} contestations Restantes</td></tr>
+                       <tr><td colspan="7" class="text-center fs-4 fw-bold py-0">VS</td></tr>
+                       <tr><td colspan="7" class="text-end pt-0">${match.getPlayerReclamations(p2)} contestations Restantes</td></tr>
 
                        <tr class="bg-green">
                            <td>
