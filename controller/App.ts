@@ -14,7 +14,12 @@ class App {
         // show a message if not already shown
         const res = ClientLocalStorage.getMatchResultNotificationStatus(matchID, serverVersion)
         if (res == null) {
-            BonPariNotification.create("Match terminé", message)
+            // check if we can send a notification
+            if (Notification?.permission === "granted") {
+                BonPariNotification.create("Match terminé", message)
+            } else {
+                console.info("No notification send with message:"+message)
+            }
             ClientLocalStorage.setMatchResultNotificationStatusSend(matchID, serverVersion)
         }
 
