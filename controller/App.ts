@@ -203,6 +203,7 @@ class App {
 
     public onBetPressed(matchID: number, player: PlayerIndex) {
         let amount = prompt(`Parier sur joueur ${player+1}`, "0");
+        if (amount == null) return;
         BonPariAPI.bet(new BetPostBody(ClientLocalStorage.getClientId(), Number(amount), player, matchID))
             .then(r => {
                 if (r.tag != BetResult.ACCEPTED) {
