@@ -157,12 +157,9 @@ class App {
         const onerror = (error, callback) => {
             this.loading.innerHTML = `<p>Impossible de se connecter au serveur.</p>`;
             if (error instanceof ApiConnectionLostError) {
-                console.log(error.cachedData);
-                console.log(callback);
                 callback(error.cachedData);
             }
         };
-        // this.loading.removeAttribute("hidden")
         this.loading.textContent = isLoading ? "Chargement..." : "Actualisation...";
         if (this.lastID == null) {
             // show list
