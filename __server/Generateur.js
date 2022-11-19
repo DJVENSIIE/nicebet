@@ -39,21 +39,21 @@ const demarrer = function () {
     if (uptime > s(5) && listePartie.length === 1)
       listePartie.push(new Partie(new Joueur('Andy', 'Murray', 28, 132, 'Angleterre'), new Joueur('Andy', 'Roddick', 36, 1000, 'États-Unis'), '2', 'Hale', '13h00', 30, onMatchEvent));
     else if (uptime > s(10) && listePartie.length === 2)
-      listePartie.push(new Partie(new Joueur('Kristopher', 'Spear', r100(), r1000(), 'Guam'), new Joueur('Dominik', 'Noel', r100(), r1000(), 'États-Unis'), '3', 'Hale', '14h25',  t(20+tick), onMatchEvent));
+      listePartie.push(new Partie(new Joueur('Kristophe', 'Spear', r100(), r1000(), 'Guam'), new Joueur('Dominik', 'Noel', r100(), r1000(), 'États-Unis'), '3', 'Hale', '14h25',  t(20+tick), onMatchEvent));
     else if (uptime > s(20) && listePartie.length === 3)
-      listePartie.push(new Partie(new Joueur('Humberto', 'Damrosch', r100(), r1000(), 'Barbados'), new Joueur('Marco', 'Antoine', r100(), r1000(), 'Nepal'), '4', 'Hale', '15h10',  t(30+tick), onMatchEvent));
+      listePartie.push(new Partie(new Joueur('Humber', 'Damrosch', r100(), r1000(), 'Barbados'), new Joueur('Marco', 'Antoine', r100(), r1000(), 'Nepal'), '4', 'Hale', '15h10',  t(30+tick), onMatchEvent));
     else if (uptime > s(30) && listePartie.length === 4)
       listePartie.push(new Partie(new Joueur('Miguel', 'Coppini', r100(), r1000(), 'Peru'), new Joueur('Alaina', 'Hartel', r100(), r1000(), 'Japan'), '1', 'Hale', '16h30',  t(40+tick), onMatchEvent));
     else if (uptime > s(40) && listePartie.length === 5)
       listePartie.push(new Partie(new Joueur('Jamya', 'Turci', r100(), r1000(), 'Angola'), new Joueur('Thaddeus', 'Harvie', r100(), r1000(), 'Chile'), '2', 'Hale', '17h00',  t(50+tick), onMatchEvent));
     else if (uptime > s(50) && listePartie.length === 6)
-      listePartie.push(new Partie(new Joueur('Clarence', 'Salt', r100(), r1000(), 'Palestine'), new Joueur('Ally', 'Hazlitt', r100(), r1000(), 'Israel'), '3', 'Hale', '19h00',  t(60+tick), onMatchEvent));
+      listePartie.push(new Partie(new Joueur('Clara', 'Salt', r100(), r1000(), 'Palestine'), new Joueur('Ally', 'Hazlitt', r100(), r1000(), 'Israel'), '3', 'Hale', '19h00',  t(60+tick), onMatchEvent));
     else if (uptime > s(60) && listePartie.length === 7)
       listePartie.push(new Partie(new Joueur('Irene', 'Carraro', r100(), r1000(), 'Romania'), new Joueur('Ana', 'Pallini', r100(), r1000(), 'Antigua and Barbuda'), '4', 'Hale', '19h25',  t(70+tick), onMatchEvent));
     else if (uptime > s(70) && listePartie.length === 8)
       listePartie.push(new Partie(new Joueur('Adonis', 'Ascher', r100(), r1000(), 'Serbia'), new Joueur('Marquise', 'Schiavinotto', r100(), r1000(), 'Djibouti'), '1', 'Hale', '20h00',  t(80+tick), onMatchEvent));
     else if (uptime > s(80) && listePartie.length === 9)
-      listePartie.push(new Partie(new Joueur('Monique', 'Villarreal', r100(), r1000(), 'Slovenia'), new Joueur('Kody', 'Cluff', r100(), r1000(), 'Monaco'), '2', 'Hale', '20h30',  t(90+tick), onMatchEvent));
+      listePartie.push(new Partie(new Joueur('Monique', 'Villa', r100(), r1000(), 'Slovenia'), new Joueur('Kody', 'Cluff', r100(), r1000(), 'Monaco'), '2', 'Hale', '20h30',  t(90+tick), onMatchEvent));
     else if (uptime > s(90) && listePartie.length === 10)
       listePartie.push(new Partie(new Joueur('Anya', 'Feather', r100(), r1000(), 'Estonia'), new Joueur('Hadassah', 'Sekimoto', r100(), r1000(), 'Armenia'), '3', 'Hale', '21h00',  t(100+tick), onMatchEvent));
 
