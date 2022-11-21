@@ -40,7 +40,11 @@ class App {
     start() {
         // ask for permission to show notifications
         if (Notification?.permission !== "granted") {
+            console.log("Les notifications sont désactivées. Requesting permissions.");
             Notification.requestPermission().then();
+        }
+        else {
+            console.log("Les notifications sont activées.");
         }
         // listen for bet results
         this.socket.on("matchEvent", (result) => {
@@ -154,32 +158,36 @@ class App {
             this.title.textContent = "Résumé";
         }
     }
+    refreshError(error, callback) {
+        this.loading.innerHTML = `<p>Impossible de se connecter au serveur.</p>`;
+        if (error instanceof ApiConnectionLostError) {
+            callback(error.cachedData);
+        }
+    }
+    refreshDate() {
+        // 1663454676
+        return "Dernière mise-à-jour: " + new Date().toTimeString().substring(0, 8);
+    }
     /**
      * Refresh what has to be refreshed.
      * We are changing the message if we are loading (Chargement...)
      * or if we are updating (Actualisation...)
      */
     refresh(isLoading = false) {
-        const onerror = (error, callback) => {
-            this.loading.innerHTML = `<p>Impossible de se connecter au serveur.</p>`;
-            if (error instanceof ApiConnectionLostError) {
-                callback(error.cachedData);
-            }
-        };
         this.loading.textContent = isLoading ? "Chargement..." : "Actualisation...";
         if (this.lastID == null) {
             // show list
             BonPariAPI.getAllGames().then((r) => {
-                this.loading.textContent = "Dernière mise-à-jour: " + new Date().getHours() + "h" + new Date().getMinutes();
+                this.loading.textContent = this.refreshDate();
                 MatchListViewHolder.updateList(r);
-            }).catch(r => onerror(r, (r) => MatchListViewHolder.updateList(r)));
+            }).catch(r => this.refreshError(r, (r) => MatchListViewHolder.updateList(r)));
         }
         else {
             // show content
             BonPariAPI.getGame(Number(this.lastID)).then((r) => {
-                this.loading.textContent = "Dernière mise-à-jour: " + new Date().getHours() + "h" + new Date().getMinutes();
+                this.loading.textContent = this.refreshDate();
                 MatchViewHolder.updateMatch(r);
-            }).catch(r => onerror(r, (r) => MatchViewHolder.updateMatch(r)));
+            }).catch(r => this.refreshError(r, (r) => MatchViewHolder.updateMatch(r)));
         }
     }
     /*
