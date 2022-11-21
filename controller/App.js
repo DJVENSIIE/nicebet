@@ -16,6 +16,7 @@ class App {
         if (res == null) {
             // check if we can send a notification
             if (Notification?.permission === "granted") {
+                console.info("Notification dispatched with message:" + message);
                 BonPariNotification.create("Match terminé", message);
             }
             else {
@@ -66,7 +67,9 @@ class App {
             if (document.hidden) {
                 console.info("Document hidden listen");
                 this.socket.on("matchEvent" + this.lastID, (result) => {
+                    console.info("Event received");
                     if (Notification?.permission === "granted") {
+                        console.info("Notification will be emitted.");
                         let body;
                         let title;
                         const e = MatchEventParser.parse(result);
