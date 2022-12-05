@@ -4,6 +4,10 @@ const router = express.Router();
 const gen = require('../Generateur');
 
 function wrapContent(res, format, content) {
+    if (content === undefined) {
+        res.send({ "message": "Not found" });
+        return
+    }
     switch (format) {
         case 'rdf+xml':
             res.send(`
@@ -107,7 +111,7 @@ router.get('/horaire', function (req, res, next) {
 router.get('/horaire/:id', function (req, res, next) {
     const id = req.params.id
     const format = getFormat(req)
-    const content = gen.liste_partie[id].toHoraire(format)
+    const content = gen.liste_partie[id]?.toHoraire(format)
     wrapContent(res, format, content)
 });
 
@@ -121,7 +125,7 @@ router.get('/resultat', function (req, res, next) {
 router.get('/resultat/:id', function (req, res, next) {
     const id = req.params.id
     const format = getFormat(req)
-    const content = gen.liste_partie[id].toResultat(format)
+    const content = gen.liste_partie[id]?.toResultat(format)
     wrapContent(res, format, content)
 });
 
@@ -135,7 +139,7 @@ router.get('/joueurs', function (req, res, next) {
 router.get('/joueurs/:id', function (req, res, next) {
     const id = req.params.id
     const format = getFormat(req)
-    const content = gen.liste_joueurs[id].to(format)
+    const content = gen.liste_joueurs[id]?.to(format)
     wrapContent(res, format, content)
 });
 
