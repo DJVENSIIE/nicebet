@@ -53,8 +53,7 @@ class Partie {
     <dc:horaire>${this.heure_debut}</dc:horaire>
 </rdf:Description>`
       case 'text/html':
-        return `<table><tr><td>horaire</td><td>${this.heure_debut}</td></tr></table>
-</Description>`
+        return `<table><tr><td>horaire</td><td>${this.heure_debut}</td></tr></table>`
     }
   }
 
