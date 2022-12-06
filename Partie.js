@@ -36,12 +36,61 @@ class Partie {
     // this.parier(5, 0, 100, true)
   }
 
+  forParis(tabParis,format){
+    let s = '';
+    for (let x in tabParis){ 
+      s += "<dc:pari>"+tabParis[x].to(format)+"</dc:pari>";
+    }
+    return s
+  }
+
+  forGains(tabGains,format){
+    let s = '';
+    for (let x in tabGains){ 
+      s += "<dc:gain>"+tabGains[x].to(format)+"</dc:gain>";
+    }
+    return s
+  }
+
+  forEvents(tabEvents,format){
+    let s = '';
+    for (let x of tabEvents){ 
+      s += "<dc:event>"+x.to(format)+"</dc:event>";
+    }
+    return s
+  }
+
+
   to(format) {
     switch (format) {
       case 'rdf+xml':
+        let vainqueur = "";
+        if (this.vainqueur === 0) {
+          vainqueur = `\n<dc:vainqueur>${this.joueur1.to(format)}</dc:vainqueur>`
+        } else if (this.vainqueur === 1) {
+          vainqueur = `\n<dc:vainqueur>${this.joueur2.to(format)}</dc:vainqueur>`
+        } else {
+          vainqueur = `<dc:vainqueur></dc:vainqueur>`
+        }
         return `<rdf:Description>
-              <dc:horaire>${this.toHoraire(format)}</dc:horaire>
-              <dc:resultat>${this.toResultat(format)}</dc:resultat>
+              <dc:id>${this.id}</dc:id>
+              <dc:joueur1>${this.joueur1.to(format)}</dc:joueur1>
+              <dc:joueur2>${this.joueur2.to(format)}</dc:joueur2>
+              <dc:terrain>${this.terrain}</dc:terrain>
+              <dc:tournoi>${this.tournoi}</dc:tournoi>
+              <dc:debut>${this.heure_debut}</dc:debut>
+              <dc:pointage>${this.pointage.to(format)}</dc:pointage>
+              <dc:duree>${this.temps_partie}</dc:duree>
+              <dc:joueur_au_service>${this.joueur_au_service}</dc:joueur_au_service>
+              <dc:vitesse_dernier_service>${this.vitesse_dernier_service}</dc:vitesse_dernier_service>
+              <dc:nombre_coup_dernier_echange>${this.vitesse_dernier_service}</dc:nombre_coup_dernier_echange>
+              <dc:constestation>${this.constestation}</dc:constestation>
+              <dc:paris>${this.forParis(this.paris,format)}</dc:paris>
+              <dc:gain>${this.forGains(this.gains,format)}</dc:gain>
+              <dc:montantTotal>${this.montantTotal}</dc:montantTotal>
+              <dc:montantJoueur1>${this.montantJoueur1}</dc:montantJoueur1>
+              <dc:montantJoueur2>${this.montantJoueur2}</dc:montantJoueur2>
+              <dc:events>${this.forEvents(this.events,format)}</dc:events>
 </rdf:Description>`
     }
   }
@@ -87,7 +136,7 @@ class Partie {
         return `<table>
     <tr><td>joueur1</td><td>${this.joueur1.to(format)}</td></tr>
     <tr><td>joueur2</td><td>${this.joueur2.to(format)}</td></tr>
-    <tr><td>durée</td><td>${this.temps_partie}</td></tr>
+    <tr><td>duree</td><td>${this.temps_partie}</td></tr>
     <tr><td>pointage</td><td>${this.pointage.to(format)}</tr></td>${vainqueur}
 </table>`
     }

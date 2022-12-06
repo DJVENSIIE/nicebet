@@ -7,6 +7,20 @@ class MatchEvent {
     this.parent = parent
   }
 
+  to(format) {
+    switch (format) {
+      case 'rdf+xml':
+
+        return `<dc:type>${this.type}</dc:type>
+                <dc:result>${this.result}</dc:result>
+                <dc:time>${this.time}</dc:time>
+                `
+      default:
+        return ""
+    }
+  }
+
+
   static score (by, parent) {
     return new MatchEvent(2, by+"", parent);
   }
