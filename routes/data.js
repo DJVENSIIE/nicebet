@@ -46,7 +46,6 @@ router.get('/', function (req, res, next) {
     switch (format) {
         case 'rdf+xml':
             gen.liste_partie.forEach(j => content += j.to(format))
-            gen.liste_joueurs.forEach(j => content += j.to(format))
             break;
         case 'text/html':
             content = `<p>Bienvenue sur l'API de BonPari - version 1.0.0</p>
