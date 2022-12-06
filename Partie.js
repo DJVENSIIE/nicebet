@@ -90,6 +90,7 @@ class Partie {
               <dc:montantTotal>${this.montantTotal}</dc:montantTotal>
               <dc:montantJoueur1>${this.montantJoueur1}</dc:montantJoueur1>
               <dc:montantJoueur2>${this.montantJoueur2}</dc:montantJoueur2>
+              ${vainqueur}
               <dc:events>${this.forEvents(this.events,format)}</dc:events>
 </rdf:Description>`
     }
