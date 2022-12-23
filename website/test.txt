@@ -1,0 +1,9 @@
+<script>
+    // https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API
+    // Notification.requestPermission().then((result) => {
+        // console.log(result);
+        // const img = '/to-do-notifications/img/icon-128.png';
+        // const text = `HEY! Your task "${"toto"}" is now overdue.`;
+        // const notification = new Notification('To do list', { body: text, icon: img });
+    // });
+</script>

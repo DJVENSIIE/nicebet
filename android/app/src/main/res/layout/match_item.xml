@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/match_starting_at"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/match_starting_at"
+        android:textAlignment="center"
+        tools:text="Tournoi Hale - 18h30" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/player_name1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                tools:text="Albert Ramos" />
+
+            <TextView
+                android:id="@+id/player_age_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="28 ans" />
+
+            <TextView
+                android:id="@+id/player_country_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Espagne" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/player_name2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                tools:text="Andy Murray" />
+
+            <TextView
+                android:id="@+id/player_age_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="28 ans" />
+
+            <TextView
+                android:id="@+id/player_country_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Angleterre" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/more_button" />
+</LinearLayout>

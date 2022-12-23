@@ -1,0 +1,10 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "scripts": {
+    "tsc": "npx tsc --project tsconfig.json -w"
+  },
+  "dependencies": {
+    "typescript": "^4.9.3"
+  }
+}
